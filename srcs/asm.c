@@ -6,18 +6,19 @@
 /*   By: cpoirier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 18:55:21 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/02 21:21:14 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/02 21:43:16 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/corewar.h"
 #include "../libft/libft.h"
 #include <fcntl.h>
-#include <stdlib.h>
+
+#include "../ressources/op.c"
 
 void	fail_msg(char *s)
 {
-	ft_printf(s);
+	ft_printf("%s\n", s);
 	exit(1);
 }
 
@@ -35,16 +36,16 @@ void	write_nb(char *s, int nb, int byte_nb)
 	}
 }
 
-void	skip_whitespace(char *s, int *i)
+void	skip_whitespace(char *s, size_t *i)
 {
 	while (s[*i] == ' ' || s[*i] == '\t')
 		(*i)++;
 }
 
-int		get_name(char *s, char name[], int len)
+int		get_name(char *s, char name[], size_t len)
 {
-	uint32_t	i;
-	uint32_t	j;
+	size_t	i;
+	size_t	j;
 
 	i = 0;
 	skip_whitespace(s, &i);
@@ -73,7 +74,7 @@ int		get_ocp(int op, t_arg_type args[3])
 
 int		get_op_id(char *s)
 {
-	uint32_t	i;
+	size_t	i;
 
 	i = 0;
 	while (i < 16)
@@ -116,9 +117,9 @@ int		get_asm(char *path)
 	int		fd;
 	char	*s;
 	t_asm	my_asm;
-	uint32_t	i;
+	size_t	i;
 
-	fd = open(path, "O_RDONLY");
+	fd = open(path, O_RDONLY);
 	if (fd < 0)
 		exit(1);	// Better error handling required...
 	my_asm.name[0] = 0;
@@ -147,7 +148,29 @@ int		get_asm(char *path)
 				fail_msg("Syntax error: Comment not well-formated");
 		}
 		else if ((my_asm.current_op = get_op_id(s + i)))
-			; // Here handle operations writing
+			handle_ope; // Here handle operations writing
+		else
+		{
+			// Here, handle potential label definitions.
+			// (precision: label names must be strictly followed by the LABEL_CHAR)
+			// Or it can be a comment.
+			// Else, it's a mistake.
+		}
 		free(s);
 	}
+
+	printf("My name is %s\n", my_asm.name);
+	printf("My comment is %s\n", my_asm.comment);
+
+
+	free(my_asm.labels);
+	free(my_asm.labels_holder);
+	return (1);
+}
+
+int main(int ac, char **av)
+{
+	if (ac < 2)
+		return (0);
+	return (get_asm(av[1]));
 }

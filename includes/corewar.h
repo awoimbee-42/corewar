@@ -6,7 +6,7 @@
 /*   By: cpoirier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 18:47:28 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/02 21:13:52 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/02 21:24:20 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 
 # include "../ressources/op.h"
+# include <stdlib.h>
 
 # define LABEL_COUNT 50
 # define LABEL_END '-'
