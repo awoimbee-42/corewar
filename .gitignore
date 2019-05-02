@@ -1,0 +1,8 @@
+*.a
+*.o
+.vscode
+*.gen
+.DS_Store
+._*
+*.dSYM
+build
