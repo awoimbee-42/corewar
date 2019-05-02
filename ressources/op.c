@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:43:01 by zaz               #+#    #+#             */
-/*   Updated: 2019/05/02 14:48:20 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/02 17:46:04 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ typedef struct	s_op
 
 t_op    op_tab[17] =
 {
-//  name - nb_args -- args_types --                                 id -- nb_cycles -- description --      uses_coding_byte -- uses_carry
+//  name - nb_args -- args_types --                                 id -- nb_cycles -- description --      uses_coding_byte -- does_direct_values_on_2_bytes_instead_of_4
 	{"live", 1, {T_DIR},                                                1,   10, "alive",                                0, 0},
 	{"ld",   2, {T_DIR | T_IND, T_REG},                                 2,    5, "load",                                 1, 0},
 	{"st",   2, {T_REG, T_IND | T_REG},                                 3,    5, "store",                                1, 0},
