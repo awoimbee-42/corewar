@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/29 23:27:57 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/02 16:05:10 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/03 11:42:35 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 #  define LFT_AVX 0
 # endif
 
-# define GNL_BUFF_SIZE 300
+# define GNL_BUFF_SIZE 32768
 # define GNL_FLUSH (char**)INTPTR_MAX
 
 typedef uint32_t	t_queued;
