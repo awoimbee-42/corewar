@@ -6,30 +6,11 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:43:01 by zaz               #+#    #+#             */
-/*   Updated: 2019/05/02 17:46:04 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/05 21:32:37 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "op.h"
-
-typedef enum	e_bool
-{
-	FALSE,
-	TRUE
-}				t_bool;
-
-typedef struct	s_op
-{
-	char		*name;
-	int			nb_args;
-	t_arg_type	args_types[3]; // 3 is the max number of args -> the compiler will round to 4 anyways
-	int			id; //op_code
-	int			cycles;
-	char		*desc;
-	t_bool		coding_byte;
-	t_bool		carry;
-}				t_op;
-
 
 t_op    op_tab[17] =
 {

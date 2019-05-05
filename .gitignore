@@ -6,3 +6,5 @@
 ._*
 *.dSYM
 build
+asm
+corewar
