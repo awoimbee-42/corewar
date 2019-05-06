@@ -5,6 +5,8 @@
 .DS_Store
 ._*
 *.dSYM
-build
+build/
 asm
+!asm/
 corewar
+!corewar/
