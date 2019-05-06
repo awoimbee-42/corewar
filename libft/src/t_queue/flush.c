@@ -1,21 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push.c                                             :+:      :+:    :+:   */
+/*   flush.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/29 01:13:56 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/05 17:45:06 by awoimbee         ###   ########.fr       */
+/*   Created: 2019/04/30 17:22:30 by awoimbee          #+#    #+#             */
+/*   Updated: 2019/04/30 19:58:56 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_vector		*vector_push(t_vector *vec, t_vected d)
+t_queue		*que_flush(t_queue *q)
 {
-	if (vec->len == vec->mem && !vector_realloc(vec))
-		return (NULL);
-	vec->arr[vec->len++] = d;
-	return (vec);
+	q->start = -1;
+	q->end = -1;
+	return (q);
 }

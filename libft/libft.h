@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/23 20:34:49 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/04/30 19:36:14 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/05 20:39:53 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ char			*ft_strrev(char *str);
 int				ft_strcat_join(char **s1, char const *s2);
 char			*ft_stpcpy(char *dest, const char *src);
 int				ft_strncat_join(char **s1, char const *s2, size_t size);
+char			*ft_strndup(const char *s1, size_t maxlen);
 
 /*
 **	##################### LIBNB ####################
@@ -136,6 +137,7 @@ t_queue			*que_new(size_t len);
 void			que_destroy(t_queue *que);
 void			que_disp(const t_queue *que);
 int				que_isempty(const t_queue *que);
+t_queue			*que_flush(t_queue *q);
 
 /*
 **	##################### T_VEC4 ##################
@@ -176,7 +178,21 @@ int				que_isempty(const t_queue *que);
 t_vector		*vector_init(t_vector *vec, const size_t reserved_len);
 t_vector		*vector_push(t_vector *vec, t_vected d);
 t_vector		*vector_realloc(t_vector *vec);
+void			vector_mapvoid(t_vector *v, void (*f)(t_vected*));
+t_vector		*vector_del_at(t_vector *v, size_t at);
 
+/*
+**	T_GARBAGE (sortof garbage collector)
+*/
+t_garbage		gb_init(void);
+void			intrin__gb_fail(t_garbage *gb);
+void			gb_freeall(t_garbage *gb);
+void			gb_free(t_garbage *gb, void *ptr);
+void			gb_remove(t_garbage *gb, void *freed);
+void			*gb_malloc(t_garbage *gb, size_t size);
+void			*gb_add(t_garbage *gb, void *malloced);
+void			gb_defrag(t_garbage *gb);
+void			*gb_memalloc(t_garbage *gb, size_t size);
 
 /*
 **	##################### other ####################

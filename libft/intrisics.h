@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/29 23:27:57 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/03 11:42:35 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/06 15:20:51 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,13 @@
 
 # ifdef __AVX__
 #  define LFT_AVX 1
-#  else
+# else
 #  define LFT_AVX 0
+# endif
+# ifdef __SSE2__
+#  define LFT_SSE2 1
+# else
+#  define LFT_SSE2 0
 # endif
 
 # define GNL_BUFF_SIZE 32768
@@ -62,5 +67,12 @@ typedef struct	s_vector
 	size_t			len;
 	size_t			mem;
 }				t_vector;
+
+typedef struct	s_garbage
+{
+	void			**pointers;
+	size_t			arr_len;
+	size_t			mem_len;
+}				t_garbage;
 
 #endif

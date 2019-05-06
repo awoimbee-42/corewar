@@ -1,21 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push.c                                             :+:      :+:    :+:   */
+/*   gb_remove.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/29 01:13:56 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/05 17:45:06 by awoimbee         ###   ########.fr       */
+/*   Created: 2019/05/04 21:19:19 by awoimbee          #+#    #+#             */
+/*   Updated: 2019/05/04 21:23:02 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_vector		*vector_push(t_vector *vec, t_vected d)
+/*
+**	Used to remove a pointer malloced through gb_malloc but freed elsewhere.
+*/
+
+void		gb_remove(t_garbage *gb, void *freed)
 {
-	if (vec->len == vec->mem && !vector_realloc(vec))
-		return (NULL);
-	vec->arr[vec->len++] = d;
-	return (vec);
+	void	**i;
+
+	i = gb->pointers;
+	while (*i != freed)
+		++i;
+	*i = NULL;
 }

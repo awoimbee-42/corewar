@@ -1,21 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push.c                                             :+:      :+:    :+:   */
+/*   gb_fail.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/29 01:13:56 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/05 17:45:06 by awoimbee         ###   ########.fr       */
+/*   Created: 2019/05/04 21:08:41 by awoimbee          #+#    #+#             */
+/*   Updated: 2019/05/05 17:34:53 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <unistd.h>
 
-t_vector		*vector_push(t_vector *vec, t_vected d)
+void		intrin__gb_fail(t_garbage *gb)
 {
-	if (vec->len == vec->mem && !vector_realloc(vec))
-		return (NULL);
-	vec->arr[vec->len++] = d;
-	return (vec);
+	write(STDERR_FILENO, "Memory allocation error, terminating cleanly.\n", 46);
+	gb_freeall(gb);
+	exit(EXIT_FAILURE);
 }
