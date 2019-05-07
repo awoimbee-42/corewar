@@ -1,31 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   gb_add.c                                           :+:      :+:    :+:   */
+/*   vecplay_del_at.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/04 21:16:26 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/07 22:26:39 by awoimbee         ###   ########.fr       */
+/*   Created: 2019/05/03 19:05:48 by awoimbee          #+#    #+#             */
+/*   Updated: 2019/05/05 17:45:13 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "vm.h"
 #include "libft.h"
 
-/*
-**	Used to add a pointer allocated from different means to the garbage list
-**	Panics if malloced == NULL !
-*/
-
-void		*gb_add(t_garbage *gb, void *malloced)
+t_vecplay		*vecplay_del_at(t_vecplay *v, size_t at)
 {
-	void		*tmp;
-
-	if (malloced == NULL)
-		intrin__gb_fail(gb);
-	if (gb->arr_len == gb->mem_len)
-		intrin_gb_extend(gb);
-	gb->pointers[gb->arr_len] = malloced;
-	gb->arr_len++;
-	return (malloced);
+	if (at >= v->len)
+		return (NULL);
+	--v->len;
+	ft_memcpy(&v->d[at], &v->d[at + 1], v->len - at);
+	return (v);
 }

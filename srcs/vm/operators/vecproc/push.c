@@ -1,31 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   gb_add.c                                           :+:      :+:    :+:   */
+/*   push.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/04 21:16:26 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/07 22:26:39 by awoimbee         ###   ########.fr       */
+/*   Created: 2019/04/29 01:13:56 by awoimbee          #+#    #+#             */
+/*   Updated: 2019/05/07 20:38:51 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "vm.h"
 #include "libft.h"
 
-/*
-**	Used to add a pointer allocated from different means to the garbage list
-**	Panics if malloced == NULL !
-*/
-
-void		*gb_add(t_garbage *gb, void *malloced)
+t_vecproc		*vecproc_push(t_garbage *gb, t_vecproc *vec, t_proc d)
 {
-	void		*tmp;
-
-	if (malloced == NULL)
-		intrin__gb_fail(gb);
-	if (gb->arr_len == gb->mem_len)
-		intrin_gb_extend(gb);
-	gb->pointers[gb->arr_len] = malloced;
-	gb->arr_len++;
-	return (malloced);
+	if (vec->len == vec->mem)
+		vecproc_realloc(gb, vec);
+	vec->d[vec->len++] = d;
+	return (vec);
 }

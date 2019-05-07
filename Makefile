@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/05/05 21:36:05 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/05/07 21:28:21 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,14 +19,31 @@ ASM  =	asm
 
 CFLAGS	=	-g3 #-Wall -Wextra -Ofast -march=native#-fsanitize=address #-Werror -Ofast -march=native
 
-SRC_NAME_CORE =	main.c
+SRC_NAME_CORE =	main.c								\
+				read_argv.c							\
+				\
+				operators/vecplay/init.c			\
+				operators/vecplay/new.c				\
+				operators/vecplay/point_last.c		\
+				operators/vecplay/push.c			\
+				operators/vecplay/push_empty.c		\
+				operators/vecplay/realloc.c			\
+				operators/vecplay/vector_del_at.c	\
+				operators/vecproc/init.c			\
+				operators/vecproc/new.c				\
+				operators/vecproc/point_last.c		\
+				operators/vecproc/push.c			\
+				operators/vecproc/push_empty.c		\
+				operators/vecproc/realloc.c			\
+				operators/vecproc/vector_del_at.c	\
 
 SRC_NAME_ASM =	asm.c
 
 ASM_FD = asm/
 ASM_SRC_SUBFOLDERS =
 CORE_FD = vm/
-CORE_SRC_SUBFOLDERS =
+CORE_SRC_SUBFOLDERS =	operators/vecplay		\
+						operators/vecproc
 BUILD_FOLDER =	build
 
 ################################################################################

@@ -1,31 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   gb_add.c                                           :+:      :+:    :+:   */
+/*   realloc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/04 21:16:26 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/07 22:26:39 by awoimbee         ###   ########.fr       */
+/*   Created: 2019/04/29 01:16:55 by awoimbee          #+#    #+#             */
+/*   Updated: 2019/05/07 21:03:15 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "vm.h"
 
-/*
-**	Used to add a pointer allocated from different means to the garbage list
-**	Panics if malloced == NULL !
-*/
-
-void		*gb_add(t_garbage *gb, void *malloced)
+t_vecplay	*vecplay_realloc(t_garbage *gb, t_vecplay *vec)
 {
-	void		*tmp;
-
-	if (malloced == NULL)
-		intrin__gb_fail(gb);
-	if (gb->arr_len == gb->mem_len)
-		intrin_gb_extend(gb);
-	gb->pointers[gb->arr_len] = malloced;
-	gb->arr_len++;
-	return (malloced);
+	if (__builtin_expect(vec->mem == 0, 0))
+		vec->mem = 2;
+	else
+		vec->mem *= 2;
+	vec->d = gb_realloc(gb, vec->d, vec->mem * sizeof(*vec->d));
+	return (vec);
 }

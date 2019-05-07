@@ -1,31 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   gb_add.c                                           :+:      :+:    :+:   */
+/*   point_last.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/04 21:16:26 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/07 22:26:39 by awoimbee         ###   ########.fr       */
+/*   Created: 2019/05/07 19:41:13 by awoimbee          #+#    #+#             */
+/*   Updated: 2019/05/07 19:42:15 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "vm.h"
 
-/*
-**	Used to add a pointer allocated from different means to the garbage list
-**	Panics if malloced == NULL !
-*/
-
-void		*gb_add(t_garbage *gb, void *malloced)
+t_play		*vecplay_point_last(const t_vecplay *vec)
 {
-	void		*tmp;
-
-	if (malloced == NULL)
-		intrin__gb_fail(gb);
-	if (gb->arr_len == gb->mem_len)
-		intrin_gb_extend(gb);
-	gb->pointers[gb->arr_len] = malloced;
-	gb->arr_len++;
-	return (malloced);
+	return (&vec->d[vec->len - 1]);
 }

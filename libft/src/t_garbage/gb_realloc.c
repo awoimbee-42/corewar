@@ -1,31 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   gb_add.c                                           :+:      :+:    :+:   */
+/*   gb_realloc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/04 21:16:26 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/07 22:26:39 by awoimbee         ###   ########.fr       */
+/*   Created: 2019/05/07 18:36:14 by awoimbee          #+#    #+#             */
+/*   Updated: 2019/05/07 22:37:41 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
 
-/*
-**	Used to add a pointer allocated from different means to the garbage list
-**	Panics if malloced == NULL !
-*/
-
-void		*gb_add(t_garbage *gb, void *malloced)
+void		*gb_realloc(t_garbage *gb, void *ptr, size_t new_size)
 {
-	void		*tmp;
+	// void	**i;
+	void	*tmp;
+	size_t	i;
 
-	if (malloced == NULL)
+	i = 0;
+	while (i < gb->arr_len && gb->pointers[i] != ptr)
+		++i;
+	if (i == gb->arr_len)
+		return (gb_malloc(gb, new_size));
+	tmp = realloc(ptr, new_size);
+	if (!__builtin_expect((long)tmp, 1))
 		intrin__gb_fail(gb);
-	if (gb->arr_len == gb->mem_len)
-		intrin_gb_extend(gb);
-	gb->pointers[gb->arr_len] = malloced;
-	gb->arr_len++;
-	return (malloced);
+	gb->pointers[i] = tmp;
+	return (tmp);
 }

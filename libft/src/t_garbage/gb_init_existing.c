@@ -1,31 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   gb_add.c                                           :+:      :+:    :+:   */
+/*   gb_init_existing.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/04 21:16:26 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/07 22:26:39 by awoimbee         ###   ########.fr       */
+/*   Created: 2019/05/07 19:21:25 by awoimbee          #+#    #+#             */
+/*   Updated: 2019/05/07 22:38:57 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <unistd.h>
 
-/*
-**	Used to add a pointer allocated from different means to the garbage list
-**	Panics if malloced == NULL !
-*/
-
-void		*gb_add(t_garbage *gb, void *malloced)
+t_garbage		*gb_init_existing(t_garbage *gb)
 {
-	void		*tmp;
-
-	if (malloced == NULL)
-		intrin__gb_fail(gb);
-	if (gb->arr_len == gb->mem_len)
-		intrin_gb_extend(gb);
-	gb->pointers[gb->arr_len] = malloced;
-	gb->arr_len++;
-	return (malloced);
+	gb->arr_len = 0;
+	gb->mem_len = 10;
+	gb->pointers = ft_memalloc(gb->mem_len * sizeof(*gb->pointers));
+	if (!__builtin_expect((long)gb->pointers, 1))
+	{
+		write(STDERR_FILENO,
+			"Memory allocation error, terminating cleanly.\n",
+			46);
+		exit(EXIT_FAILURE);
+	}
+	return (gb);
 }

@@ -6,12 +6,12 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/29 23:27:57 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/06 15:20:51 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/07 19:14:49 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LFT_INTRISICS_H
-# define LFT_INTRISICS_H
+#ifndef INTRISICS_H
+# define INTRISICS_H
 # include <inttypes.h>
 # include <string.h>
 # include <x86intrin.h>
