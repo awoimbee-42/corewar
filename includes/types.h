@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/05 21:12:00 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/05 21:36:37 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/07 18:32:42 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ typedef	struct	s_asm
 	size_t				label_pos;
 	t_label				*labels_holder;
 	size_t				label_holder_pos;
+	size_t				op_begin;
 }				t_asm;
 
 #endif
