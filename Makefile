@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/05/07 21:28:21 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/05/08 17:48:39 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,14 +21,9 @@ CFLAGS	=	-g3 #-Wall -Wextra -Ofast -march=native#-fsanitize=address #-Werror -Of
 
 SRC_NAME_CORE =	main.c								\
 				read_argv.c							\
+				print_memory.c						\
+				swap_endianess.c					\
 				\
-				operators/vecplay/init.c			\
-				operators/vecplay/new.c				\
-				operators/vecplay/point_last.c		\
-				operators/vecplay/push.c			\
-				operators/vecplay/push_empty.c		\
-				operators/vecplay/realloc.c			\
-				operators/vecplay/vector_del_at.c	\
 				operators/vecproc/init.c			\
 				operators/vecproc/new.c				\
 				operators/vecproc/point_last.c		\

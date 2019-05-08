@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 19:24:05 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/08 02:40:52 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/08 17:54:03 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,38 +15,78 @@
 #include <fcntl.h>
 #include <errno.h>
 
+// Put header somewhere
+//  load champion code (without header) into arena
+
+
 // ./corewar [-dump nbr_cycles] [[-n number] champion1.cor] ...
 
 
-void		load_cor(t_vm *env, char *fname, t_play *p)
+/*
+**	Filename is put in t_play.cor by read_champ()
+**		it is then read by load_cor which replaces t_play.cor by the actual
+**		.cor data address (inside t_vm.arena)
+*/
+
+static void		load_cor(t_vm *env, t_play *p, char *buffer)
 {
 	int			fd;
 	t_garbage	*gb;
+	char		*fname;
+	uint		size;
 
+	ft_printf("{grn}Load .cor file{eoc} \"%s\"\n", p->cor);
+	fname = p->cor;
 	gb = &env->gb;
 	fd = open(fname, O_RDONLY);
-	if (fd == -1
-		|| (p->cor_len = lseek(fd, 0, SEEK_END)) < sizeof(t_header))
+	if (fd == -1)
 		exit_vm(env, gb_add(gb, ft_cprintf("%s '%s'", gb_add(gb, strerror(errno)), fname)));
-	if (p->cor_len > CHAMP_MAX_SIZE) 										// wtf, CHAMP_MAX_SIZE is very small ??
+	if ((size = lseek(fd, 0, SEEK_END)) <= sizeof(t_header))
+		exit_vm(env, gb_add(gb, ft_cprintf("Too small/empty file %s", fname)));
+	size -= sizeof(t_header);
+	if (size > CHAMP_MAX_SIZE)
 		exit_vm(env, gb_add(gb, ft_cprintf("Champion %s too big", fname)));
 	lseek(fd, 0, SEEK_SET);
-	p->cor = gb_malloc(&env->gb, p->cor_len);
-	if (read(fd, p->cor, p->cor_len) != p->cor_len)
+	if (read(fd, &p->head, sizeof(t_header)) != sizeof(t_header)
+		|| read(fd, buffer, size) != size)
 		exit_vm(env, gb_add(gb, ft_cprintf("%s '%s'", gb_add(gb, strerror(errno)), fname)));
-	p->head = (t_header*)p->cor;
-	if (p->head->magic != COREWAR_EXEC_MAGIC)
+	p->head.magic = swap32_endianess(p->head.magic);
+	p->head.prog_size = swap32_endianess(p->head.prog_size);
+	if (p->head.magic != COREWAR_EXEC_MAGIC)
 		exit_vm(env, gb_add(gb, ft_cprintf("Exec magic not recognised")));
-	if (p->head->prog_size != p->cor_len)
+	if (p->head.prog_size != size)
 		exit_vm(env, gb_add(gb, ft_cprintf("Prog size does not match")));
 }
 
-int			read_champ(t_vm *env, char **input, int i)
+/*
+**	This function also sets the PC
+*/
+
+void			load_cor_files(t_vm *env)
+{
+	int			i;
+	uint		spacing;
+	uint		offset;
+
+	offset = 0;
+	spacing = MEM_SIZE / env->players.len;
+	i = -1;
+	while (++i < env->players.len)
+	{
+		load_cor(env, &env->players.d[i], &env->arena[offset]);
+		env->players.d[i].cor = &env->arena[offset];
+		env->players.d[i].procs.d->pc = offset;
+		offset += spacing;
+	}
+}
+
+static int		read_champ(t_vm *env, char **input, int i)
 {
 	t_play		*champ;
 
-	ft_printf("read_champ\n"); // REMOVE
-	champ = vecplay_point_last(vecplay_push_empty(&env->gb, &env->players));
+	ft_printf("{grn}read_champ{eoc}\n"); // REMOVE
+	champ = &env->players.d[env->players.len++];
+	champ->id = RESERVED_ID;
 	if (!ft_strcmp(input[i], "-n") && ++i)
 	{
 		if (input[i] == NULL
@@ -54,20 +94,20 @@ int			read_champ(t_vm *env, char **input, int i)
 			|| ((champ->id = ft_atoi(input[i])) == RESERVED_ID))
 			exit_vm(env, gb_add(&env->gb,
 					ft_cprintf("Champ. id badly formatted ('%s')", input[i])));
-		ft_printf("Read champ id set by user: (string)'%s' == (int)%d\n", input[i], champ->id); // REMOVE
+		ft_printf("{grn}Read champ id set by user: (string)'%s' == (int)%d{eoc}\n", input[i], champ->id); // REMOVE
 		++i;
 	}
-	else
-		champ->id = RESERVED_ID;
 	if (input[i] == NULL || ft_strlen(input[i]) > CHAMP_MAX_SIZE)
 		exit_vm(env, gb_add(&env->gb,
 			ft_cprintf("Champion name ('%s') over the limit of %d chars",
 				input[i], CHAMP_MAX_SIZE)));
-	load_cor(env, input[i], champ);
+	vecproc_push_empty(&env->gb, &champ->procs);
+	champ->procs.d->reg[0] = 0;
+	champ->cor = input[i];
 	return (i);
 }
 
-void		read_dump_cycle(t_vm *env, char *input)
+static void		read_dump_cycle(t_vm *env, char *input)
 {
 	if (input == NULL
 		|| ft_strlen(input) > 10
@@ -76,7 +116,7 @@ void		read_dump_cycle(t_vm *env, char *input)
 			ft_cprintf("Dump cycle badly formatted ('%s')", input)));
 }
 
-void		set_remaining_play_id(t_vm *env)
+static void		set_remaining_play_id(t_vm *env)
 {
 	size_t		i;
 	size_t		j;
@@ -102,13 +142,11 @@ void		set_remaining_play_id(t_vm *env)
 	}
 }
 
-void		read_argv(t_vm *env, int argc, char **argv)
+void		read_argv_init(t_vm *env, int argc, char **argv)
 {
 	int		i;
 
-	if (argc > MAX_ARGS_NUMBER)
-		exit_vm(env, "Too many args (limit set by MAX_ARGS_NUMBER");
-	vecplay_init(&env->gb, &env->players, MAX_PLAYERS);
+	env->cycle_die = CYCLE_TO_DIE;
 	i = 0;
 	while (++i < argc)
 	{
@@ -119,4 +157,5 @@ void		read_argv(t_vm *env, int argc, char **argv)
 			i = read_champ(env, argv, i);
 	}
 	set_remaining_play_id(env);
+	load_cor_files(env);
 }
