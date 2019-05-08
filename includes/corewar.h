@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 18:47:28 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/07 23:02:41 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/08 16:02:44 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "types.h"
 # include <stdlib.h>
 # include <unistd.h>
+# include <sys/types.h> // yoloooooooo
 
 # define LABEL_COUNT 50
 # define LABEL_END "-"
