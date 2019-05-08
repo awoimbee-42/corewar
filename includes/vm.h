@@ -52,13 +52,15 @@ typedef struct	s_proc
 typedef struct	s_vecproc
 {
 	struct s_proc		*d;
+	unsigned int		wait_cnt;
 	size_t				len;
-	size_t				mem;
+	size_t				mem; // std::vector<t_proc>
 }				t_vecproc;
 
 typedef struct	s_play
 {
 	int					id;
+	t_bool				alive_flag;
 	char				*cor;
 	t_header			*head;
 	ssize_t				cor_len;
