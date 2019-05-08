@@ -13,6 +13,15 @@
 
 #include "vm.h"
 
+
+/*
+**	#################
+**	  Helper function
+**	#################
+*/
+
+int read
+
 int		op_live(t_vm *vm, t_play *p, t_proc *proc)
 {
 	int player;
@@ -28,15 +37,18 @@ void	op_ld(t_vm *vm, t_play *p, t_proc *proc)
 	char acb;
 	int num;
 	int reg;
+	int rel;
 
 	acb = vm->arena[(proc->pc + 1) % MEM_SIZE];
 	if (acb & 192 == 192)
 	{
-		num = 
+		rel = 3;
+		num = *(short*)&vm->arena[(proc->pc + 1) % MEM_SIZE];
 	}
 	else if (acb & 128 == 128)
 	{
-
+		rel = 5;
+		num = *(int*)&vm->arena[(proc->pc + 1) % MEM_SIZE];
 	}
 	proc->pc = (proc->pc + 5) % MEM_SIZE;
 
