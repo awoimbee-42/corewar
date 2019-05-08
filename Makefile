@@ -130,7 +130,7 @@ fclean : clean
 	# @rm -rf $(DEPS_FOLDER)/lib
 	@printf "$(RED)Cleaning $(NAME) & $(ASM)$(EOC)\n"
 	@rm -f $(NAME)
-	@rm -f $(EDITOR)
+	@rm -f $(ASM)
 
 sclean	:	obj_clean
 re		:	fclean		all

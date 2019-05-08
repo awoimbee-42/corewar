@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 14:51:50 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/07 22:58:47 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/08 02:40:28 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@
 
 #include "corewar.h"
 #include "vm.h"
-
-//./corewar [-dump nbr_cycles] [[-n number] champion1.cor] ...
 
 void	exit_vm(t_vm *env, char *err_msg)
 {
@@ -51,10 +49,8 @@ int		main(int argc, char **argv)
 {
 	t_vm		env;
 
-	if (argc == 1)
+	if (argc == 1 || argc > MAX_ARGS_NUMBER)
 		return(usage());
-
-	ft_printf("%d\n", CHAMP_MAX_SIZE);
 	ft_bzero(&env, sizeof(env));
 	gb_init_existing(&env.gb);
 	read_argv(&env, argc, argv);
@@ -62,7 +58,7 @@ int		main(int argc, char **argv)
 	{
 		ft_printf("Our contestants are:\n");
 		for (size_t i = 0; i < env.players.len; ++i)
-			ft_printf("\tJean michel #%d avec un programme d'une taille de %ld octets\n", env.players.d[i].id, env.players.d[i].cor_len);
+			ft_printf("\tJean michel %s #%d avec un programme d'une taille de %ld octets\n", env.players.d[i].head->prog_name, env.players.d[i].id, env.players.d[i].cor_len);
 	}
 
 

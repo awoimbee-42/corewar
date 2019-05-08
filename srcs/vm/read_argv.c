@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 19:24:05 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/07 22:57:57 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/08 02:40:52 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,8 @@ void		load_cor(t_vm *env, char *fname, t_play *p)
 
 	gb = &env->gb;
 	fd = open(fname, O_RDONLY);
-	if (fd == -1)
-		exit_vm(env, gb_add(gb, ft_cprintf("%s '%s'", gb_add(gb, strerror(errno)), fname)));
-	p->cor_len = lseek(fd, 0, SEEK_END);
-	if (p->cor_len <= 0)
+	if (fd == -1
+		|| (p->cor_len = lseek(fd, 0, SEEK_END)) < sizeof(t_header))
 		exit_vm(env, gb_add(gb, ft_cprintf("%s '%s'", gb_add(gb, strerror(errno)), fname)));
 	if (p->cor_len > CHAMP_MAX_SIZE) 										// wtf, CHAMP_MAX_SIZE is very small ??
 		exit_vm(env, gb_add(gb, ft_cprintf("Champion %s too big", fname)));
@@ -36,6 +34,11 @@ void		load_cor(t_vm *env, char *fname, t_play *p)
 	p->cor = gb_malloc(&env->gb, p->cor_len);
 	if (read(fd, p->cor, p->cor_len) != p->cor_len)
 		exit_vm(env, gb_add(gb, ft_cprintf("%s '%s'", gb_add(gb, strerror(errno)), fname)));
+	p->head = (t_header*)p->cor;
+	if (p->head->magic != COREWAR_EXEC_MAGIC)
+		exit_vm(env, gb_add(gb, ft_cprintf("Exec magic not recognised")));
+	if (p->head->prog_size != p->cor_len)
+		exit_vm(env, gb_add(gb, ft_cprintf("Prog size does not match")));
 }
 
 int			read_champ(t_vm *env, char **input, int i)
@@ -103,6 +106,9 @@ void		read_argv(t_vm *env, int argc, char **argv)
 {
 	int		i;
 
+	if (argc > MAX_ARGS_NUMBER)
+		exit_vm(env, "Too many args (limit set by MAX_ARGS_NUMBER");
+	vecplay_init(&env->gb, &env->players, MAX_PLAYERS);
 	i = 0;
 	while (++i < argc)
 	{

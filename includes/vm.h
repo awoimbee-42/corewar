@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/07 21:49:12 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/08 02:37:46 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,18 @@
 # include "corewar.h"
 # include "libft.h"
 
+/*
+**	################
+**	    Defines
+**	################
+*/
+
 # define RESERVED_ID -2147483648
 
 /*
-**		Define needed structs
+**	#################
+**	   Declarations
+**	#################
 */
 
 typedef uint32_t	t_register;
@@ -27,6 +35,12 @@ struct s_play;
 struct s_vecproc;
 struct s_vecplay;
 struct s_vm;
+
+/*
+**	################
+**	   Definitions
+**	################
+*/
 
 typedef struct	s_proc
 {
@@ -46,6 +60,7 @@ typedef struct	s_play
 {
 	int					id;
 	char				*cor;
+	t_header			*head;
 	ssize_t				cor_len;
 	struct s_vecproc	procs;
 }				t_play;
@@ -67,12 +82,19 @@ typedef struct	s_vm
 	size_t				cycle_dump;
 	size_t				cycle_die;
 	size_t				cycle_curr;
+	char				arena[MEM_SIZE];
 	struct s_vecplay	players;
 	struct s_garbage	gb;
 }				t_vm;
 
 /*
-**	OPERATORS
+**	##################
+**	    OPERATORS
+**	##################
+*/
+
+/*
+**	Check for MAX_PLAYERS is done inside these functions, dont worry about it
 */
 
 t_vecplay		*vecplay_init(t_garbage *gb, t_vecplay *vec, size_t reserv_len);
