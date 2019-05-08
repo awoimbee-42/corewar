@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 14:51:50 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/08 17:51:37 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/08 18:52:08 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int		main(int argc, char **argv)
 {
 	t_vm		env;
 
-	if (argc == 1 || argc > MAX_ARGS_NUMBER)
+	if (argc == 1)// || argc > MAX_ARGS_NUMBER)
 		return(usage());
 	ft_bzero(&env, sizeof(env));
 	gb_init_existing(&env.gb);
@@ -63,9 +63,7 @@ int		main(int argc, char **argv)
 	ft_printf("Arena:\n");
 	print_memory(env.arena, MEM_SIZE);
 
-
-
-	ft_printf("Hello World\n");
+	loop(&env);
 	gb_freeall(&env.gb);
 	return (0);
 }

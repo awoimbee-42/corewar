@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/08 17:49:02 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/08 18:17:55 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ typedef struct	s_proc
 {
 	t_register			reg[REG_NUMBER];
 	t_register			pc;
+	uint				live;
+	uint				op_cylces;
 	t_bool				carry;
 }				t_proc;
 
@@ -77,10 +79,11 @@ typedef struct	s_vecplay
 */
 typedef struct	s_vm
 {
-	unsigned int		cycle_dump;
-	unsigned int		cycle_die;
-	unsigned int		cycle_curr;
-	unsigned int		die_cycle_checks;
+	uint				cycle_dump;
+	uint				cycle_die;
+	uint				cycle_curr;
+	uint				die_cycle_checks;
+	uint				time_to_die;
 	char				arena[MEM_SIZE];
 	struct s_vecplay	players;
 	struct s_garbage	gb;
@@ -122,6 +125,8 @@ void			print_memory(const void *addr, size_t size);
 */
 int				usage(void);
 void			exit_vm(t_vm *env, char *err_msg);
+
+void			loop(t_vm *env);
 
 /*
 **

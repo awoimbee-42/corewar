@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 19:24:05 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/08 17:54:03 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/08 17:57:34 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,6 @@
 #include "vm.h"
 #include <fcntl.h>
 #include <errno.h>
-
-// Put header somewhere
-//  load champion code (without header) into arena
-
-
-// ./corewar [-dump nbr_cycles] [[-n number] champion1.cor] ...
-
 
 /*
 **	Filename is put in t_play.cor by read_champ()
@@ -59,7 +52,7 @@ static void		load_cor(t_vm *env, t_play *p, char *buffer)
 }
 
 /*
-**	This function also sets the PC
+**	This function also sets the PCm
 */
 
 void			load_cor_files(t_vm *env)
