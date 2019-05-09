@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 18:55:21 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/07 20:08:51 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/09 20:22:45 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ void	write_nb(char *s, int nb, int byte_nb)
 		//s[byte_nb - 2 - i] = (nb / 256) % 256;//digits[(nb / 16) % 16];
 		nb >>= 8;
 	}
-	for (int k = 0; k < byte_nb; k++)
-		printf("RESULTING %d\n", s[k]);
+	//for (int k = 0; k < byte_nb; k++)
+	//	printf("RESULTING %d\n", s[k]);
 }
 
 void	skip_whitespace(char *s, size_t *i)
@@ -94,6 +94,7 @@ int		read_label(t_label *label, char *s)
 {
 	size_t	i;
 
+	printf("Reading LABEL from %s\n", s);
 	i = 0;
 	while (s[i] && s[i] != LABEL_CHAR && ft_strchr(LABEL_CHARS, s[i]))
 		i++;//add_to_name(&label->name, &i, s[i]);
@@ -143,6 +144,7 @@ void		write_to_output(char **output, size_t *pos, char *src)
 		if (*pos % OUTPUT_LENGTH == 0)
 			if (!(*output = (char *)realloc(*output, *pos + OUTPUT_LENGTH)))
 				fail_msg("Realloc failed");
+		ft_bzero(*output + *pos, OUTPUT_LENGTH);
 		(*output)[*pos] = src[*pos - start];
 		(*pos)++;
 	}
@@ -158,6 +160,7 @@ void        write_n_to_output(char **output, size_t *pos, char *src, size_t n)
 		if (*pos % OUTPUT_LENGTH == 0)
 			if (!(*output = (char *)realloc(*output, *pos + OUTPUT_LENGTH)))
 				fail_msg("Realloc failed");
+		ft_bzero(*output + *pos, OUTPUT_LENGTH);
 		(*output)[*pos] = src[*pos - start];
 		(*pos)++;
 	}
@@ -218,7 +221,7 @@ void	write_nb_to_output(t_asm *my_asm, int nb, int pre)
 	if (pre > 1)
 		write_nb(s, nb, pre);
 	else
-		s[0] = nb;// + '0';
+		s[0] = nb;
 	write_n_to_output(&my_asm->output, &my_asm->cursor, s, pre);
 	free(s);
 }
@@ -230,6 +233,10 @@ void	write_param(t_asm *my_asm, t_arg_type type, char *s)
 	int		two;
 
 	i = 0;
+	printf("Writing param of type %d at %lu\n", type, my_asm->cursor);
+	for (size_t k = (my_asm->cursor / OUTPUT_LENGTH) * OUTPUT_LENGTH; k < (my_asm->cursor / OUTPUT_LENGTH + 1) * OUTPUT_LENGTH; k++)
+		printf("%d ", my_asm->output[k]);
+	printf("\n\n");
 	two = op_tab[my_asm->current_op - 1].carry ? 2 : 4;
 	if (type & T_DIR || type & T_REG)
 		++s;
@@ -240,7 +247,7 @@ void	write_param(t_asm *my_asm, t_arg_type type, char *s)
 		if (!(name = (char *)malloc(i + 1)))
 			fail_msg("Malloc failed");
 		ft_strncpy(name, s + 1, i);
-		printf("Label holder creation: %lu\n", my_asm->op_begin);
+		printf("Label holder creation: %s\n", name);
 		add_label(&my_asm->labels_holder, &my_asm->label_holder_pos,
 				name, my_asm->op_begin);
 		write_nb_to_output(my_asm, two, 1);
@@ -281,7 +288,10 @@ void	write_label_holders(t_asm *my_asm)
 			}
 		}
 		if (j == my_asm->label_pos)
+		{
+			printf("Stupid rogu oij %s\n", my_asm->labels_holder[i].name);
 			fail_msg("Label not found");
+		}
 	}
 }
 
@@ -304,6 +314,10 @@ void	handle_op(t_asm *my_asm, char *s)
 	t_arg_type	types[3];
 
 	my_asm->op_begin = my_asm->cursor;
+	printf("Before writing to op %d at pos %lu\n", my_asm->current_op, my_asm->cursor);
+	//for (size_t y = 0; y < my_asm->cursor; y++)
+	//	printf("%d ", my_asm->output[y]);
+	//printf("\n\n");
 	write_nb_to_output(my_asm, my_asm->current_op, 1);
 	current_param = 0;
 	i = 0;
@@ -360,7 +374,10 @@ void	write_header(t_asm *my_asm)
 
 
 	write_n_to_output(&my_asm->output, &my_asm->cursor, my_asm->name, PROG_NAME_LENGTH);
-	write_n_to_output(&my_asm->output, &my_asm->cursor, "$", 4);
+	char *s = ft_strnew(8);
+	s[7] = '$';
+	write_n_to_output(&my_asm->output, &my_asm->cursor, s, 8);
+	free(s);
 	write_n_to_output(&my_asm->output, &my_asm->cursor, my_asm->comment, COMMENT_LENGTH);
 
 	//magic = ft_strnew(PROG_NAME_LENGTH);
@@ -372,7 +389,6 @@ void	write_header(t_asm *my_asm)
 	write_to_output(&my_asm->output, &my_asm->cursor, magic);
 	free(magic);
 	printf("Writing header at: %lu\n", my_asm->cursor);
-
 }
 
 int		get_asm(char *path, t_asm *my_asm)
@@ -384,8 +400,8 @@ int		get_asm(char *path, t_asm *my_asm)
 	fd = open(path, O_RDONLY);
 	if (fd < 0)
 		exit(1);	// Better error handling required...
-	my_asm->name[0] = 0;
-	my_asm->comment[0] = 0;
+	ft_bzero(my_asm->name, PROG_NAME_LENGTH);
+	ft_bzero(my_asm->comment, COMMENT_LENGTH);
 	my_asm->cursor = 0;
 	my_asm->output = 0;
 	init_labels(my_asm);
@@ -439,7 +455,7 @@ int		get_asm(char *path, t_asm *my_asm)
 		free(s);
 	}
 
-	write_label_holders(my_asm);
+	//write_label_holders(my_asm);
 
 	printf("My name is %s\n", my_asm->name);
 	printf("My comment is %s\n", my_asm->comment);
