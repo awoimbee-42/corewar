@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 14:51:50 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/08 18:52:08 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/09 12:01:41 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int		main(int argc, char **argv)
 
 	{
 		ft_printf("Our contestants are:\n");
-		for (size_t i = 0; i < env.players.len; ++i)
+		for (int i = 0; i < env.players.len; ++i)
 			ft_printf("\tJean michel %s #%d avec un programme d'une taille de %ld octets\n", env.players.d[i].head.prog_name, env.players.d[i].id, env.players.d[i].head.prog_size);
 	}
 	ft_printf("Arena:\n");

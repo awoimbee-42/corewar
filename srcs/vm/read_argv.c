@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 19:24:05 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/08 17:57:34 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/09 14:24:32 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ static void		load_cor(t_vm *env, t_play *p, char *buffer)
 void			load_cor_files(t_vm *env)
 {
 	int			i;
-	uint		spacing;
-	uint		offset;
+	int			spacing;
+	int			offset;
 
 	offset = 0;
 	spacing = MEM_SIZE / env->players.len;
@@ -69,6 +69,7 @@ void			load_cor_files(t_vm *env)
 		load_cor(env, &env->players.d[i], &env->arena[offset]);
 		env->players.d[i].cor = &env->arena[offset];
 		env->players.d[i].procs.d->pc = offset;
+		env->players.d[i].procs.d->reg[0] = env->players.d[i].id;
 		offset += spacing;
 	}
 }
@@ -111,8 +112,8 @@ static void		read_dump_cycle(t_vm *env, char *input)
 
 static void		set_remaining_play_id(t_vm *env)
 {
-	size_t		i;
-	size_t		j;
+	int			i;
+	int			j;
 	int			champ_id;
 
 	i = -1;
@@ -150,5 +151,5 @@ void		read_argv_init(t_vm *env, int argc, char **argv)
 			i = read_champ(env, argv, i);
 	}
 	set_remaining_play_id(env);
-	load_cor_files(env);
+	load_cor_files(env); // also sets the PC & r0
 }
