@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 18:55:21 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/09 20:22:45 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/09 22:00:00 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ void	init_labels(t_asm *my_asm)
 	my_asm->label_holder_pos = 0;
 }
 
-void	add_label(t_label **l, size_t *pos, char *name, size_t p)
+void	add_label(t_label **l, size_t *pos, char *name, size_t p, size_t offset)
 {
 	if ((*l)[*pos].name)
 	{
@@ -131,6 +131,7 @@ void	add_label(t_label **l, size_t *pos, char *name, size_t p)
 	}
 	(*l)[*pos].name = name;
 	(*l)[*pos].pos = p;
+	(*l)[*pos].offset = offset;
 	(*pos)++;
 }
 
@@ -142,9 +143,11 @@ void		write_to_output(char **output, size_t *pos, char *src)
 	while (src[*pos - start])
 	{
 		if (*pos % OUTPUT_LENGTH == 0)
+		{
 			if (!(*output = (char *)realloc(*output, *pos + OUTPUT_LENGTH)))
 				fail_msg("Realloc failed");
-		ft_bzero(*output + *pos, OUTPUT_LENGTH);
+			ft_bzero(*output + *pos, OUTPUT_LENGTH - 1);
+		}
 		(*output)[*pos] = src[*pos - start];
 		(*pos)++;
 	}
@@ -158,9 +161,11 @@ void        write_n_to_output(char **output, size_t *pos, char *src, size_t n)
 	while (*pos - start < n)
 	{
 		if (*pos % OUTPUT_LENGTH == 0)
+		{
 			if (!(*output = (char *)realloc(*output, *pos + OUTPUT_LENGTH)))
 				fail_msg("Realloc failed");
-		ft_bzero(*output + *pos, OUTPUT_LENGTH);
+			ft_bzero(*output + *pos, OUTPUT_LENGTH);
+		}
 		(*output)[*pos] = src[*pos - start];
 		(*pos)++;
 	}
@@ -233,10 +238,6 @@ void	write_param(t_asm *my_asm, t_arg_type type, char *s)
 	int		two;
 
 	i = 0;
-	printf("Writing param of type %d at %lu\n", type, my_asm->cursor);
-	for (size_t k = (my_asm->cursor / OUTPUT_LENGTH) * OUTPUT_LENGTH; k < (my_asm->cursor / OUTPUT_LENGTH + 1) * OUTPUT_LENGTH; k++)
-		printf("%d ", my_asm->output[k]);
-	printf("\n\n");
 	two = op_tab[my_asm->current_op - 1].carry ? 2 : 4;
 	if (type & T_DIR || type & T_REG)
 		++s;
@@ -247,9 +248,10 @@ void	write_param(t_asm *my_asm, t_arg_type type, char *s)
 		if (!(name = (char *)malloc(i + 1)))
 			fail_msg("Malloc failed");
 		ft_strncpy(name, s + 1, i);
+		name[i] = '\0';
 		printf("Label holder creation: %s\n", name);
 		add_label(&my_asm->labels_holder, &my_asm->label_holder_pos,
-				name, my_asm->op_begin);
+				name, my_asm->op_begin, my_asm->cursor - my_asm->op_begin);
 		write_nb_to_output(my_asm, two, 1);
 		my_asm->cursor += two == 2 ? 1 : 3;
 		//my_asm->cursor += op_tab[my_asm->current_op - 1].carry ? 2 : 4;
@@ -277,21 +279,25 @@ void	write_label_holders(t_asm *my_asm)
 			if (!ft_strcmp(my_asm->labels_holder[i].name,
 						my_asm->labels[j].name))
 			{
+				
+
+
 				old_pos = my_asm->cursor;
-				my_asm->cursor = my_asm->labels_holder[i].pos;
+				my_asm->cursor = my_asm->labels_holder[i].pos
+					+ my_asm->labels_holder[i].offset;
 				write_nb_to_output(my_asm, (int)my_asm->labels[j].pos
 						- (int)my_asm->labels_holder[i].pos,
 						my_asm->output[my_asm->cursor]);
 				printf("Diff is: %d\n", (int)my_asm->labels[j].pos - (int)my_asm->labels_holder[i].pos);
+				
+				printf("Size should be : %d\n", (int)my_asm->output[my_asm->cursor]);
+
 				my_asm->cursor = old_pos;
 				break ;
 			}
 		}
 		if (j == my_asm->label_pos)
-		{
-			printf("Stupid rogu oij %s\n", my_asm->labels_holder[i].name);
 			fail_msg("Label not found");
-		}
 	}
 }
 
@@ -306,6 +312,28 @@ void	write_output(t_asm *my_asm)
 	close(fd);
 }
 
+void	write_opcode(t_asm *my_asm, t_arg_type types[3])
+{
+	size_t	i;
+
+	printf("Types: %d %d %d\n", types[0], types[1], types[2]);
+
+	printf("At first, num is : %d\n", my_asm->output[my_asm->op_begin + 1]);
+
+	i = -1;
+	while (++i < 3)
+	{
+		if (types[i] & T_REG)
+			my_asm->output[my_asm->op_begin + 1] += 1;
+		else if (types[i] & T_IND)
+			my_asm->output[my_asm->op_begin + 1] += 3;
+		else if (types[i] & T_DIR)
+			my_asm->output[my_asm->op_begin + 1] += 2;
+		printf("So far, num is: %d\n", my_asm->output[my_asm->op_begin + 1]);
+		my_asm->output[my_asm->op_begin + 1] <<= 2;
+	}
+}
+
 void	handle_op(t_asm *my_asm, char *s)
 {
 	size_t		i;
@@ -314,7 +342,10 @@ void	handle_op(t_asm *my_asm, char *s)
 	t_arg_type	types[3];
 
 	my_asm->op_begin = my_asm->cursor;
+
 	printf("Before writing to op %d at pos %lu\n", my_asm->current_op, my_asm->cursor);
+	
+	ft_bzero(types, sizeof(t_arg_type) * 3);
 	//for (size_t y = 0; y < my_asm->cursor; y++)
 	//	printf("%d ", my_asm->output[y]);
 	//printf("\n\n");
@@ -326,7 +357,7 @@ void	handle_op(t_asm *my_asm, char *s)
 	skip_whitespace(s, &i);
 	if (my_asm->current_op != 1 && my_asm->current_op != 12 && my_asm->current_op != 15 && my_asm->current_op != 9)
 		write_nb_to_output(my_asm, 0, 1);//my_asm->cursor += 2;
-	while (current_param < op_tab[my_asm->current_op - 1].nb_args)
+	while (current_param < (size_t)op_tab[my_asm->current_op - 1].nb_args)
 	{
 		if ((types[current_param] = get_arg_type(s + i)) < 0)
 		{
@@ -337,15 +368,17 @@ void	handle_op(t_asm *my_asm, char *s)
 		write_param(my_asm, types[current_param], s + i);
 		while (s[i] && s[i] != SEPARATOR_CHAR)
 			i++;
-		if (s[i] == SEPARATOR_CHAR && current_param + 1 == op_tab[my_asm->current_op - 1].nb_args)
+		if (s[i] == SEPARATOR_CHAR && current_param + 1 == (size_t)op_tab[my_asm->current_op - 1].nb_args)
 			fail_msg("Too much parameters");
-		else if (!s[i] && current_param + 1 < op_tab[my_asm->current_op - 1].nb_args)
+		else if (!s[i] && current_param + 1 < (size_t)op_tab[my_asm->current_op - 1].nb_args)
 			fail_msg("Missing parameters");
 		if (s[i])
 			++i;
 		skip_whitespace(s, &i);
 		current_param++;
 	}
+	if (my_asm->current_op != 1 && my_asm->current_op != 12 && my_asm->current_op != 15 && my_asm->current_op != 9)
+		write_opcode(my_asm, types);
 }
 
 void	write_header(t_asm *my_asm)
@@ -374,9 +407,9 @@ void	write_header(t_asm *my_asm)
 
 
 	write_n_to_output(&my_asm->output, &my_asm->cursor, my_asm->name, PROG_NAME_LENGTH);
-	char *s = ft_strnew(8);
-	s[7] = '$';
-	write_n_to_output(&my_asm->output, &my_asm->cursor, s, 8);
+	char *s = ft_strnew(4);
+	//s[3] = '$';
+	write_n_to_output(&my_asm->output, &my_asm->cursor, s, 4);
 	free(s);
 	write_n_to_output(&my_asm->output, &my_asm->cursor, my_asm->comment, COMMENT_LENGTH);
 
@@ -384,11 +417,24 @@ void	write_header(t_asm *my_asm)
 	//ft_strcpy(magic, my_asm->name);
 	//write_to_output(&my_asm->output, &my_asm->cursor, magic);
 	//free(magic);
-	magic = ft_strnew(COMMENT_LENGTH);
-	ft_strcpy(magic, my_asm->comment);
-	write_to_output(&my_asm->output, &my_asm->cursor, magic);
-	free(magic);
+	//magic = ft_strnew(COMMENT_LENGTH);
+	//ft_strcpy(magic, my_asm->comment);
+	//write_to_output(&my_asm->output, &my_asm->cursor, magic);
+	//free(magic);
 	printf("Writing header at: %lu\n", my_asm->cursor);
+}
+
+void	write_final_length(t_asm *my_asm)
+{
+	int		len;
+	size_t	old_pos;
+
+	old_pos = my_asm->cursor;
+	len = (int)my_asm->cursor;
+	my_asm->cursor = 4 + PROG_NAME_LENGTH;
+	len -= 8 + COMMENT_LENGTH + PROG_NAME_LENGTH;
+	write_nb_to_output(my_asm, len, 4);
+	my_asm->cursor = old_pos;
 }
 
 int		get_asm(char *path, t_asm *my_asm)
@@ -432,13 +478,13 @@ int		get_asm(char *path, t_asm *my_asm)
 				write_header(my_asm);
 			handle_op(my_asm, s + i);
 		}
-		else if (s[i] && s[i] != '#')
+		else if (s[i] && s[i] != COMMENT_CHAR)
 		{
 			if (!my_asm->name[0] || !my_asm->comment[0])
 				fail_msg("Error: Name and Comment must be declared before any instruction or label");
 			if (!my_asm->cursor)
 				write_header(my_asm);
-			add_label(&my_asm->labels, &my_asm->label_pos, ft_strnew(0), my_asm->cursor);
+			add_label(&my_asm->labels, &my_asm->label_pos, ft_strnew(0), my_asm->cursor, 0);
 			if (!read_label(my_asm->labels + my_asm->label_pos - 1, s + i))
 				fail_msg("Syntax error on label");
 			else
@@ -455,10 +501,13 @@ int		get_asm(char *path, t_asm *my_asm)
 		free(s);
 	}
 
-	//write_label_holders(my_asm);
+	write_label_holders(my_asm);
+
+	write_final_length(my_asm);
 
 	printf("My name is %s\n", my_asm->name);
 	printf("My comment is %s\n", my_asm->comment);
+
 
 	write_output(my_asm);
 	//printf("%s\n", my_asm->output);
