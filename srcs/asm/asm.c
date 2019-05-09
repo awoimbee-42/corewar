@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 18:55:21 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/09 22:00:00 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/09 22:28:02 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -383,12 +383,33 @@ void	handle_op(t_asm *my_asm, char *s)
 
 void	write_header(t_asm *my_asm)
 {
-	size_t	i;
+	unsigned int	n;
+	int				k;
+	size_t			pos;
 
-	i = -1;
-	char *magic;// = ft_strnew(8);
+	my_asm->header.magic = COREWAR_EXEC_MAGIC;
+	ft_memcpy(my_asm->output, &my_asm->header, sizeof(t_header));
 	
-	write_nb_to_output(my_asm, COREWAR_EXEC_MAGIC, 4);
+	
+	n = COREWAR_EXEC_MAGIC;
+	k = -1;
+	while (++k < 4)
+	{
+		my_asm->output[3 - k] = n % 256;
+		n >>= 8;
+	}
+	n = my_asm->header.prog_size;
+	k = -1;
+	pos = ((4 + PROG_NAME_LENGTH) / 8 + 1) * 8;
+	while (++k < 4)
+	{
+		my_asm->output[pos + 3 - k] = n % 256;
+		n >>= 8;
+	}
+	
+	//char *magic;// = ft_strnew(8);
+	
+	//write_nb_to_output(my_asm, COREWAR_EXEC_MAGIC, 4);
 	
 	
 	/*write_nb(magic, COREWAR_EXEC_MAGIC, 8);
@@ -405,13 +426,12 @@ void	write_header(t_asm *my_asm)
 	  */
 	
 
-
-	write_n_to_output(&my_asm->output, &my_asm->cursor, my_asm->name, PROG_NAME_LENGTH);
-	char *s = ft_strnew(4);
+	//write_n_to_output(&my_asm->output, &my_asm->cursor, my_asm->header.prog_name, PROG_NAME_LENGTH);
+	//char *s = ft_strnew(4);
 	//s[3] = '$';
-	write_n_to_output(&my_asm->output, &my_asm->cursor, s, 4);
-	free(s);
-	write_n_to_output(&my_asm->output, &my_asm->cursor, my_asm->comment, COMMENT_LENGTH);
+	//write_n_to_output(&my_asm->output, &my_asm->cursor, s, 4);
+	//free(s);
+	//write_n_to_output(&my_asm->output, &my_asm->cursor, my_asm->comment, COMMENT_LENGTH);
 
 	//magic = ft_strnew(PROG_NAME_LENGTH);
 	//ft_strcpy(magic, my_asm->name);
@@ -426,15 +446,15 @@ void	write_header(t_asm *my_asm)
 
 void	write_final_length(t_asm *my_asm)
 {
-	int		len;
-	size_t	old_pos;
+	//int		len;
+	//size_t	old_pos;
 
-	old_pos = my_asm->cursor;
-	len = (int)my_asm->cursor;
-	my_asm->cursor = 4 + PROG_NAME_LENGTH;
-	len -= 8 + COMMENT_LENGTH + PROG_NAME_LENGTH;
-	write_nb_to_output(my_asm, len, 4);
-	my_asm->cursor = old_pos;
+	//old_pos = my_asm->cursor;
+	//len = (int)my_asm->cursor;
+	//my_asm->cursor = 4 + PROG_NAME_LENGTH;
+	my_asm->header.prog_size = my_asm->cursor - sizeof(t_header);
+	//write_nb_to_output(my_asm, len, 4);
+	//my_asm->cursor = old_pos;
 }
 
 int		get_asm(char *path, t_asm *my_asm)
@@ -446,44 +466,47 @@ int		get_asm(char *path, t_asm *my_asm)
 	fd = open(path, O_RDONLY);
 	if (fd < 0)
 		exit(1);	// Better error handling required...
-	ft_bzero(my_asm->name, PROG_NAME_LENGTH);
-	ft_bzero(my_asm->comment, COMMENT_LENGTH);
+	ft_bzero(my_asm->header.prog_name, PROG_NAME_LENGTH + 4);
+	ft_bzero(my_asm->header.comment, COMMENT_LENGTH + 4);
 	my_asm->cursor = 0;
 	my_asm->output = 0;
 	init_labels(my_asm);
+	char *dummy = ft_strnew(sizeof(t_header));
+	write_n_to_output(&my_asm->output, &my_asm->cursor, dummy, sizeof(t_header));
+	free(dummy);
 	while (get_next_line(fd, &s) > 0)
 	{
 		i = 0;
 		skip_whitespace(s, &i);
 		if (!ft_strncmp(s + i, NAME_CMD_STRING, ft_strlen(NAME_CMD_STRING)))
 		{
-			if (my_asm->name[0])
+			if (my_asm->header.prog_name[0])
 				fail_msg("Error: Name already declared");
 			if (!get_name(s + i + ft_strlen(NAME_CMD_STRING),
-						my_asm->name, PROG_NAME_LENGTH))
+						my_asm->header.prog_name, PROG_NAME_LENGTH))
 				fail_msg("Syntax error: Name not well-formated");
 		}
 		else if (!ft_strncmp(s + i, COMMENT_CMD_STRING,
 					ft_strlen(COMMENT_CMD_STRING)))
 		{
-			if (my_asm->comment[0])
+			if (my_asm->header.comment[0])
 				fail_msg("Error: Comment already declared");
 			if (!get_name(s + i + ft_strlen(COMMENT_CMD_STRING),
-						my_asm->comment, COMMENT_LENGTH))
+						my_asm->header.comment, COMMENT_LENGTH))
 				fail_msg("Syntax error: Comment not well-formated");
 		}
 		else if ((my_asm->current_op = get_op_id(s + i)))
 		{
-			if (!my_asm->cursor)
-				write_header(my_asm);
+			//if (!my_asm->cursor)
+			//	write_header(my_asm);
 			handle_op(my_asm, s + i);
 		}
 		else if (s[i] && s[i] != COMMENT_CHAR)
 		{
-			if (!my_asm->name[0] || !my_asm->comment[0])
+			if (!my_asm->header.prog_name[0] || !my_asm->header.comment[0])
 				fail_msg("Error: Name and Comment must be declared before any instruction or label");
-			if (!my_asm->cursor)
-				write_header(my_asm);
+			//if (!my_asm->cursor)
+			//	write_header(my_asm);
 			add_label(&my_asm->labels, &my_asm->label_pos, ft_strnew(0), my_asm->cursor, 0);
 			if (!read_label(my_asm->labels + my_asm->label_pos - 1, s + i))
 				fail_msg("Syntax error on label");
@@ -505,8 +528,10 @@ int		get_asm(char *path, t_asm *my_asm)
 
 	write_final_length(my_asm);
 
-	printf("My name is %s\n", my_asm->name);
-	printf("My comment is %s\n", my_asm->comment);
+	write_header(my_asm);
+
+	printf("My name is %s\n", my_asm->header.prog_name);
+	printf("My comment is %s\n", my_asm->header.comment);
 
 
 	write_output(my_asm);

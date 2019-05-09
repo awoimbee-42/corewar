@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/05 21:12:00 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/09 21:34:20 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/09 22:19:31 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,9 @@ typedef	struct	s_label
 
 typedef	struct	s_asm
 {
-	char				name[PROG_NAME_LENGTH + 1];
-	char				comment[COMMENT_LENGTH + 1];
+	//char				name[PROG_NAME_LENGTH + 1];
+	//char				comment[COMMENT_LENGTH + 1];
+	t_header			header;
 	int					current_op;
 	char				*output;
 	size_t				cursor;
