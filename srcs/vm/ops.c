@@ -44,15 +44,42 @@ void	op_ld(t_vm *vm, t_play *p, t_proc *proc)
 	{
 		rel = 3;
 		num = *(short*)&vm->arena[(proc->pc + 1) % MEM_SIZE];
+		num = *(int*)&vm->arena[num % MEM_SIZE]
 	}
 	else if (acb & 128 == 128)
 	{
 		rel = 5;
 		num = *(int*)&vm->arena[(proc->pc + 1) % MEM_SIZE];
 	}
-	proc->pc = (proc->pc + 5) % MEM_SIZE;
+	reg = vm->arena[(proc->pc + rel) % MEM_SIZE] % REG_NUMBER;
+	proc->reg[reg] = num;
+	proc->pc = (proc->pc + rel + 1) % MEM_SIZE;
+}
+/*
+void	op_st(t_vm *vm, t_play *p, t_proc *proc)
+{
+	char acb;
+	int num;
+	int reg;
+	int rel;
 
-
+	acb = vm->arena[(proc->pc + 1) % MEM_SIZE];
+	if (acb & 48 == 48)
+	{
+		rel = 3;
+		num = *(short*)&vm->arena[(proc->pc + 1) % MEM_SIZE];
+		num = *(int*)&vm->arena[num % MEM_SIZE]
+	}
+	else if (acb & 32 == 32)
+	{
+		rel = 5;
+		num = *(int*)&vm->arena[(proc->pc + 1) % MEM_SIZE];
+	}
+	vm->arena[num % MEM_SIZE] = ;
+	proc->reg[reg] = num;
+	proc->pc = (proc->pc + rel + 1) % MEM_SIZE;
+}
+*/
 void	op_add(t_vm *vm, t_play *p, t_proc *proc)
 {
 	int a;
