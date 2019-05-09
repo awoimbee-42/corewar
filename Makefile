@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/05/05 21:36:05 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/05/09 14:34:22 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,16 +17,29 @@
 NAME =	corewar
 ASM  =	asm
 
-CFLAGS	=	-g3 #-Wall -Wextra -Ofast -march=native#-fsanitize=address #-Werror -Ofast -march=native
+CFLAGS	=	-g3 -Wall -Wextra #-Ofast -march=native#-fsanitize=address #-Werror -Ofast -march=native
 
-SRC_NAME_CORE =	main.c
+SRC_NAME_CORE =	main.c								\
+				read_argv.c							\
+				print_memory.c						\
+				swap_endianess.c					\
+				loop.c								\
+				\
+				operators/vecproc/init.c			\
+				operators/vecproc/new.c				\
+				operators/vecproc/point_last.c		\
+				operators/vecproc/push.c			\
+				operators/vecproc/push_empty.c		\
+				operators/vecproc/realloc.c			\
+				operators/vecproc/vector_del_at.c	\
 
 SRC_NAME_ASM =	asm.c
 
 ASM_FD = asm/
 ASM_SRC_SUBFOLDERS =
 CORE_FD = vm/
-CORE_SRC_SUBFOLDERS =
+CORE_SRC_SUBFOLDERS =	operators/vecplay		\
+						operators/vecproc
 BUILD_FOLDER =	build
 
 ################################################################################
@@ -113,7 +126,7 @@ fclean : clean
 	# @rm -rf $(DEPS_FOLDER)/lib
 	@printf "$(RED)Cleaning $(NAME) & $(ASM)$(EOC)\n"
 	@rm -f $(NAME)
-	@rm -f $(EDITOR)
+	@rm -f $(ASM)
 
 sclean	:	obj_clean
 re		:	fclean		all

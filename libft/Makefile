@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/16 11:55:20 by awoimbee          #+#    #+#              #
-#    Updated: 2019/05/07 16:18:49 by cpoirier         ###   ########.fr        #
+#    Updated: 2019/05/08 02:41:18 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME	=	libft.a
 
 CC	=	gcc
 
-CFLAGS = -march=native -Wall -Wextra -Werror -Ofast -fno-builtin -ftree-vectorize -fstrict-aliasing
+CFLAGS = -g3 -march=native -O1# -Wall -Wextra -Werror -Ofast -fno-builtin -ftree-vectorize -fstrict-aliasing
 
 SRCS_CHAR =	ft_isalnum.c		ft_isascii.c		ft_isprint.c		\
 			ft_isalpha.c		ft_isdigit.c		ft_tolower.c		\
@@ -67,7 +67,8 @@ SRCS_VECT =	new.c				push.c				realloc.c			\
 
 SRCS_GARB =	gb_fail.c			gb_add.c			gb_defrag.c			\
 			gb_free.c			gb_freeall.c		gb_init.c			\
-			gb_malloc.c			gb_remove.c			gb_memalloc.c
+			gb_malloc.c			gb_remove.c			gb_memalloc.c		\
+			gb_init_existing.c	gb_realloc.c		intrin_gb_extend.c
 
 SRCS_OTHER = msg_exit.c
 

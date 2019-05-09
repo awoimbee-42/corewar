@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 18:47:28 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/07 19:27:17 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/08 16:02:44 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,15 @@
 #include "op.h"
 #include "types.h"
 # include <stdlib.h>
+# include <unistd.h>
+# include <sys/types.h> // yoloooooooo
 
 # define LABEL_COUNT 50
 # define LABEL_END "-"
 
 # define OUTPUT_LENGTH 1024
 
-t_op    op_tab[17] =
+static t_op    op_tab[17] =
 {
 //  name - nb_args -- args_types --                                 id -- nb_cycles -- description --      uses_coding_byte -- does_direct_values_on_2_bytes_instead_of_4
 	{"live", 1, {T_DIR},                                                1,   10, "alive",                                0, 0},
