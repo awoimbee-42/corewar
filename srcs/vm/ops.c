@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ops.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: skiessli <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 14:56:02 by skiessli          #+#    #+#             */
-/*   Updated: 2019/05/08 14:56:04 by skiessli         ###   ########.fr       */
+/*   Updated: 2019/05/09 17:11:44 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,24 @@
 **	#################
 */
 
-int read
-
 int		op_live(t_vm *vm, t_play *p, t_proc *proc)
 {
+	int i;
 	int player;
 
 	player = *(int*)&vm->arena[(proc->pc + 1) % MEM_SIZE];
-	p->alive_flag = TRUE;
+	i = -1;
+	while (++i < vm->players.len && vm->players.d[i].id != player)
+		;
+	if (i == vm->players.len)
+		return (1); //fail
+	proc->live++;
 	proc->pc = (proc->pc + 5) % MEM_SIZE;
+	ft_printf("un processus dit que le joueur x(nom_champion) est en vie");
 	return (player);
 }
 
-void	op_ld(t_vm *vm, t_play *p, t_proc *proc)
+int		op_ld(t_vm *vm, t_play *p, t_proc *proc)
 {
 	char acb;
 	int num;
@@ -56,7 +61,7 @@ void	op_ld(t_vm *vm, t_play *p, t_proc *proc)
 	proc->pc = (proc->pc + rel + 1) % MEM_SIZE;
 }
 /*
-void	op_st(t_vm *vm, t_play *p, t_proc *proc)
+int		op_st(t_vm *vm, t_play *p, t_proc *proc)
 {
 	char acb;
 	int num;
@@ -80,7 +85,7 @@ void	op_st(t_vm *vm, t_play *p, t_proc *proc)
 	proc->pc = (proc->pc + rel + 1) % MEM_SIZE;
 }
 */
-void	op_add(t_vm *vm, t_play *p, t_proc *proc)
+int		op_add(t_vm *vm, t_play *p, t_proc *proc)
 {
 	int a;
 	int b;
@@ -99,7 +104,7 @@ void	op_add(t_vm *vm, t_play *p, t_proc *proc)
 	proc->pc = (proc->pc + 5) % MEM_SIZE;
 }
 
-void	op_sub(t_vm *vm, t_play *p, t_proc *proc)
+int		op_sub(t_vm *vm, t_play *p, t_proc *proc)
 {
 	int a;
 	int b;
@@ -118,7 +123,7 @@ void	op_sub(t_vm *vm, t_play *p, t_proc *proc)
 	proc->pc = (proc->pc + 5) % MEM_SIZE;
 }
 
-void	op_zjmp(t_vm *vm, t_play *p, t_proc *proc)
+int		op_zjmp(t_vm *vm, t_play *p, t_proc *proc)
 {
 	int	rel;
 
@@ -128,7 +133,7 @@ void	op_zjmp(t_vm *vm, t_play *p, t_proc *proc)
 	proc->pc = (proc->pc + rel) % MEM_SIZE; // % IDX_MOD missing?        ??????????????????????????????
 }
 
-void	op_fork(t_vm *vm, t_play *p, t_proc *proc)
+int		op_fork(t_vm *vm, t_play *p, t_proc *proc)
 {
 	int	rel;
 
@@ -136,7 +141,7 @@ void	op_fork(t_vm *vm, t_play *p, t_proc *proc)
 	proc->pc = (proc->pc + (rel % IDX_MOD)) % MEM_SIZE;
 }
 
-void	op_lfork(t_vm *vm, t_play *p, t_proc *proc)
+int		op_lfork(t_vm *vm, t_play *p, t_proc *proc)
 {
 	int	rel;
 
@@ -146,7 +151,7 @@ void	op_lfork(t_vm *vm, t_play *p, t_proc *proc)
 
 
 // ??????????? What to print excatcly>>>>
-void	op_aff(t_vm *vm, t_play *p, t_proc *proc)
+int		op_aff(t_vm *vm, t_play *p, t_proc *proc)
 {
 	char	rel;
 

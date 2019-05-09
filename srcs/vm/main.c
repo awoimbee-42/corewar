@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 14:51:50 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/09 12:01:41 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/09 17:06:59 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,23 @@ int		main(int argc, char **argv)
 	ft_bzero(&env, sizeof(env));
 	gb_init_existing(&env.gb);
 	read_argv_init(&env, argc, argv);
+
+	env.opfuns[0] = op_live;
+	env.opfuns[1] = op_ld;
+	env.opfuns[2] = op_st;
+	env.opfuns[3] = op_add;
+	env.opfuns[4] = op_sub;
+	// env.opfuns[5] = op_and;
+	// env.opfuns[6] = op_or;
+	// env.opfuns[7] = op_xor;
+	env.opfuns[8] = op_zjmp;
+	// env.opfuns[9] = op_ldi;
+	// env.opfuns[10] = op_sti;
+	env.opfuns[11] = op_fork;
+	// env.opfuns[12] = op_lld;
+	// env.opfuns[13] = op_lldi;
+	env.opfuns[14] = op_lfork;
+	env.opfuns[15] = op_aff;
 
 	{
 		ft_printf("Our contestants are:\n");
