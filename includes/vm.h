@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/09 17:12:04 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/09 20:09:10 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ typedef int(*t_opfun)(struct s_vm*, t_play*, t_proc*);
 typedef struct	s_vm
 {
 	t_opfun				opfuns[16];
+	int					op_ocps[16];
 	int					cycle_dump;
 	int					cycle_die;
 	int					cycle_curr;

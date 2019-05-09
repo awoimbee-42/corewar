@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 14:51:50 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/09 17:06:59 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/09 22:28:31 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int		main(int argc, char **argv)
 
 	env.opfuns[0] = op_live;
 	env.opfuns[1] = op_ld;
-	env.opfuns[2] = op_st;
+	// env.opfuns[2] = op_st;
 	env.opfuns[3] = op_add;
 	env.opfuns[4] = op_sub;
 	// env.opfuns[5] = op_and;
