@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/08 17:49:02 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/09 14:30:20 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,22 +46,22 @@ typedef struct	s_proc
 {
 	t_register			reg[REG_NUMBER];
 	t_register			pc;
+	int					live;
+	int					op_cycles;
 	t_bool				carry;
 }				t_proc;
 
 typedef struct	s_vecproc
 {
 	struct s_proc		*d;
-	unsigned int		wait_cnt;
-	size_t				len;
-	size_t				mem; // std::vector<t_proc>
+	int					len;
+	int					mem;
 }				t_vecproc;
 
 typedef struct	s_play
 {
 	int					id;
-	t_bool				alive_flag;
-	char				*cor;
+	char				*cor; // useless ?
 	t_header			head;
 	struct s_vecproc	procs;
 }				t_play;
@@ -79,10 +79,10 @@ typedef struct	s_vecplay
 */
 typedef struct	s_vm
 {
-	unsigned int		cycle_dump;
-	unsigned int		cycle_die;
-	unsigned int		cycle_curr;
-	unsigned int		die_cycle_checks;
+	int					cycle_dump;
+	int					cycle_die;
+	int					cycle_curr;
+	int					die_cycle_checks;
 	char				arena[MEM_SIZE];
 	struct s_vecplay	players;
 	struct s_garbage	gb;
@@ -111,7 +111,7 @@ t_vecproc		*vecproc_new(t_garbage *gb, size_t reserved_len);
 t_vecproc		*vecproc_push_empty(t_garbage *gb, t_vecproc *vec);
 t_vecproc		*vecproc_push(t_garbage *gb, t_vecproc *vec, t_proc d);
 t_vecproc		*vecproc_realloc(t_garbage *gb, t_vecproc *vec);
-t_vecproc		*vecproc_del_at(t_vecproc *v, size_t at);
+t_vecproc		*vecproc_del_at(t_vecproc *v, int at);
 
 /*
 **	Functions
@@ -124,6 +124,8 @@ void			print_memory(const void *addr, size_t size);
 */
 int				usage(void);
 void			exit_vm(t_vm *env, char *err_msg);
+
+void			loop(t_vm *env);
 
 /*
 **
