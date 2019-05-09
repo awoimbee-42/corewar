@@ -13,7 +13,7 @@
 #include "vm.h"
 #include "libft.h"
 
-t_vecproc		*vecproc_del_at(t_vecproc *v, size_t at)
+t_vecproc		*vecproc_del_at(t_vecproc *v, int at)
 {
 	if (at >= v->len)
 		return (NULL);
