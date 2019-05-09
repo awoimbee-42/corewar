@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 17:59:57 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/09 14:26:53 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/09 22:25:12 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void			read_instruction(t_proc *proc, t_play *play, t_vm *env)
 		ft_printf("\t\t\t{red}invalid op: %#llx -> %lld, PC: %d{eoc}\n", op_id, op_id, proc->pc);                             // ignore and continue reading until next valid instruction byte
 	op = &op_tab[op_id];
 	ft_printf("\t\t\tOP: %s\n", op->name);
+	env->opfuns[op_id](env, play, proc);
 }
 
 static int		loop_player(t_vm *env, t_play *p)

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/09 14:30:20 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/09 20:09:10 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ struct s_play;
 struct s_vecproc;
 struct s_vecplay;
 struct s_vm;
+
 
 /*
 **	################
@@ -77,15 +78,19 @@ typedef struct	s_vecplay
 **	  MAIN STRUCT
 **	#################
 */
+typedef int(*t_opfun)(struct s_vm*, t_play*, t_proc*);
+
 typedef struct	s_vm
 {
+	t_opfun				opfuns[16];
+	int					op_ocps[16];
 	int					cycle_dump;
 	int					cycle_die;
 	int					cycle_curr;
 	int					die_cycle_checks;
-	char				arena[MEM_SIZE];
 	struct s_vecplay	players;
 	struct s_garbage	gb;
+	char				arena[MEM_SIZE];
 }				t_vm;
 
 /*
@@ -131,5 +136,18 @@ void			loop(t_vm *env);
 **
 */
 void			read_argv_init(t_vm *env, int argc, char **argv);
+
+/*
+**	OPs
+*/
+int			op_live(t_vm *vm, t_play *p, t_proc *proc);
+int			op_ld(t_vm *vm, t_play *p, t_proc *proc);
+int			op_st(t_vm *vm, t_play *p, t_proc *proc);
+int			op_add(t_vm *vm, t_play *p, t_proc *proc);
+int			op_sub(t_vm *vm, t_play *p, t_proc *proc);
+int			op_zjmp(t_vm *vm, t_play *p, t_proc *proc);
+int			op_fork(t_vm *vm, t_play *p, t_proc *proc);
+int			op_lfork(t_vm *vm, t_play *p, t_proc *proc);
+int			op_aff(t_vm *vm, t_play *p, t_proc *proc);
 
 #endif
