@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/09 20:09:10 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/10 16:42:46 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,16 +74,30 @@ typedef struct	s_vecplay
 }				t_vecplay;
 
 /*
+**	OPs
+*/
+
+typedef void(*t_opfun)(struct s_vm*, t_play*, t_proc*);
+
+typedef struct	s_vm_op
+{
+	char				name[5];
+	int					nb_cycles;
+	t_opfun				fun;
+}				t_vm_op;
+
+extern const t_vm_op g_op[16];
+
+/*
 **	#################
 **	  MAIN STRUCT
 **	#################
 */
-typedef int(*t_opfun)(struct s_vm*, t_play*, t_proc*);
+
 
 typedef struct	s_vm
 {
-	t_opfun				opfuns[16];
-	int					op_ocps[16];
+	int					verbosity;
 	int					cycle_dump;
 	int					cycle_die;
 	int					cycle_curr;
@@ -121,7 +135,8 @@ t_vecproc		*vecproc_del_at(t_vecproc *v, int at);
 /*
 **	Functions
 */
-uint			swap32_endianess(uint val);
+uint32_t		swap32_endian(uint32_t val);
+uint16_t		swap16_endian(uint16_t val);
 void			print_memory(const void *addr, size_t size);
 
 /*
@@ -140,14 +155,14 @@ void			read_argv_init(t_vm *env, int argc, char **argv);
 /*
 **	OPs
 */
-int			op_live(t_vm *vm, t_play *p, t_proc *proc);
-int			op_ld(t_vm *vm, t_play *p, t_proc *proc);
-int			op_st(t_vm *vm, t_play *p, t_proc *proc);
-int			op_add(t_vm *vm, t_play *p, t_proc *proc);
-int			op_sub(t_vm *vm, t_play *p, t_proc *proc);
-int			op_zjmp(t_vm *vm, t_play *p, t_proc *proc);
-int			op_fork(t_vm *vm, t_play *p, t_proc *proc);
-int			op_lfork(t_vm *vm, t_play *p, t_proc *proc);
-int			op_aff(t_vm *vm, t_play *p, t_proc *proc);
+void		op_live(t_vm *vm, t_play *p, t_proc *proc);
+void		op_ld(t_vm *vm, t_play *p, t_proc *proc);
+void		op_st(t_vm *vm, t_play *p, t_proc *proc);
+void		op_add(t_vm *vm, t_play *p, t_proc *proc);
+void		op_sub(t_vm *vm, t_play *p, t_proc *proc);
+void		op_zjmp(t_vm *vm, t_play *p, t_proc *proc);
+void		op_fork(t_vm *vm, t_play *p, t_proc *proc);
+void		op_lfork(t_vm *vm, t_play *p, t_proc *proc);
+void		op_aff(t_vm *vm, t_play *p, t_proc *proc);
 
 #endif

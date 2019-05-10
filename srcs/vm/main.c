@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 14:51:50 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/09 22:28:31 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/10 15:57:52 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,25 @@
 
 #include "corewar.h"
 #include "vm.h"
+
+const t_vm_op g_op[16] = {
+	{"live", 10, op_live},
+	{"ld", 5, op_ld},
+	{"st", 5, op_live},
+	{"add", 10, op_add},
+	{"sub",10, op_sub},
+	{"and", 6, op_live}, //
+	{"or", 6, op_live}, //
+	{"xor", 6, op_live},
+	{"zjmp", 20, op_zjmp},
+	{"ldi", 25, op_live},
+	{"sti", 25, op_live},
+	{"fork", 800, op_fork},
+	{"lld", 10, op_live},
+	{"lldi", 50, op_live},
+	{"lfork", 1000, op_lfork},
+	{"aff", 2, op_aff},
+};
 
 void	exit_vm(t_vm *env, char *err_msg)
 {
@@ -52,25 +71,11 @@ int		main(int argc, char **argv)
 	if (argc == 1)// || argc > MAX_ARGS_NUMBER)
 		return(usage());
 	ft_bzero(&env, sizeof(env));
+	ft_printf("gb len addr %p status: %lu\n", &env.gb.arr_len, env.gb.arr_len);
 	gb_init_existing(&env.gb);
+	ft_printf("gb len addr %p status: %lu\n", &env.gb.arr_len, env.gb.arr_len);
 	read_argv_init(&env, argc, argv);
-
-	env.opfuns[0] = op_live;
-	env.opfuns[1] = op_ld;
-	// env.opfuns[2] = op_st;
-	env.opfuns[3] = op_add;
-	env.opfuns[4] = op_sub;
-	// env.opfuns[5] = op_and;
-	// env.opfuns[6] = op_or;
-	// env.opfuns[7] = op_xor;
-	env.opfuns[8] = op_zjmp;
-	// env.opfuns[9] = op_ldi;
-	// env.opfuns[10] = op_sti;
-	env.opfuns[11] = op_fork;
-	// env.opfuns[12] = op_lld;
-	// env.opfuns[13] = op_lldi;
-	env.opfuns[14] = op_lfork;
-	env.opfuns[15] = op_aff;
+	env.verbosity = 4;
 
 	{
 		ft_printf("Our contestants are:\n");
