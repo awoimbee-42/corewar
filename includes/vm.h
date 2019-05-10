@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/10 16:42:46 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/11 00:17:37 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ typedef struct	s_vecproc
 typedef struct	s_play
 {
 	int					id;
-	char				*cor; // useless ?
+	uint8_t				*cor; // useless ?
 	t_header			head;
 	struct s_vecproc	procs;
 }				t_play;
@@ -104,7 +104,7 @@ typedef struct	s_vm
 	int					die_cycle_checks;
 	struct s_vecplay	players;
 	struct s_garbage	gb;
-	char				arena[MEM_SIZE];
+	uint8_t				arena[MEM_SIZE];
 }				t_vm;
 
 /*

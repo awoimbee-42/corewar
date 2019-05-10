@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 14:56:02 by skiessli          #+#    #+#             */
-/*   Updated: 2019/05/10 16:50:58 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/11 00:15:01 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	op_live(t_vm *vm, t_play *p, t_proc *proc)
 
 void	op_ld(t_vm *vm, t_play *p, t_proc *proc)
 {
-	char	acb;
+	uint8_t	acb;
 	int		tmp;
 	int		rel;
 	int		fail;
@@ -83,7 +83,7 @@ void	op_ld(t_vm *vm, t_play *p, t_proc *proc)
 /*
 int		op_st(t_vm *vm, t_play *p, t_proc *proc)
 {
-	char acb;
+	uint8_t acb;
 	int num;
 	int reg;
 	int rel;
@@ -107,7 +107,7 @@ int		op_st(t_vm *vm, t_play *p, t_proc *proc)
 */
 void	op_add(t_vm *vm, t_play *p, t_proc *proc)
 {
-	char	*reg_ids;
+	uint8_t	*reg_ids;
 
 	reg_ids = &vm->arena[proc->pc + 2];
 	if (vm->arena[proc->pc + 1] != 0b01010100
@@ -128,7 +128,7 @@ void	op_add(t_vm *vm, t_play *p, t_proc *proc)
 
 void	op_sub(t_vm *vm, t_play *p, t_proc *proc)
 {
-	char	*reg_ids;
+	uint8_t	*reg_ids;
 
 	reg_ids = &vm->arena[proc->pc + 2];
 	if (vm->arena[proc->pc + 1] != 0b01010100
@@ -173,7 +173,7 @@ void	op_lfork(t_vm *vm, t_play *p, t_proc *proc)
 void	op_aff(t_vm *vm, t_play *p, t_proc *proc)
 {
 	uint	reg_id;
-	char	c;
+	uint8_t	c;
 
 	reg_id = (uint)vm->arena[(proc->pc + 2) % MEM_SIZE];
 	if (reg_id > REG_NUMBER
