@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 17:59:57 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/10 16:43:37 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/11 16:58:24 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,14 @@ void			read_instruction(t_proc *proc, t_play *play, t_vm *env)
 	op_id = env->arena[proc->pc] - 1;
 	if (op_id < 0 || 15 < op_id)
 	{
-		ft_printf("\t\t\t{red}load fail op: %#llx -> %lld, PC: %d{eoc}\n", op_id, op_id, proc->pc);                             // ignore and continue reading until next valid instruction byte
+		ft_printf("\t\t\t{red}load fail op: %#x -> %lld, PC: %d{eoc}\n", op_id, op_id, proc->pc);                             // ignore and continue reading until next valid instruction byte
 		proc->pc++;
 		proc->op_cycles = 0;
 	}
 	else
 	{
 		proc->op_cycles = g_op[op_id].nb_cycles;
-		ft_printf("\t\t\t{blu}load OP: %s{eoc}\n", g_op[op_id].name);
+		ft_printf("\t\t\t{blu}load OP: %s PC: %d{eoc}\n", g_op[op_id].name, proc->pc);
 	}
 }
 
@@ -47,8 +47,8 @@ static int		loop_player(t_vm *env, t_play *p)
 	int			i;
 
 	ft_printf("\tPlayer: %d\n", p->id);
-	i = -1;
-	while (++i < p->procs.len)
+	i = p->procs.len;
+	while (i-- != 0)
 	{
 		ft_printf("\t\tProcess: %d\n", i);
 		if (!(env->cycle_curr % env->cycle_die) && !p->procs.d[i].live)
@@ -86,8 +86,8 @@ void			loop(t_vm *env)
 				env->cycle_die = 1;
 		}
 		alive = 0;
-		i = -1;
-		while (++i < env->players.len)
+		i = env->players.len;
+		while (i-- != 0)
 		{
 			if (loop_player(env, &env->players.d[i]) == 1) // if (something); {} <- worst fucking bug
 				alive = 1;

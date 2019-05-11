@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 14:56:02 by skiessli          #+#    #+#             */
-/*   Updated: 2019/05/11 00:15:01 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/11 16:59:38 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	op_ld(t_vm *vm, t_play *p, t_proc *proc)
 		return ;
 	}
 	proc->reg[vm->arena[(proc->pc + rel) % MEM_SIZE] % REG_NUMBER] = tmp;
-	proc->pc = (proc->pc + rel + REG_SIZE) % MEM_SIZE;
+	proc->pc = (proc->pc + rel + REG_SIZE + 1) % MEM_SIZE;
 	ft_printf("P #%5d | ld SUCCESS\n", p->id);
 }
 /*
