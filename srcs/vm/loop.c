@@ -37,6 +37,7 @@ void			read_instruction(t_proc *proc, t_play *play, t_vm *env)
 void			launch_instruction(t_vm *vm, t_play *play, t_proc *proc)
 {
 	int		op_id;
+	int		reg_num[3];
 
 	op_id = vm->arena[proc->pc] - 1;
 	g_op[op_id].fun(vm, play, proc);

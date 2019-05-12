@@ -26,9 +26,9 @@
 
 static t_op    op_tab[17] =
 {
-//				T_REG 01	1 byte
-//				T_DIR 10	4 byte
-//				T_IND 11	2 byte
+//				REG 01	1 byte
+//				DIR 10	4 byte
+//				IND 11	2 byte
 //  name - nb_args -- args_types --                                 id -- nb_cycles -- description --      uses_coding_byte -- does_direct_values_on_2_bytes_instead_of_4
 	{"live", 1, {T_DIR},                                                1,   10, "alive",                                0, 0},
 	{"ld",   2, {T_DIR | T_IND, T_REG},                                 2,    5, "load",                                 1, 0},
@@ -48,6 +48,7 @@ static t_op    op_tab[17] =
 	{"aff",  1, {T_REG},                                               16,    2, "aff",                                  1, 0},
 	{0, 0, {0}, 0, 0, 0, 0, 0}
 };
+
 
 
 

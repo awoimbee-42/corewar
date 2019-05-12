@@ -45,8 +45,9 @@ struct s_vm;
 
 typedef struct	s_proc
 {
-	t_register			reg[REG_NUMBER];
+	t_register			reg[REG_NUMBER + 4];
 	t_register			pc;
+	t_register			new_pc;
 	int					live;
 	int					op_cycles;
 	t_bool				carry;
@@ -77,12 +78,20 @@ typedef struct	s_vecplay
 **	OPs
 */
 
-typedef void(*t_opfun)(struct s_vm*, t_play*, t_proc*);
+typedef void(*t_opfun)(struct s_vm*, t_play*, t_proc*, int[3]);
 
 typedef struct	s_vm_op
 {
 	char				name[5];
-	int					nb_cycles;
+	int					nb_args;
+	t_arg_type			args_types[3]; // 3 is the max number of args -> the compiler will round to 4 anyways
+	int					id; //op_code
+	int					cycles;
+	char				*desc;
+	t_bool				coding_byte;
+	t_bool				modcarry;
+	t_bool				dir2;
+	t_bool				ldx_rel;
 	t_opfun				fun;
 }				t_vm_op;
 

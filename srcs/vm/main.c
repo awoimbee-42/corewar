@@ -29,22 +29,24 @@
 #include "vm.h"
 
 const t_vm_op g_op[16] = {
-	{"live", 10, op_live},
-	{"ld", 5, op_ld},
-	{"st", 5, op_live},
-	{"add", 10, op_add},
-	{"sub",10, op_sub},
-	{"and", 6, op_live}, //
-	{"or", 6, op_live}, //
-	{"xor", 6, op_live},
-	{"zjmp", 20, op_zjmp},
-	{"ldi", 25, op_live},
-	{"sti", 25, op_live},
-	{"fork", 800, op_fork},
-	{"lld", 10, op_live},
-	{"lldi", 50, op_live},
-	{"lfork", 1000, op_lfork},
-	{"aff", 2, op_aff},
+	//  name - nb_args -- args_types --                id -- nb_cycles -- uses_coding_byte -- modcarry -- dir2 -- ldx_mod --  fun 
+	{"live", 1, {T_DIR},                                                1,   10, 0, 0, 0, 0, op_live},
+	{"ld",   2, {T_DIR | T_IND, T_REG},                                 2,    5, 1, 1, 0, 0, op_live},
+	{"st",   2, {T_REG, T_IND | T_REG},                                 3,    5, 1, 0, 0, 0, op_live},
+	{"add",  3, {T_REG, T_REG, T_REG},                                  4,   10, 1, 1, 0, 0, op_live},
+	{"sub",  3, {T_REG, T_REG, T_REG},                                  5,   10, 1, 1, 0, 0, op_live},
+	{"and",  3, {T_REG | T_DIR | T_IND, T_REG | T_IND | T_DIR, T_REG},  6,    6, 1, 1, 0, 0, op_live},
+	{"or",   3, {T_REG | T_IND | T_DIR, T_REG | T_IND | T_DIR, T_REG},  7,    6, 1, 1, 0, 0, op_live},
+	{"xor",  3, {T_REG | T_IND | T_DIR, T_REG | T_IND | T_DIR, T_REG},  8,    6, 1, 1, 0, 0, op_live},
+	{"zjmp", 1, {T_DIR},                                                9,   20, 0, 0, 1, 0, op_live},
+	{"ldi",  3, {T_REG | T_DIR | T_IND, T_DIR | T_REG, T_REG},         10,   25, 1, 0, 1, 0, op_live},
+	{"sti",  3, {T_REG, T_REG | T_DIR | T_IND, T_DIR | T_REG},         11,   25, 1, 0, 1, 0, op_live},
+	{"fork", 1, {T_DIR},                                               12,  800, 0, 0, 1, 0, op_live},
+	{"lld",  2, {T_DIR | T_IND, T_REG},                                13,   10, 1, 1, 0, 1, op_live},
+	{"lldi", 3, {T_REG | T_DIR | T_IND, T_DIR | T_REG, T_REG},         14,   50, 1, 1, 1, 1, op_live},
+	{"lfork",1, {T_DIR},                                               15, 1000, 0, 0, 1, 1, op_live},
+	{"aff",  1, {T_REG},                                               16,    2, 1, 0, 0, 0, op_live},
+	
 };
 
 void	exit_vm(t_vm *env, char *err_msg)

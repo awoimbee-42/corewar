@@ -39,6 +39,7 @@ typedef struct	s_op
 	char				*desc;
 	t_bool				coding_byte;
 	t_bool				carry;
+	t_bool				dir2;
 }				t_op;
 
 typedef	struct	s_label
