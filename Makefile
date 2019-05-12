@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/05/09 17:04:51 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/05/11 16:11:09 by cpoirier         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,7 @@ SRC_NAME_CORE =	main.c								\
 				swap_endianess.c					\
 				loop.c								\
 				ops.c								\
+				load_from_mem.c						\
 				\
 				operators/vecproc/init.c			\
 				operators/vecproc/new.c				\

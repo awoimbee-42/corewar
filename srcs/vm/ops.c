@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 14:56:02 by skiessli          #+#    #+#             */
-/*   Updated: 2019/05/11 16:59:38 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/12 14:43:14 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	op_live(t_vm *vm, t_play *p, t_proc *proc)
 	int		player;
 	int		fail;
 
-	player = swap32_endian(*(int*)&vm->arena[(proc->pc + 1) % MEM_SIZE]);
+	player = load32(vm, proc->pc + 1);//swap32_endian(*(int*)&vm->arena[(proc->pc + 1) % MEM_SIZE]);
 	i = 0;
 	fail = 0;
 	while (i < vm->players.len && vm->players.d[i].id != player)
