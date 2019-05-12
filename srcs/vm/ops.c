@@ -20,7 +20,36 @@
 **	#################
 */
 
-int read
+int		get_first_arg(t_vm *vm, t_play *p, t_proc *proc)
+{
+	char acb;
+	int num;
+	int reg;
+	int rel;
+
+	acb = vm->arena[(proc->pc + 1) % MEM_SIZE];
+	if (acb & 192 == 192)
+	{
+		rel = 3;
+		num = *(short*)&vm->arena[(proc->pc + 2) % MEM_SIZE];
+		num = *(int*)&vm->arena[(proc->pc + (num + IDX_MOD)) % MEM_SIZE]
+	}
+	else if (acb & 128 == 128)
+	{
+		rel = 5;
+		num = *(int*)&vm->arena[(proc->pc + 2) % MEM_SIZE];
+	}
+}
+
+int		get_second_arg(t_vm *vm, t_play *p, t_proc *proc)
+{
+
+}
+
+int		get_thrid_arg(t_vm *vm, t_play *p, t_proc *proc)
+{
+
+}
 
 int		op_live(t_vm *vm, t_play *p, t_proc *proc)
 {
@@ -43,19 +72,32 @@ void	op_ld(t_vm *vm, t_play *p, t_proc *proc)
 	if (acb & 192 == 192)
 	{
 		rel = 3;
-		num = *(short*)&vm->arena[(proc->pc + 1) % MEM_SIZE];
-		num = *(int*)&vm->arena[num % MEM_SIZE]
+		num = *(short*)&vm->arena[(proc->pc + 2) % MEM_SIZE];
+		num = *(int*)&vm->arena[(proc->pc + (num + IDX_MOD)) % MEM_SIZE]
 	}
 	else if (acb & 128 == 128)
 	{
 		rel = 5;
-		num = *(int*)&vm->arena[(proc->pc + 1) % MEM_SIZE];
+		num = *(int*)&vm->arena[(proc->pc + 2) % MEM_SIZE];
 	}
-	reg = vm->arena[(proc->pc + rel) % MEM_SIZE] % REG_NUMBER;
+	else
+	{
+		proc->carry = 0;
+		proc->pc = (proc->pc + 1) % MEM_SIZE;
+		return ;
+	}
+	reg = vm->arena[(proc->pc + rel + 1) % MEM_SIZE];
+	if (reg >= REG_SIZE)
+	{
+		proc->carry = 0;
+		proc->pc = (proc->pc + 1) % MEM_SIZE;
+		return ;
+	}
 	proc->reg[reg] = num;
+	proc->carry = 1;
 	proc->pc = (proc->pc + rel + 1) % MEM_SIZE;
 }
-/*
+
 void	op_st(t_vm *vm, t_play *p, t_proc *proc)
 {
 	char acb;
@@ -64,22 +106,34 @@ void	op_st(t_vm *vm, t_play *p, t_proc *proc)
 	int rel;
 
 	acb = vm->arena[(proc->pc + 1) % MEM_SIZE];
+	reg = vm->arena[(proc->pc + 2) % MEM_SIZE];
+	if (reg >= REG_SIZE)
+	{
+		proc->carry = 0;
+		proc->pc = (proc->pc + 1) % MEM_SIZE;
+		return ;
+	}
 	if (acb & 48 == 48)
 	{
 		rel = 3;
-		num = *(short*)&vm->arena[(proc->pc + 1) % MEM_SIZE];
-		num = *(int*)&vm->arena[num % MEM_SIZE]
+		num = *(short*)&vm->arena[(proc->pc + 3) % MEM_SIZE];
+		*(int*)&vm->arena[(proc->pc + (num % IDX_MOD)) % MEM_SIZE] = proc->reg[reg];
 	}
 	else if (acb & 32 == 32)
 	{
 		rel = 5;
-		num = *(int*)&vm->arena[(proc->pc + 1) % MEM_SIZE];
+		num = *(int*)&vm->arena[(proc->pc + 3) % MEM_SIZE];
 	}
-	vm->arena[num % MEM_SIZE] = ;
-	proc->reg[reg] = num;
+	else
+	{
+		proc->carry = 0;
+		proc->pc = (proc->pc + 1) % MEM_SIZE;
+		return ;
+	}
+	proc->carry = 1;
 	proc->pc = (proc->pc + rel + 1) % MEM_SIZE;
 }
-*/
+
 void	op_add(t_vm *vm, t_play *p, t_proc *proc)
 {
 	int a;
@@ -118,6 +172,11 @@ void	op_sub(t_vm *vm, t_play *p, t_proc *proc)
 	proc->pc = (proc->pc + 5) % MEM_SIZE;
 }
 
+void	op_and(t_vm *vm, t_play *p, t_proc *proc)
+{
+
+}
+
 void	op_zjmp(t_vm *vm, t_play *p, t_proc *proc)
 {
 	int	rel;
@@ -148,9 +207,16 @@ void	op_lfork(t_vm *vm, t_play *p, t_proc *proc)
 // ??????????? What to print excatcly>>>>
 void	op_aff(t_vm *vm, t_play *p, t_proc *proc)
 {
-	char	rel;
+	char			rel;
+	unsigned int	reg;
 
-	rel = proc->reg[vm->arena[(proc->pc + 2) % MEM_SIZE]];
-	write(1, &rel, 1);
+	reg = *(unsigned int*)&vm->arena[(proc->pc + 2) % MEM_SIZE];
+	if (reg >= REG_SIZE)	
+	{
+		proc->pc = (proc->pc + 1) % MEM_SIZE;
+		return ;	
+	}
+	rel = proc->reg[reg];
+	write(1, &rel, 4);
 	proc->pc = (proc->pc + 3) % MEM_SIZE;
 }
