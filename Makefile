@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/05/11 16:11:09 by cpoirier         ###   ########.fr        #
+#    Updated: 2019/05/12 22:53:36 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ SRC_NAME_CORE =	main.c								\
 				loop.c								\
 				ops.c								\
 				load_from_mem.c						\
+				visu_loop.c							\
 				\
 				operators/vecproc/init.c			\
 				operators/vecproc/new.c				\
@@ -57,7 +58,7 @@ else ifeq ($(UNAME_S),Darwin)
 endif
 
 CC = gcc
-LDLIBS = -lft
+LDLIBS = -lft -lncurses -lpthread
 LDFLAGS = -L./libft
 CFLAGS += -MMD -I./includes -I./libft
 

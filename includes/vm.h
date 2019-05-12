@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/11 16:10:48 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/12 23:33:15 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define VM_H
 # include "corewar.h"
 # include "libft.h"
+# include <ncurses.h>
+# include <pthread.h>
 
 /*
 **	################
@@ -74,6 +76,19 @@ typedef struct	s_vecplay
 }				t_vecplay;
 
 /*
+**
+*/
+
+typedef struct	s_visu
+{
+	pthread_t			thread;
+	WINDOW				*rootw;
+	WINDOW				*arenaw;
+	WINDOW				*sidepw;
+}				t_visu;
+
+
+/*
 **	OPs
 */
 
@@ -97,6 +112,7 @@ extern const t_vm_op g_op[16];
 
 typedef struct	s_vm
 {
+	t_visu				visu;
 	int					verbosity;
 	int					cycle_dump;
 	int					cycle_die;
@@ -149,6 +165,7 @@ int				usage(void);
 void			exit_vm(t_vm *env, char *err_msg);
 
 void			loop(t_vm *env);
+void			visu_loop(t_vm *vm);
 
 /*
 **

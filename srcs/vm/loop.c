@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 17:59:57 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/11 16:58:24 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/12 23:12:21 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,16 @@ void			read_instruction(t_proc *proc, t_play *play, t_vm *env)
 	op_id = env->arena[proc->pc] - 1;
 	if (op_id < 0 || 15 < op_id)
 	{
-		ft_printf("\t\t\t{red}load fail op: %#x -> %lld, PC: %d{eoc}\n", op_id, op_id, proc->pc);                             // ignore and continue reading until next valid instruction byte
+		if (env->verbosity > 5)
+			ft_printf("\t\t\t{red}load fail op: %#x -> %lld, PC: %d{eoc}\n", op_id, op_id, proc->pc);                             // ignore and continue reading until next valid instruction byte
 		proc->pc++;
 		proc->op_cycles = 0;
 	}
 	else
 	{
 		proc->op_cycles = g_op[op_id].nb_cycles;
-		ft_printf("\t\t\t{blu}load OP: %s PC: %d{eoc}\n", g_op[op_id].name, proc->pc);
+		if (env->verbosity > 5)
+			ft_printf("\t\t\t{blu}load OP: %s PC: %d{eoc}\n", g_op[op_id].name, proc->pc);
 	}
 }
 
@@ -46,14 +48,17 @@ static int		loop_player(t_vm *env, t_play *p)
 {
 	int			i;
 
-	ft_printf("\tPlayer: %d\n", p->id);
+	if (env->verbosity > 5)
+		ft_printf("\tPlayer: %d\n", p->id);
 	i = p->procs.len;
 	while (i-- != 0)
 	{
-		ft_printf("\t\tProcess: %d\n", i);
+		if (env->verbosity > 5)
+			ft_printf("\t\tProcess: %d\n", i);
 		if (!(env->cycle_curr % env->cycle_die) && !p->procs.d[i].live)
 		{
-			ft_printf("\t\tProcess %lu of player %d died because he thought that live was not an important instruction\n", i, p->id);
+			if (env->verbosity > 5)
+				ft_printf("\t\tProcess %lu of player %d died because he thought that live was not an important instruction\n", i, p->id);
 			vecproc_del_at(&p->procs, i);
 		}
 		--p->procs.d[i].op_cycles;
@@ -76,20 +81,21 @@ void			loop(t_vm *env)
 	while (alive)
 	{
 		++env->cycle_curr;
-		ft_printf("{PNK}cycle: %lu{eoc}\n", env->cycle_curr);
+		if (env->verbosity > 4)
+			ft_printf("{PNK}cycle: %lu{eoc}\n", env->cycle_curr);
 		if (!(env->cycle_curr % env->cycle_die))
 			env->die_cycle_checks++;
 		if (env->die_cycle_checks == MAX_CHECKS)
 		{
 			env->die_cycle_checks = 0;
-			if ((env->cycle_die -= 1) <= 0) // should I decrement by 1 on CYCLE DELTA ?
+			if ((env->cycle_die -= CYCLE_DELTA) <= 0) // should I decrement by 1 or CYCLE DELTA ?
 				env->cycle_die = 1;
 		}
 		alive = 0;
 		i = env->players.len;
 		while (i-- != 0)
 		{
-			if (loop_player(env, &env->players.d[i]) == 1) // if (something); {} <- worst fucking bug
+			if (loop_player(env, &env->players.d[i]) == 1)
 				alive = 1;
 		}
 	}

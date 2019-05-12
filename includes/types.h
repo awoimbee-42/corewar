@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/05 21:12:00 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/09 22:19:31 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/12 20:52:54 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 typedef enum	e_bool
 {
 	FALSE,
-	TRUE
+	TRUE,
 }				t_bool;
 
 typedef struct	s_header
