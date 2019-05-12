@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 19:24:05 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/09 14:24:32 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/10 16:43:04 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ static void		load_cor(t_vm *env, t_play *p, char *buffer)
 	if (read(fd, &p->head, sizeof(t_header)) != sizeof(t_header)
 		|| read(fd, buffer, size) != size)
 		exit_vm(env, gb_add(gb, ft_cprintf("%s '%s'", gb_add(gb, strerror(errno)), fname)));
-	p->head.magic = swap32_endianess(p->head.magic);
-	p->head.prog_size = swap32_endianess(p->head.prog_size);
+	p->head.magic = swap32_endian(p->head.magic);
+	p->head.prog_size = swap32_endian(p->head.prog_size);
 	if (p->head.magic != COREWAR_EXEC_MAGIC)
 		exit_vm(env, gb_add(gb, ft_cprintf("Exec magic not recognised")));
 	if (p->head.prog_size != size)

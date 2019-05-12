@@ -8,5 +8,6 @@
 build/
 asm
 !asm/
+!ressources/*
 corewar
 !corewar/

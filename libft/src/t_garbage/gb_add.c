@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/04 21:16:26 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/07 22:26:39 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/10 16:16:16 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@
 
 void		*gb_add(t_garbage *gb, void *malloced)
 {
-	void		*tmp;
-
 	if (malloced == NULL)
 		intrin__gb_fail(gb);
 	if (gb->arr_len == gb->mem_len)

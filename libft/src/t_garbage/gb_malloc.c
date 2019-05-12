@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/04 20:44:45 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/07 22:26:52 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/10 16:16:52 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 void		*gb_malloc(t_garbage *gb, size_t size)
 {
-	void		*tmp;
-
 	if (gb->arr_len == gb->mem_len - 1)
 		intrin_gb_extend(gb);
 	gb->pointers[gb->arr_len] = malloc(size);
