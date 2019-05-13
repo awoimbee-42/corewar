@@ -6,36 +6,70 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/12 22:29:22 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/13 00:06:26 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/13 04:11:56 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
 #include "vm.h"
 
+const char	*g_pcolors[] = {"\x1b[31m", "\e[32m", "\e[33m", "\e[34m"};
+
+void		visu_init_memview(t_vm *vm)
+{
+	int				i;
+	int				mem;
+	int				mem_pc;
+
+	mem = 0;
+	while (mem != 4096)
+	{
+		i = -1;
+		while (++i < 64)
+			wprintw(vm->visu.arenaw, " 00");
+		mem += 64;
+		wprintw(vm->visu.arenaw, "\n", vm->arena[mem]);
+	}
+	i = -1;
+	while (++i < vm->players.len)
+	{
+		wmove(vm->visu.arenaw, mem_pc / 64, mem_pc % 64);
+		mem = 0;
+		mem_pc = vm->players.d[i].procs.d->pc;
+		while (mem < vm->players.d[i].head.prog_size)
+		{
+			wrefresh(vm->visu.arenaw);
+			sleep(1);
+			if (mem_pc % 64 == 0)
+				wprintw(vm->visu.arenaw, "\n");
+			wprintw(vm->visu.arenaw, " %s%02hhx", g_pcolors[i], vm->arena[mem_pc]);  // add color escape code for each player
+			mem_pc++;
+			mem++;
+		}
+	}
+	wmove(vm->visu.arenaw, 0, 0);
+	wrefresh(vm->visu.arenaw);
+}
+
 void		nc_dump_memory(const uint8_t *addr, WINDOW *w)
 {
 	int				i;
 	int				size;
-	char			*base;
 
-	base = "0123456789abcdef";
 	size = 0;
 	while (size != 4096)
 	{
 		i = -1;
 		while (++i < 64)
-			wprintw(w, " %02hhx", addr[size + i]);
+			wprintw(w, "   ");
 		wprintw(w, "\n", addr[size + i]);
 		size += 64;
 	}
+
+
 	wmove(w, 0, 0);
 	wrefresh(w);
 }
-
-
-
-
 
 // dump 64 * 64 bytes
 

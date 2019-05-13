@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 19:24:05 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/13 00:16:55 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/13 04:03:06 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,15 +146,16 @@ void		init_ncurses(t_vm *vm)
 	curs_set(FALSE);
 	start_color();
 	vm->visu.rootw = newwin(66, 232, 0, 0);
-	init_color(COLOR_RED, 200, 200, 200);
-	init_pair(1, COLOR_WHITE, COLOR_RED);
+	init_color(COLOR_CYAN, 200, 200, 200);
+	init_pair(1, COLOR_WHITE, COLOR_CYAN);
 	wbkgd(vm->visu.rootw, COLOR_PAIR(1));
 	vm->visu.arenaw = subwin(vm->visu.rootw, 64, 193, 1, 2);
 	init_pair(2, COLOR_WHITE, COLOR_BLACK);
 	wbkgd(vm->visu.arenaw, COLOR_PAIR(2));
-	vm->visu.sidepw = subwin(vm->visu.rootw, 64, 30, 1, 202);
+	vm->visu.sidepw = subwin(vm->visu.rootw, 64, 30, 1, 197);
 	wbkgd(vm->visu.sidepw, COLOR_PAIR(2));
 	wrefresh(vm->visu.rootw);
+	visu_init_memview(vm);
 	pthread_create(&vm->visu.thread, NULL, (void*(*)(void *))visu_loop, (void*)vm);
 }
 
@@ -170,10 +171,12 @@ void		read_argv_init(t_vm *env, int argc, char **argv)
 		if (!ft_strcmp(argv[i], "-dump"))
 			read_dump_cycle(env, argv[++i]);
 		else if (!ft_strncmp(argv[i], "-visu", 5))
-			init_ncurses(env);
+			env->verbosity = -1;
 		else
 			i = read_champ(env, argv, i);
 	}
 	set_remaining_play_id(env);
 	load_cor_files(env); // also sets the PC & r0
+	if (env->verbosity == -1)
+		init_ncurses(env);
 }

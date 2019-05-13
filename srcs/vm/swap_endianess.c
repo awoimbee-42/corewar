@@ -6,11 +6,11 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 17:46:49 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/10 16:42:08 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/13 03:06:32 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "corewar.h"
+#include <inttypes.h>
 
 uint32_t	swap32_endian(uint32_t val)
 {

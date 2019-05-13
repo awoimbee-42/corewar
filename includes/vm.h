@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/12 23:33:15 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/13 04:03:42 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,9 @@ int				usage(void);
 void			exit_vm(t_vm *env, char *err_msg);
 
 void			loop(t_vm *env);
+
 void			visu_loop(t_vm *vm);
+void			visu_init_memview(t_vm *vm);
 
 /*
 **
