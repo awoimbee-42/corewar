@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 17:59:57 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/11 16:58:24 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/13 17:58:13 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,19 +29,19 @@ void			read_instruction(t_proc *proc, t_play *play, t_vm *env)
 	}
 	else
 	{
-		proc->op_cycles = g_op[op_id].nb_cycles;
+		proc->op_cycles = g_op[op_id].cycles;
 		ft_printf("\t\t\t{blu}load OP: %s PC: %d{eoc}\n", g_op[op_id].name, proc->pc);
 	}
 }
 
-void			launch_instruction(t_vm *vm, t_play *play, t_proc *proc)
-{
-	int		op_id;
-	int		reg_num[3];
+// void			launch_instruction(t_vm *vm, t_play *play, t_proc *proc)
+// {
+// 	int		op_id;
+// 	int		reg_num[3];
 
-	op_id = vm->arena[proc->pc] - 1;
-	g_op[op_id].fun(vm, play, proc);
-}
+// 	op_id = vm->arena[proc->pc] - 1;
+// 	g_op[op_id].fun(vm, play, proc);
+// }
 
 static int		loop_player(t_vm *env, t_play *p)
 {

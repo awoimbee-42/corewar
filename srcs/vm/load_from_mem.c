@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/12 20:56:49 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/12 21:09:13 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/13 16:15:27 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ uint32_t		load32(t_vm *vm, t_register pc)
 	uint8_t		*r;
 	int			i;
 
-	r = &res;
+	r = (uint8_t*)&res;
 	i = -1;
 	while (++i < 4)
 		r[i] = vm->arena[(pc + (3 - i)) % MEM_SIZE];

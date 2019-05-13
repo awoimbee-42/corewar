@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/11 16:10:48 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/13 17:56:57 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,9 @@ typedef struct	s_vm_op
 {
 	char				name[5];
 	int					nb_args;
-	t_arg_type			args_types[3]; // 3 is the max number of args -> the compiler will round to 4 anyways
+	t_arg_type			args_type[3]; // 3 is the max number of args -> the compiler will round to 4 anyways
 	int					id; //op_code
 	int					cycles;
-	char				*desc;
 	t_bool				coding_byte;
 	t_bool				modcarry;
 	t_bool				dir2;
@@ -159,6 +158,9 @@ void			exit_vm(t_vm *env, char *err_msg);
 
 void			loop(t_vm *env);
 
+/* ops.c */
+void			launch_instruction(t_vm *vm, t_play *play, t_proc *proc);
+
 /*
 **
 */
@@ -167,14 +169,14 @@ void			read_argv_init(t_vm *env, int argc, char **argv);
 /*
 **	OPs
 */
-void		op_live(t_vm *vm, t_play *p, t_proc *proc);
-void		op_ld(t_vm *vm, t_play *p, t_proc *proc);
-void		op_st(t_vm *vm, t_play *p, t_proc *proc);
-void		op_add(t_vm *vm, t_play *p, t_proc *proc);
-void		op_sub(t_vm *vm, t_play *p, t_proc *proc);
-void		op_zjmp(t_vm *vm, t_play *p, t_proc *proc);
-void		op_fork(t_vm *vm, t_play *p, t_proc *proc);
-void		op_lfork(t_vm *vm, t_play *p, t_proc *proc);
-void		op_aff(t_vm *vm, t_play *p, t_proc *proc);
+void		op_live(t_vm *vm, t_play *p, t_proc *proc, int reg_num[3]);
+void		op_ld(t_vm *vm, t_play *p, t_proc *proc, int reg_num[3]);
+void		op_st(t_vm *vm, t_play *p, t_proc *proc, int reg_num[3]);
+void		op_add(t_vm *vm, t_play *p, t_proc *proc, int reg_num[3]);
+void		op_sub(t_vm *vm, t_play *p, t_proc *proc, int reg_num[3]);
+void		op_zjmp(t_vm *vm, t_play *p, t_proc *proc, int reg_num[3]);
+void		op_fork(t_vm *vm, t_play *p, t_proc *proc, int reg_num[3]);
+void		op_lfork(t_vm *vm, t_play *p, t_proc *proc, int reg_num[3]);
+void		op_aff(t_vm *vm, t_play *p, t_proc *proc, int reg_num[3]);
 
 #endif
