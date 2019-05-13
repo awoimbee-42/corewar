@@ -6,42 +6,32 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 18:55:21 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/13 17:59:11 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/13 19:29:14 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "corewar.h"
-#include "libft.h"
-#include <fcntl.h>
+#include "asm.h"
 
-void	fail_msg(char *s)
+const t_op	g_op_tab[17] =
 {
-	ft_printf("%s\n", s);
-	exit(1);
-}
-
-void	write_nb(char *s, int nb, int byte_nb)
-{
-	int				i;
-	static char		*digits = "0123456789abcdef";
-
-	printf("Printing %d\n%d\n\n", nb, byte_nb);
-	i = -1;
-	while (++i < byte_nb)
-	{
-		s[byte_nb - 1 - i] = nb % 256;//digits[nb % 16];
-		//s[byte_nb - 2 - i] = (nb / 256) % 256;//digits[(nb / 16) % 16];
-		nb >>= 8;
-	}
-	//for (int k = 0; k < byte_nb; k++)
-	//	printf("RESULTING %d\n", s[k]);
-}
-
-void	skip_whitespace(char *s, size_t *i)
-{
-	while (s[*i] == ' ' || s[*i] == '\t')
-		(*i)++;
-}
+	{"live", 1, {T_DIR},                                                1,   10, "alive",                                0, 0},
+	{"ld",   2, {T_DIR | T_IND, T_REG},                                 2,    5, "load",                                 1, 0},
+	{"st",   2, {T_REG, T_IND | T_REG},                                 3,    5, "store",                                1, 0},
+	{"add",  3, {T_REG, T_REG, T_REG},                                  4,   10, "addition",                             1, 0},
+	{"sub",  3, {T_REG, T_REG, T_REG},                                  5,   10, "soustraction",                         1, 0},
+	{"and",  3, {T_REG | T_DIR | T_IND, T_REG | T_IND | T_DIR, T_REG},  6,    6, "et (and  r1, r2, r3   r1&r2 -> r3",    1, 0},
+	{"or",   3, {T_REG | T_IND | T_DIR, T_REG | T_IND | T_DIR, T_REG},  7,    6, "ou  (or   r1, r2, r3   r1 | r2 -> r3", 1, 0},
+	{"xor",  3, {T_REG | T_IND | T_DIR, T_REG | T_IND | T_DIR, T_REG},  8,    6, "ou (xor  r1, r2, r3   r1^r2 -> r3",    1, 0},
+	{"zjmp", 1, {T_DIR},                                                9,   20, "jump if zero",                         0, 1},
+	{"ldi",  3, {T_REG | T_DIR | T_IND, T_DIR | T_REG, T_REG},         10,   25, "load index",                           1, 1},
+	{"sti",  3, {T_REG, T_REG | T_DIR | T_IND, T_DIR | T_REG},         11,   25, "store index",                          1, 1},
+	{"fork", 1, {T_DIR},                                               12,  800, "fork",                                 0, 1},
+	{"lld",  2, {T_DIR | T_IND, T_REG},                                13,   10, "long load",                            1, 0},
+	{"lldi", 3, {T_REG | T_DIR | T_IND, T_DIR | T_REG, T_REG},         14,   50, "long load index",                      1, 1},
+	{"lfork",1, {T_DIR},                                               15, 1000, "long fork",                            0, 1},
+	{"aff",  1, {T_REG},                                               16,    2, "aff",                                  1, 0},
+	{0, 0, {0}, 0, 0, 0, 0, 0}
+};
 
 int		get_name(char *s, char name[], size_t len)
 {
@@ -65,7 +55,7 @@ int		get_name(char *s, char name[], size_t len)
 	return (1);
 }
 
-int		get_ocp(int op, t_arg_type args[3])
+int		get_ocp(int op, t_arg_type args[3]) // ?
 {
 	char res;
 
@@ -80,9 +70,9 @@ int		get_op_id(char *s)
 	i = 0;
 	while (i < 16)
 	{
-		if (!ft_strncmp(s, op_tab[i].name, ft_strlen(op_tab[i].name))
-				&& (s[ft_strlen(op_tab[i].name)] == ' '
-					|| s[ft_strlen(op_tab[i].name)] == '\t'))
+		if (!ft_strncmp(s, g_op_tab[i].name, ft_strlen(g_op_tab[i].name))
+				&& (s[ft_strlen(g_op_tab[i].name)] == ' '
+					|| s[ft_strlen(g_op_tab[i].name)] == '\t'))
 			return (i + 1);
 		i++;
 	}
@@ -109,16 +99,11 @@ int		read_label(t_label *label, char *s)
 
 void	init_labels(t_asm *my_asm)
 {
-	my_asm->labels = ft_memalloc((LABEL_COUNT + 1) * sizeof(t_label));
-	if (!my_asm->labels)
+	if (!(my_asm->labels = ft_memalloc((LABEL_COUNT + 1) * sizeof(t_label)))
+		|| !(my_asm->labels[LABEL_COUNT].name = ft_strnew(0))
+		|| !(my_asm->labels_holder = ft_memalloc((LABEL_COUNT + 1) * sizeof(t_label)))
+		|| !(my_asm->labels_holder[LABEL_COUNT].name = ft_strnew(0)))
 		fail_msg("Malloc failed");
-	my_asm->labels[LABEL_COUNT].name = ft_strnew(0);
-	my_asm->labels_holder = ft_memalloc((LABEL_COUNT + 1) * sizeof(t_label));
-	if (!my_asm->labels_holder)
-		fail_msg("Malloc failed");
-	my_asm->labels_holder[LABEL_COUNT].name = ft_strnew(0);
-	my_asm->label_pos = 0;
-	my_asm->label_holder_pos = 0;
 }
 
 void	add_label(t_label **l, size_t *pos, char *name, size_t p, size_t offset)
@@ -153,9 +138,9 @@ void		write_to_output(char **output, size_t *pos, char *src)
 	}
 }
 
-void        write_n_to_output(char **output, size_t *pos, char *src, size_t n)
+void		write_n_to_output(char **output, size_t *pos, char *src, size_t n)
 {
-	size_t  start;
+	size_t	start;
 
 	start = *pos;
 	while (*pos - start < n)
@@ -238,7 +223,7 @@ void	write_param(t_asm *my_asm, t_arg_type type, char *s)
 	int		two;
 
 	i = 0;
-	two = op_tab[my_asm->current_op - 1].dir2 ? 2 : 4;
+	two = g_op_tab[my_asm->current_op - 1].dir2 ? 2 : 4;
 	if (type & T_DIR || type & T_REG)
 		++s;
 	if (type & T_LAB)
@@ -254,11 +239,11 @@ void	write_param(t_asm *my_asm, t_arg_type type, char *s)
 				name, my_asm->op_begin, my_asm->cursor - my_asm->op_begin);
 		write_nb_to_output(my_asm, two, 1);
 		my_asm->cursor += two == 2 ? 1 : 3;
-		//my_asm->cursor += op_tab[my_asm->current_op - 1].carry ? 2 : 4;
+		//my_asm->cursor += g_op_tab[my_asm->current_op - 1].carry ? 2 : 4;
 	}
 	else if (!(type & T_REG))
 	{
-		write_nb_to_output(my_asm, ft_atoi(s + i), op_tab[my_asm->current_op - 1].dir2 ? 2 : 4);
+		write_nb_to_output(my_asm, ft_atoi(s + i), g_op_tab[my_asm->current_op - 1].dir2 ? 2 : 4);
 	}
 	else
 		write_nb_to_output(my_asm, ft_atoi(s + i), 1);
@@ -357,20 +342,20 @@ void	handle_op(t_asm *my_asm, char *s)
 	skip_whitespace(s, &i);
 	if (my_asm->current_op != 1 && my_asm->current_op != 12 && my_asm->current_op != 15 && my_asm->current_op != 9)
 		write_nb_to_output(my_asm, 0, 1);//my_asm->cursor += 2;
-	while (current_param < (size_t)op_tab[my_asm->current_op - 1].nb_args)
+	while (current_param < (size_t)g_op_tab[my_asm->current_op - 1].nb_args)
 	{
 		if ((types[current_param] = get_arg_type(s + i)) < 0)
 		{
 			fail_msg("Syntax error for parameter");
 		}
-		if (!(op_tab[my_asm->current_op - 1].args_types[current_param] & types[current_param]))
+		if (!(g_op_tab[my_asm->current_op - 1].args_types[current_param] & types[current_param]))
 			fail_msg("Invalid type");
 		write_param(my_asm, types[current_param], s + i);
 		while (s[i] && s[i] != SEPARATOR_CHAR)
 			i++;
-		if (s[i] == SEPARATOR_CHAR && current_param + 1 == (size_t)op_tab[my_asm->current_op - 1].nb_args)
+		if (s[i] == SEPARATOR_CHAR && current_param + 1 == (size_t)g_op_tab[my_asm->current_op - 1].nb_args)
 			fail_msg("Too much parameters");
-		else if (!s[i] && current_param + 1 < (size_t)op_tab[my_asm->current_op - 1].nb_args)
+		else if (!s[i] && current_param + 1 < (size_t)g_op_tab[my_asm->current_op - 1].nb_args)
 			fail_msg("Missing parameters");
 		if (s[i])
 			++i;
@@ -463,13 +448,8 @@ int		get_asm(char *path, t_asm *my_asm)
 	char	*s;
 	size_t	i;
 
-	fd = open(path, O_RDONLY);
-	if (fd < 0)
-		exit(1);	// Better error handling required...
-	ft_bzero(my_asm->header.prog_name, PROG_NAME_LENGTH + 4);
-	ft_bzero(my_asm->header.comment, COMMENT_LENGTH + 4);
-	my_asm->cursor = 0;
-	my_asm->output = 0;
+	if ((fd = open(path, O_RDONLY)) == -1)
+		fail_msg(ft_cprintf("%s '%s'", strerror(errno), path));
 	init_labels(my_asm);
 	char *dummy = ft_strnew(sizeof(t_header));
 	write_n_to_output(&my_asm->output, &my_asm->cursor, dummy, sizeof(t_header));
@@ -562,9 +542,13 @@ int		get_asm(char *path, t_asm *my_asm)
 
 int main(int ac, char **av)
 {
-	t_asm my_asm;
+	t_asm	my_asm;
 
 	if (ac < 2)
+	{
+		ft_printf("Usage: %s <sourcefile.s>\n", av[0]);
 		return (0);
+	}
+	ft_bzero(&my_asm, sizeof(my_asm));
 	return (get_asm(av[1], &my_asm));
 }

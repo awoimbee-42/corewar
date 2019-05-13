@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/05/11 16:11:09 by cpoirier         ###   ########.fr        #
+#    Updated: 2019/05/13 19:27:10 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,8 @@ SRC_NAME_CORE =	main.c								\
 				operators/vecproc/realloc.c			\
 				operators/vecproc/vector_del_at.c	\
 
-SRC_NAME_ASM =	asm.c
+SRC_NAME_ASM =	asm.c					\
+				utils.c
 
 ASM_FD = asm/
 ASM_SRC_SUBFOLDERS =
