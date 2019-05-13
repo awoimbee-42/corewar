@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 18:55:21 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/09 22:28:02 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/13 17:59:11 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,7 +238,7 @@ void	write_param(t_asm *my_asm, t_arg_type type, char *s)
 	int		two;
 
 	i = 0;
-	two = op_tab[my_asm->current_op - 1].carry ? 2 : 4;
+	two = op_tab[my_asm->current_op - 1].dir2 ? 2 : 4;
 	if (type & T_DIR || type & T_REG)
 		++s;
 	if (type & T_LAB)
@@ -258,7 +258,7 @@ void	write_param(t_asm *my_asm, t_arg_type type, char *s)
 	}
 	else if (!(type & T_REG))
 	{
-		write_nb_to_output(my_asm, ft_atoi(s + i), op_tab[my_asm->current_op - 1].carry ? 2 : 4);
+		write_nb_to_output(my_asm, ft_atoi(s + i), op_tab[my_asm->current_op - 1].dir2 ? 2 : 4);
 	}
 	else
 		write_nb_to_output(my_asm, ft_atoi(s + i), 1);
@@ -279,7 +279,7 @@ void	write_label_holders(t_asm *my_asm)
 			if (!ft_strcmp(my_asm->labels_holder[i].name,
 						my_asm->labels[j].name))
 			{
-				
+
 
 
 				old_pos = my_asm->cursor;
@@ -289,7 +289,7 @@ void	write_label_holders(t_asm *my_asm)
 						- (int)my_asm->labels_holder[i].pos,
 						my_asm->output[my_asm->cursor]);
 				printf("Diff is: %d\n", (int)my_asm->labels[j].pos - (int)my_asm->labels_holder[i].pos);
-				
+
 				printf("Size should be : %d\n", (int)my_asm->output[my_asm->cursor]);
 
 				my_asm->cursor = old_pos;
@@ -344,7 +344,7 @@ void	handle_op(t_asm *my_asm, char *s)
 	my_asm->op_begin = my_asm->cursor;
 
 	printf("Before writing to op %d at pos %lu\n", my_asm->current_op, my_asm->cursor);
-	
+
 	ft_bzero(types, sizeof(t_arg_type) * 3);
 	//for (size_t y = 0; y < my_asm->cursor; y++)
 	//	printf("%d ", my_asm->output[y]);
@@ -389,8 +389,8 @@ void	write_header(t_asm *my_asm)
 
 	my_asm->header.magic = COREWAR_EXEC_MAGIC;
 	ft_memcpy(my_asm->output, &my_asm->header, sizeof(t_header));
-	
-	
+
+
 	n = COREWAR_EXEC_MAGIC;
 	k = -1;
 	while (++k < 4)
@@ -406,12 +406,12 @@ void	write_header(t_asm *my_asm)
 		my_asm->output[pos + 3 - k] = n % 256;
 		n >>= 8;
 	}
-	
+
 	//char *magic;// = ft_strnew(8);
-	
+
 	//write_nb_to_output(my_asm, COREWAR_EXEC_MAGIC, 4);
-	
-	
+
+
 	/*write_nb(magic, COREWAR_EXEC_MAGIC, 8);
 	  write_to_output(&my_asm->output, &my_asm->cursor, magic);
 	  free(magic);*/
@@ -424,7 +424,7 @@ void	write_header(t_asm *my_asm)
 	  my_asm->output[my_asm->cursor + i] = my_asm->comment[i];
 	  my_asm->cursor += COMMENT_LENGTH;
 	  */
-	
+
 
 	//write_n_to_output(&my_asm->output, &my_asm->cursor, my_asm->header.prog_name, PROG_NAME_LENGTH);
 	//char *s = ft_strnew(4);

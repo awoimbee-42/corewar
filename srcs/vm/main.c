@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 14:51:50 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/10 15:57:52 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/13 15:42:03 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,12 @@
 #include "vm.h"
 
 const t_vm_op g_op[16] = {
-	//  name - nb_args -- args_types --                id -- nb_cycles -- uses_coding_byte -- modcarry -- dir2 -- ldx_mod --  fun 
+	//  name - nb_args -- args_types --                id -- nb_cycles -- uses_coding_byte -- modcarry -- dir2 -- ldx_mod --  fun
 	{"live", 1, {T_DIR},                                                1,   10, 0, 0, 0, 0, op_live},
-	{"ld",   2, {T_DIR | T_IND, T_REG},                                 2,    5, 1, 1, 0, 0, op_live},
-	{"st",   2, {T_REG, T_IND | T_REG},                                 3,    5, 1, 0, 0, 0, op_live},
-	{"add",  3, {T_REG, T_REG, T_REG},                                  4,   10, 1, 1, 0, 0, op_live},
-	{"sub",  3, {T_REG, T_REG, T_REG},                                  5,   10, 1, 1, 0, 0, op_live},
+	{"ld",   2, {T_DIR | T_IND, T_REG},                                 2,    5, 1, 1, 0, 0, op_ld},
+	{"st",   2, {T_REG, T_IND | T_REG},                                 3,    5, 1, 0, 0, 0, op_st},
+	{"add",  3, {T_REG, T_REG, T_REG},                                  4,   10, 1, 1, 0, 0, op_add},
+	{"sub",  3, {T_REG, T_REG, T_REG},                                  5,   10, 1, 1, 0, 0, op_sub},
 	{"and",  3, {T_REG | T_DIR | T_IND, T_REG | T_IND | T_DIR, T_REG},  6,    6, 1, 1, 0, 0, op_live},
 	{"or",   3, {T_REG | T_IND | T_DIR, T_REG | T_IND | T_DIR, T_REG},  7,    6, 1, 1, 0, 0, op_live},
 	{"xor",  3, {T_REG | T_IND | T_DIR, T_REG | T_IND | T_DIR, T_REG},  8,    6, 1, 1, 0, 0, op_live},
@@ -46,7 +46,7 @@ const t_vm_op g_op[16] = {
 	{"lldi", 3, {T_REG | T_DIR | T_IND, T_DIR | T_REG, T_REG},         14,   50, 1, 1, 1, 1, op_live},
 	{"lfork",1, {T_DIR},                                               15, 1000, 0, 0, 1, 1, op_live},
 	{"aff",  1, {T_REG},                                               16,    2, 1, 0, 0, 0, op_live},
-	
+
 };
 
 void	exit_vm(t_vm *env, char *err_msg)

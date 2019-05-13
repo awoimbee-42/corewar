@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 14:56:02 by skiessli          #+#    #+#             */
-/*   Updated: 2019/05/12 14:43:14 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/13 17:57:13 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,8 +204,8 @@ void			op_live(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 	}
 	proc->live++;
 	proc->pc = (proc->pc + 5) % MEM_SIZE;
-	if (vm->verbosity == 4)
-		ft_printf("P #%-5d | live %d\n", p->id, player);
+	if (vm->verbosity > 3)
+		ft_printf("P #%-5d | live %d\n", play->id, player);
 }
 
 void			op_ld(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
@@ -254,7 +254,7 @@ void			op_zjmp(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 
 void			op_ldi(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 {
-	proc->reg[reg_num[2]] = load32(vm, proc->pc + ((proc->reg[reg_num[0]] + proc->reg[reg_num[1]]) % IDX_MOD)); 
+	proc->reg[reg_num[2]] = load32(vm, proc->pc + ((proc->reg[reg_num[0]] + proc->reg[reg_num[1]]) % IDX_MOD));
 }
 
 void			op_sti(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
@@ -267,7 +267,7 @@ void			op_sti(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 
 void			op_fork(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 {
-	vecproc_push(vm->gb, play->procs, *proc);
+	vecproc_push(&vm->gb, &play->procs, *proc);
 	play->procs.d[play->procs.len - 1].pc = (proc->pc + (proc->reg[reg_num[0]] % IDX_MOD)) % MEM_SIZE;
 	play->procs.d[play->procs.len - 1].op_cycles = 0;
 }
@@ -279,12 +279,12 @@ void			op_lld(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 
 void			op_lldi(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 {
-	proc->reg[reg_num[2]] = load32(vm, proc->pc + (proc->reg[reg_num[0]] + proc->reg[reg_num[1]])); 
+	proc->reg[reg_num[2]] = load32(vm, proc->pc + (proc->reg[reg_num[0]] + proc->reg[reg_num[1]]));
 }
 
 void			op_lfork(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 {
-	vecproc_push(vm->gb, play->procs, *proc);
+	vecproc_push(&vm->gb, &play->procs, *proc);
 	play->procs.d[play->procs.len - 1].pc = (proc->pc + proc->reg[reg_num[0]])% MEM_SIZE;
 	play->procs.d[play->procs.len - 1].op_cycles = 0;
 }
@@ -293,14 +293,14 @@ void			op_aff(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 {
 	uint8_t	c;
 
-	c = proc->reg[reg_id] % 256;
+	c = proc->reg[reg_num[0]] % 256;
 	write(1, &c, 1);
 }
 
 int				check_valid_return_size(unsigned char cb, t_arg_type types, t_bool dir2)
 {
 	if (cb == REG_CODE && T_REG & types)
-		return (REG_SIZE)
+		return (REG_SIZE);
 	else if (cb == DIR_CODE && T_DIR & types)
 		return (dir2 ? 2 : DIR_SIZE);
 	else if (cb == IND_CODE && T_IND & types)
@@ -308,30 +308,30 @@ int				check_valid_return_size(unsigned char cb, t_arg_type types, t_bool dir2)
 	return (-1);
 }
 
-int				read_one_arg(t_vm *vm, t_proc *proc, unsigned char cb, int cur_arg)
+int				read_one_arg(t_vm *vm, t_proc *proc, uint8_t cb, int cur_arg)
 {
 	int		op_id;
 	int		size;
 	int		tmp;
 
 	op_id = vm->arena[proc->pc] - 1;
-	if (cb == REG_CODE && T_REG & g_op[op_id]->args_type[cur_arg])
+	if (cb == REG_CODE && (T_REG & g_op[op_id].args_type[cur_arg]))
 	{
 		tmp = load8(vm, proc->new_pc);
-		proc->new_pc = (proc->pc + 1) % MEM_SIZE1;
+		proc->new_pc = (proc->pc + 1) % MEM_SIZE;
 		return (tmp <= REG_NUMBER && tmp >= 1 ? tmp : -1);
 	}
-	else if (cb == DIR_CODE && T_DIR & g_op[op_id]->args_type[cur_arg])
+	else if (cb == DIR_CODE && T_DIR & g_op[op_id].args_type[cur_arg])
 	{
-		proc->reg[REG_NUMBER + cur_arg] = g_op[op_id]->dir2 ? load16(vm, proc->new_pc) : load32(vm, proc->new_pc); 
-		proc->new_pc = g_op[op_id]->dir2 ? (proc->pc + 2) % MEM_SIZE : (proc->pc + 4) % MEM_SIZE; 
+		proc->reg[REG_NUMBER + cur_arg] = g_op[op_id].dir2 ? load16(vm, proc->new_pc) : load32(vm, proc->new_pc);
+		proc->new_pc = g_op[op_id].dir2 ? (proc->pc + 2) % MEM_SIZE : (proc->pc + 4) % MEM_SIZE;
 	}
-	else if (cb == IND_CODE && T_IND & g_op[op_id]->args_type[cur_arg])
+	else if (cb == IND_CODE && T_IND & g_op[op_id].args_type[cur_arg])
 	{
-		if (g_op[op_id]->ldx_rel)
-			proc->reg[REG_NUMBER + cur_arg] = load32(vm, proc->pc + (load16(vm, proc->new_pc) % IDX_MOD)); 
+		if (g_op[op_id].ldx_rel)
+			proc->reg[REG_NUMBER + cur_arg] = load32(vm, proc->pc + (load16(vm, proc->new_pc) % IDX_MOD));
 		else
-			proc->reg[REG_NUMBER + cur_arg] = load32(vm, proc->pc + load16(vm, proc->new_pc)); 
+			proc->reg[REG_NUMBER + cur_arg] = load32(vm, proc->pc + load16(vm, proc->new_pc));
 		proc->new_pc = (proc->pc + 2) % MEM_SIZE;
 	}
 	else
@@ -339,22 +339,23 @@ int				read_one_arg(t_vm *vm, t_proc *proc, unsigned char cb, int cur_arg)
 	return (REG_NUMBER + cur_arg);
 }
 
-int			load_arg_into_regs(t_vm *vm, t_play *play, t_proc *proc)
+
+
+int			load_arg_into_regs(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 {
 	int		op_id;
-	int		reg_num[3];
+	// int		reg_num[3];
 	int		i;
 
 	op_id = vm->arena[proc->pc] - 1;
-	
-	if (g_op[op_id]->coding_byte == TRUE)
+	if (g_op[op_id].coding_byte == TRUE)
 	{
 		i = 0;
 		proc->new_pc = (proc->pc + 2) % MEM_SIZE;
-		while (i < g_op[op_id]->nb_args)
+		while (i < g_op[op_id].nb_args)
 		{
-			reg_num[i] = read_one_arg(vm, proc, 
-						vm->arena[(proc->pc + 1) % MEM_SIZE] >> 6 - (i * 2) && 0b11, i);
+			reg_num[i] = read_one_arg(vm, proc,
+						vm->arena[(proc->pc + 1) % MEM_SIZE] >> 6 - (i * 2) & 0b11, i);
 			if (reg_num[i] == -1)
 				return (0);
 			i++;
@@ -367,6 +368,24 @@ int			load_arg_into_regs(t_vm *vm, t_play *play, t_proc *proc)
 		if (reg_num[0] == -1)
 			return (0);
 	}
+	// g_op[op_id].fun(vm, play, proc, reg_num);
+	return (1);
+}
+
+
+
+
+void			launch_instruction(t_vm *vm, t_play *play, t_proc *proc)
+{
+	int		op_id;
+	int		reg_num[3];
+
+	op_id = vm->arena[proc->pc] - 1;
+	if (!load_arg_into_regs(vm, play, proc, reg_num))
+	{
+		proc->pc += 1;
+		 // I dunno what is needed here
+		return ;
+	}
 	g_op[op_id].fun(vm, play, proc, reg_num);
-	return (1)
 }

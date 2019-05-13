@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/05 21:12:00 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/09 22:19:31 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/13 16:13:43 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ typedef struct	s_op
 	int					cycles;
 	char				*desc;
 	t_bool				coding_byte;
-	t_bool				carry;
 	t_bool				dir2;
 }				t_op;
 
