@@ -215,7 +215,10 @@ void			op_ld(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 
 void			op_st(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 {
-
+	if (vm->arena[(proc->pc + 1) % MEM_SIZE] >> 4 & 0b11 == IND_CODE)
+		vm->arena[(proc->pc + (load16(vm, proc->pc + 3) % IDX_MOD)) % MEM_SIZE] = proc->reg[reg_num[0]];
+	else
+		vm->arena[(proc->pc + (proc->reg[reg_num[1]] % IDX_MOD)) % MEM_SIZE] = proc->reg[reg_num[0]];	
 }
 
 void			op_add(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
@@ -256,7 +259,10 @@ void			op_ldi(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 
 void			op_sti(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 {
+	int addr;
 
+	addr = (proc->reg[reg_num[1]] + proc->reg[reg_num[2]]) % IDX_MOD;
+	vm->arena[(proc->pc + addr) % MEM_SIZE] = proc->reg[reg_num[0]];
 }
 
 void			op_fork(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
@@ -349,7 +355,7 @@ int			load_arg_into_regs(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 		while (i < g_op[op_id].nb_args)
 		{
 			reg_num[i] = read_one_arg(vm, proc,
-						vm->arena[(proc->pc + 1) % MEM_SIZE] >> 6 - (i * 2) & 0b11, i);
+						vm->arena[(proc->pc + 1) % MEM_SIZE] >> (6 - (i * 2)) & 0b11, i);
 			if (reg_num[i] == -1)
 				return (0);
 			i++;
