@@ -15,7 +15,7 @@
 
 const char	*g_pcolors[] = {"\x1b[31m", "\e[32m", "\e[33m", "\e[34m"};
 
-void		visu_init_memview(t_vm *vm)
+void		visu_memview(t_vm *vm)
 {
 	int				i;
 	int				mem;
@@ -26,10 +26,15 @@ void		visu_init_memview(t_vm *vm)
 	{
 		i = -1;
 		while (++i < 64)
-			wprintw(vm->visu.arenaw, " 00");
+		{
+			wattron(vm->visu.arenaw, COLOR_PAIR(1));
+			wprintw(vm->visu.arenaw, " %02hhx", vm->arena[mem + i]);  // add color escape code for each player;
+			wattroff(vm->visu.arenaw, COLOR_PAIR(1));
+		}
 		mem += 64;
 		wprintw(vm->visu.arenaw, "\n", vm->arena[mem]);
 	}
+	/*
 	i = -1;
 	while (++i < vm->players.len)
 	{
@@ -42,11 +47,13 @@ void		visu_init_memview(t_vm *vm)
 			sleep(1);
 			if (mem_pc % 64 == 0)
 				wprintw(vm->visu.arenaw, "\n");
-			wprintw(vm->visu.arenaw, " %s%02hhx", g_pcolors[i], vm->arena[mem_pc]);  // add color escape code for each player
+			wattron(vm->visu.arenaw, COLOR_PAIR(2));
+			wprintw(vm->visu.arenaw, " %02hhx", vm->arena[mem_pc]);  // add color escape code for each player
+			wattroff(vm->visu.arenaw, COLOR_PAIR(2));
 			mem_pc++;
 			mem++;
 		}
-	}
+	}*/
 	wmove(vm->visu.arenaw, 0, 0);
 	wrefresh(vm->visu.arenaw);
 }
@@ -79,7 +86,8 @@ void		visu_loop(t_vm *vm)
 	while (1)
 	{
 		// ft_printf("{RED}PUTE{eoc}\n");
-		nc_dump_memory(vm->arena, vm->visu.arenaw);
+		visu_memview(vm);
+		//nc_dump_memory(vm->arena, vm->visu.arenaw);
 
 	}
 

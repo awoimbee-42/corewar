@@ -146,16 +146,20 @@ void		init_ncurses(t_vm *vm)
 	curs_set(FALSE);
 	start_color();
 	vm->visu.rootw = newwin(66, 232, 0, 0);
-	init_color(COLOR_CYAN, 200, 200, 200);
-	init_pair(1, COLOR_WHITE, COLOR_CYAN);
-	wbkgd(vm->visu.rootw, COLOR_PAIR(1));
+	//init_color(COLOR_CYAN, 200, 200, 200);
+	init_pair(32, COLOR_WHITE, 0b00001000);
+	init_pair(1, COLOR_GREEN, COLOR_BLACK);
+	init_pair(2, COLOR_BLUE, COLOR_BLACK);
+	init_pair(3, COLOR_RED, COLOR_BLACK);
+	init_pair(4, COLOR_YELLOW, COLOR_BLACK);
+	wbkgd(vm->visu.rootw, COLOR_PAIR(32));
 	vm->visu.arenaw = subwin(vm->visu.rootw, 64, 193, 1, 2);
-	init_pair(2, COLOR_WHITE, COLOR_BLACK);
-	wbkgd(vm->visu.arenaw, COLOR_PAIR(2));
+	//init_pair(2, COLOR_WHITE, COLOR_BLACK);
+	wbkgd(vm->visu.arenaw, COLOR_PAIR(0));
 	vm->visu.sidepw = subwin(vm->visu.rootw, 64, 30, 1, 197);
-	wbkgd(vm->visu.sidepw, COLOR_PAIR(2));
+	wbkgd(vm->visu.sidepw, COLOR_PAIR(0));
 	wrefresh(vm->visu.rootw);
-	visu_init_memview(vm);
+	//visu_init_memview(vm);
 	pthread_create(&vm->visu.thread, NULL, (void*(*)(void *))visu_loop, (void*)vm);
 }
 

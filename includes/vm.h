@@ -24,6 +24,14 @@
 */
 
 # define RESERVED_ID -2147483648
+# define COLOR_BRIGHT_BLACK 8
+# define COLOR_BRIGHT_RED 9
+# define COLOR_BRIGHT_GREEN 10
+# define COLOR_BRIGHT_YELLOW 11
+# define COLOR_BRIGHT_BLUE 12
+# define COLOR_BRIGHT_MAGENTA 13
+# define COLOR_BRIGHT_CYAN 14
+# define COLOR_BRIGHT_WHITE 15
 
 /*
 **	#################
