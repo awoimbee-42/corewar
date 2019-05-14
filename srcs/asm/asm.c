@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 18:55:21 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/13 19:29:14 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/14 16:51:07 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int		read_label(t_label *label, char *s)
 {
 	size_t	i;
 
-	printf("Reading LABEL from %s\n", s);
+	//printf("Reading LABEL from %s\n", s);
 	i = 0;
 	while (s[i] && s[i] != LABEL_CHAR && ft_strchr(LABEL_CHARS, s[i]))
 		i++;//add_to_name(&label->name, &i, s[i]);
@@ -234,7 +234,7 @@ void	write_param(t_asm *my_asm, t_arg_type type, char *s)
 			fail_msg("Malloc failed");
 		ft_strncpy(name, s + 1, i);
 		name[i] = '\0';
-		printf("Label holder creation: %s\n", name);
+		//printf("Label holder creation: %s\n", name);
 		add_label(&my_asm->labels_holder, &my_asm->label_holder_pos,
 				name, my_asm->op_begin, my_asm->cursor - my_asm->op_begin);
 		write_nb_to_output(my_asm, two, 1);
@@ -273,9 +273,9 @@ void	write_label_holders(t_asm *my_asm)
 				write_nb_to_output(my_asm, (int)my_asm->labels[j].pos
 						- (int)my_asm->labels_holder[i].pos,
 						my_asm->output[my_asm->cursor]);
-				printf("Diff is: %d\n", (int)my_asm->labels[j].pos - (int)my_asm->labels_holder[i].pos);
+				//printf("Diff is: %d\n", (int)my_asm->labels[j].pos - (int)my_asm->labels_holder[i].pos);
 
-				printf("Size should be : %d\n", (int)my_asm->output[my_asm->cursor]);
+				//printf("Size should be : %d\n", (int)my_asm->output[my_asm->cursor]);
 
 				my_asm->cursor = old_pos;
 				break ;
@@ -290,20 +290,23 @@ void	write_output(t_asm *my_asm)
 {
 	int		fd;
 
-	fd = open("out.cor", O_CREAT | O_WRONLY, 0777);
-	printf("Current cursor: %lu\n", my_asm->cursor);
+	
+
+	fd = open(my_asm->file_name, O_CREAT | O_WRONLY, 0777);
 	if (fd >= 0)
 		write(fd, my_asm->output, my_asm->cursor);
 	close(fd);
+	printf("Written output to %s\n", my_asm->file_name);
+	free(my_asm->file_name);
 }
 
 void	write_opcode(t_asm *my_asm, t_arg_type types[3])
 {
 	size_t	i;
 
-	printf("Types: %d %d %d\n", types[0], types[1], types[2]);
+	//printf("Types: %d %d %d\n", types[0], types[1], types[2]);
 
-	printf("At first, num is : %d\n", my_asm->output[my_asm->op_begin + 1]);
+	//printf("At first, num is : %d\n", my_asm->output[my_asm->op_begin + 1]);
 
 	i = -1;
 	while (++i < 3)
@@ -314,7 +317,7 @@ void	write_opcode(t_asm *my_asm, t_arg_type types[3])
 			my_asm->output[my_asm->op_begin + 1] += 3;
 		else if (types[i] & T_DIR)
 			my_asm->output[my_asm->op_begin + 1] += 2;
-		printf("So far, num is: %d\n", my_asm->output[my_asm->op_begin + 1]);
+		//printf("So far, num is: %d\n", my_asm->output[my_asm->op_begin + 1]);
 		my_asm->output[my_asm->op_begin + 1] <<= 2;
 	}
 }
@@ -328,7 +331,7 @@ void	handle_op(t_asm *my_asm, char *s)
 
 	my_asm->op_begin = my_asm->cursor;
 
-	printf("Before writing to op %d at pos %lu\n", my_asm->current_op, my_asm->cursor);
+	//printf("Before writing to op %d at pos %lu\n", my_asm->current_op, my_asm->cursor);
 
 	ft_bzero(types, sizeof(t_arg_type) * 3);
 	//for (size_t y = 0; y < my_asm->cursor; y++)
@@ -426,7 +429,7 @@ void	write_header(t_asm *my_asm)
 	//ft_strcpy(magic, my_asm->comment);
 	//write_to_output(&my_asm->output, &my_asm->cursor, magic);
 	//free(magic);
-	printf("Writing header at: %lu\n", my_asm->cursor);
+	//printf("Writing header at: %lu\n", my_asm->cursor);
 }
 
 void	write_final_length(t_asm *my_asm)
@@ -510,18 +513,18 @@ int		get_asm(char *path, t_asm *my_asm)
 
 	write_header(my_asm);
 
-	printf("My name is %s\n", my_asm->header.prog_name);
-	printf("My comment is %s\n", my_asm->header.comment);
+	//printf("My name is %s\n", my_asm->header.prog_name);
+	//printf("My comment is %s\n", my_asm->header.comment);
 
 
 	write_output(my_asm);
 	//printf("%s\n", my_asm->output);
-
+/*
 	for (int i = 0; i < my_asm->label_holder_pos; i++)
 		printf("Label holder:\nName: %s\nPos: %lu\n\n", my_asm->labels_holder[i].name, my_asm->labels_holder[i].pos);
 	for (int i = 0; i < my_asm->label_pos; i++)
 		printf("Label:\nName: %s\nPos: %lu\n\n", my_asm->labels[i].name, my_asm->labels[i].pos);
-
+*/
 	free(my_asm->output);
 
 	/*
@@ -540,6 +543,28 @@ int		get_asm(char *path, t_asm *my_asm)
 	return (1);
 }
 
+char	*get_base_name(char *s)
+{
+	int		dot_pos;
+	size_t	i;
+	char	*res;
+
+	i = -1;
+	dot_pos = -1;
+	while (s[++i])
+	{
+		if (s[i] == '.')
+			dot_pos = (int)i;
+	}
+	if (dot_pos > 0)
+		s[dot_pos] = '\0';
+	res = ft_strjoin(s, ".cor");
+	free(s);
+	if (!res)
+		fail_msg("Malloc failed");
+	return (res);
+}
+
 int main(int ac, char **av)
 {
 	t_asm	my_asm;
@@ -550,5 +575,6 @@ int main(int ac, char **av)
 		return (0);
 	}
 	ft_bzero(&my_asm, sizeof(my_asm));
+	my_asm.file_name = get_base_name(ft_strdup(av[1]));
 	return (get_asm(av[1], &my_asm));
 }

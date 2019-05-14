@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 18:06:46 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/13 19:26:44 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/14 16:47:12 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct	s_op
 
 typedef struct	s_asm
 {
+	char				*file_name;
 	int					curr_line;
 	int					curr_char;
 	//char				name[PROG_NAME_LENGTH + 1];

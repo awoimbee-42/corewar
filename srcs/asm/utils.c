@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 18:13:30 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/13 19:36:43 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/14 16:51:35 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	write_nb(char *s, int nb, int byte_nb)
 	int				i;
 	static char		*digits = "0123456789abcdef";
 
-	printf("Printing %d\n%d\n\n", nb, byte_nb);
+	//printf("Printing %d\n%d\n\n", nb, byte_nb);
 	i = -1;
 	while (++i < byte_nb)
 	{
