@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 18:13:30 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/14 16:51:35 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/14 18:07:57 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,17 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include "asm.h"
 
-void	fail_msg(char *s)
+void	fail_msg(t_asm *my_asm, char *s)
 {
 	size_t			len;
 
 	len = ft_strlen(s);
-	write(1, s, len);
-	write(1, "\n", 1);
+	if (my_asm)
+		ft_printf("%s on [%d:%d]\n", s, my_asm->curr_line, my_asm->curr_char);
+	else
+		ft_printf("Error: %s\n", s);
 	exit(EXIT_FAILURE);
 }
 

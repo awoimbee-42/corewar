@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 18:06:46 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/14 16:47:12 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/14 18:05:26 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,5 +56,7 @@ typedef struct	s_asm
 }				t_asm;
 
 extern const t_op	g_op_tab[17];
+
+void				fail_msg(t_asm *my_asm, char *s);
 
 #endif

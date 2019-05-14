@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 18:55:21 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/14 16:51:07 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/14 18:32:56 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int		read_label(t_label *label, char *s)
 		return (0);
 	free(label->name);
 	if (!(label->name = (char *)ft_memalloc(i + 1)))
-		fail_msg("Realloc failed");
+		fail_msg(0, "Realloc failed");
 	ft_strncpy(label->name, s, i);
 	return (1);
 }
@@ -103,7 +103,7 @@ void	init_labels(t_asm *my_asm)
 		|| !(my_asm->labels[LABEL_COUNT].name = ft_strnew(0))
 		|| !(my_asm->labels_holder = ft_memalloc((LABEL_COUNT + 1) * sizeof(t_label)))
 		|| !(my_asm->labels_holder[LABEL_COUNT].name = ft_strnew(0)))
-		fail_msg("Malloc failed");
+		fail_msg(0, "Malloc failed");
 }
 
 void	add_label(t_label **l, size_t *pos, char *name, size_t p, size_t offset)
@@ -111,7 +111,7 @@ void	add_label(t_label **l, size_t *pos, char *name, size_t p, size_t offset)
 	if ((*l)[*pos].name)
 	{
 		if (!(*l = (t_label *)realloc(*l, sizeof(t_label) * (*pos * 2 + 1))))
-			fail_msg("Realloc failed");
+			fail_msg(0, "Realloc failed");
 		(*l)[*pos * 2].name = ft_strnew(0);
 	}
 	(*l)[*pos].name = name;
@@ -130,7 +130,7 @@ void		write_to_output(char **output, size_t *pos, char *src)
 		if (*pos % OUTPUT_LENGTH == 0)
 		{
 			if (!(*output = (char *)realloc(*output, *pos + OUTPUT_LENGTH)))
-				fail_msg("Realloc failed");
+				fail_msg(0, "Realloc failed");
 			ft_bzero(*output + *pos, OUTPUT_LENGTH - 1);
 		}
 		(*output)[*pos] = src[*pos - start];
@@ -148,7 +148,7 @@ void		write_n_to_output(char **output, size_t *pos, char *src, size_t n)
 		if (*pos % OUTPUT_LENGTH == 0)
 		{
 			if (!(*output = (char *)realloc(*output, *pos + OUTPUT_LENGTH)))
-				fail_msg("Realloc failed");
+				fail_msg(0, "Realloc failed");
 			ft_bzero(*output + *pos, OUTPUT_LENGTH);
 		}
 		(*output)[*pos] = src[*pos - start];
@@ -168,7 +168,7 @@ t_arg_type	get_arg_type(char *s)
 		while (ft_isdigit(s[++i]))
 			;
 		skip_whitespace(s, &i);
-		if (!s[i] || s[i] == SEPARATOR_CHAR)
+		if (!s[i] || s[i] == SEPARATOR_CHAR || s[i] == COMMENT_CHAR)
 			return (*s == 'r' ? T_REG : T_DIR);
 		return (-1);
 	}
@@ -178,7 +178,7 @@ t_arg_type	get_arg_type(char *s)
 		while (ft_strchr(LABEL_CHARS, s[++i]) && s[i])
 			;
 		skip_whitespace(s, &i);
-		if (!s[i] || s[i] == SEPARATOR_CHAR)
+		if (!s[i] || s[i] == SEPARATOR_CHAR || s[i] == COMMENT_CHAR)
 			return (T_DIR | T_LAB);
 		return (-1);
 	}
@@ -187,7 +187,7 @@ t_arg_type	get_arg_type(char *s)
 		while (ft_strchr(LABEL_CHARS, s[++i]) && s[i])
 			;
 		skip_whitespace(s, &i);
-		if (!s[i] || s[i] == SEPARATOR_CHAR)
+		if (!s[i] || s[i] == SEPARATOR_CHAR || s[i] == COMMENT_CHAR)
 			return (T_IND | T_LAB);
 		return (-1);
 	}
@@ -198,7 +198,7 @@ t_arg_type	get_arg_type(char *s)
 		while (ft_isdigit(s[i]))
 			i++;
 		skip_whitespace(s, &i);
-		if (!s[i] || s[i] == SEPARATOR_CHAR)
+		if (!s[i] || s[i] == SEPARATOR_CHAR || s[i] == COMMENT_CHAR)
 			return (T_IND);
 		return (-1);
 	}
@@ -224,6 +224,8 @@ void	write_param(t_asm *my_asm, t_arg_type type, char *s)
 
 	i = 0;
 	two = g_op_tab[my_asm->current_op - 1].dir2 ? 2 : 4;
+	if (type & T_IND)
+		two = 2;
 	if (type & T_DIR || type & T_REG)
 		++s;
 	if (type & T_LAB)
@@ -231,7 +233,7 @@ void	write_param(t_asm *my_asm, t_arg_type type, char *s)
 		while (ft_strchr(LABEL_CHARS, s[i + 1]) && s[i + 1])
 			i++;
 		if (!(name = (char *)malloc(i + 1)))
-			fail_msg("Malloc failed");
+			fail_msg(0, "Malloc failed");
 		ft_strncpy(name, s + 1, i);
 		name[i] = '\0';
 		//printf("Label holder creation: %s\n", name);
@@ -243,7 +245,7 @@ void	write_param(t_asm *my_asm, t_arg_type type, char *s)
 	}
 	else if (!(type & T_REG))
 	{
-		write_nb_to_output(my_asm, ft_atoi(s + i), g_op_tab[my_asm->current_op - 1].dir2 ? 2 : 4);
+		write_nb_to_output(my_asm, ft_atoi(s + i), two);
 	}
 	else
 		write_nb_to_output(my_asm, ft_atoi(s + i), 1);
@@ -282,22 +284,35 @@ void	write_label_holders(t_asm *my_asm)
 			}
 		}
 		if (j == my_asm->label_pos)
-			fail_msg("Label not found");
+			fail_msg(my_asm, "Label not found");
 	}
 }
 
-void	write_output(t_asm *my_asm)
+void	write_output(t_asm *my_asm, char *path)
 {
 	int		fd;
-
-	
+	char	*new_path;
 
 	fd = open(my_asm->file_name, O_CREAT | O_WRONLY, 0777);
 	if (fd >= 0)
 		write(fd, my_asm->output, my_asm->cursor);
+	else
+		fail_msg(0, "Cannot write to output file");
 	close(fd);
-	printf("Written output to %s\n", my_asm->file_name);
+	printf("Written output program to %s\n", my_asm->file_name);
 	free(my_asm->file_name);
+	/*new_path = ft_strnew(ft_strlen(path) + 2);
+	ft_strcpy(new_path, path);
+	ft_strcpy(new_path + ft_strlen(path) - 1, "cor");
+	printf("%s", new_path);
+	fd = open(new_path, O_CREAT | O_WRONLY, 0777);
+	printf("Current cursor: %lu\n", my_asm->cursor);
+	if (fd >= 0)
+		write(fd, my_asm->output, my_asm->cursor);
+	close(fd);
+	free(new_path);
+>>>>>>> 99ad34121ab8b3352ad0a1fbe1ba75565efde88d
+*/
 }
 
 void	write_opcode(t_asm *my_asm, t_arg_type types[3])
@@ -328,8 +343,10 @@ void	handle_op(t_asm *my_asm, char *s)
 	size_t		current_param;
 	t_arg_type	current_type;
 	t_arg_type	types[3];
+	int			old_char;
 
 	my_asm->op_begin = my_asm->cursor;
+	old_char = my_asm->curr_char;
 
 	//printf("Before writing to op %d at pos %lu\n", my_asm->current_op, my_asm->cursor);
 
@@ -347,19 +364,19 @@ void	handle_op(t_asm *my_asm, char *s)
 		write_nb_to_output(my_asm, 0, 1);//my_asm->cursor += 2;
 	while (current_param < (size_t)g_op_tab[my_asm->current_op - 1].nb_args)
 	{
+		my_asm->curr_char = old_char + i;
 		if ((types[current_param] = get_arg_type(s + i)) < 0)
-		{
-			fail_msg("Syntax error for parameter");
-		}
+			fail_msg(my_asm, "Syntax error for parameter");
 		if (!(g_op_tab[my_asm->current_op - 1].args_types[current_param] & types[current_param]))
-			fail_msg("Invalid type");
+			fail_msg(my_asm, "Invalid type");
 		write_param(my_asm, types[current_param], s + i);
 		while (s[i] && s[i] != SEPARATOR_CHAR)
 			i++;
+		my_asm->curr_char = old_char + i;
 		if (s[i] == SEPARATOR_CHAR && current_param + 1 == (size_t)g_op_tab[my_asm->current_op - 1].nb_args)
-			fail_msg("Too much parameters");
+			fail_msg(my_asm, "Too much parameters");
 		else if (!s[i] && current_param + 1 < (size_t)g_op_tab[my_asm->current_op - 1].nb_args)
-			fail_msg("Missing parameters");
+			fail_msg(my_asm, "Missing parameters");
 		if (s[i])
 			++i;
 		skip_whitespace(s, &i);
@@ -452,31 +469,33 @@ int		get_asm(char *path, t_asm *my_asm)
 	size_t	i;
 
 	if ((fd = open(path, O_RDONLY)) == -1)
-		fail_msg(ft_cprintf("%s '%s'", strerror(errno), path));
+		fail_msg(my_asm, ft_cprintf("%s '%s'", strerror(errno), path));
 	init_labels(my_asm);
 	char *dummy = ft_strnew(sizeof(t_header));
 	write_n_to_output(&my_asm->output, &my_asm->cursor, dummy, sizeof(t_header));
 	free(dummy);
 	while (get_next_line(fd, &s) > 0)
 	{
+		my_asm->curr_line++;
 		i = 0;
 		skip_whitespace(s, &i);
+		my_asm->curr_char = i;
 		if (!ft_strncmp(s + i, NAME_CMD_STRING, ft_strlen(NAME_CMD_STRING)))
 		{
 			if (my_asm->header.prog_name[0])
-				fail_msg("Error: Name already declared");
+				fail_msg(my_asm, "Error: Name already declared");
 			if (!get_name(s + i + ft_strlen(NAME_CMD_STRING),
 						my_asm->header.prog_name, PROG_NAME_LENGTH))
-				fail_msg("Syntax error: Name not well-formated");
+				fail_msg(my_asm, "Syntax error: Name not well-formated");
 		}
 		else if (!ft_strncmp(s + i, COMMENT_CMD_STRING,
 					ft_strlen(COMMENT_CMD_STRING)))
 		{
 			if (my_asm->header.comment[0])
-				fail_msg("Error: Comment already declared");
+				fail_msg(my_asm, "Error: Comment already declared");
 			if (!get_name(s + i + ft_strlen(COMMENT_CMD_STRING),
 						my_asm->header.comment, COMMENT_LENGTH))
-				fail_msg("Syntax error: Comment not well-formated");
+				fail_msg(my_asm, "Syntax error: Comment not well-formated");
 		}
 		else if ((my_asm->current_op = get_op_id(s + i)))
 		{
@@ -487,12 +506,12 @@ int		get_asm(char *path, t_asm *my_asm)
 		else if (s[i] && s[i] != COMMENT_CHAR)
 		{
 			if (!my_asm->header.prog_name[0] || !my_asm->header.comment[0])
-				fail_msg("Error: Name and Comment must be declared before any instruction or label");
+				fail_msg(my_asm, "Error: Name and Comment must be declared before any instruction or label");
 			//if (!my_asm->cursor)
 			//	write_header(my_asm);
 			add_label(&my_asm->labels, &my_asm->label_pos, ft_strnew(0), my_asm->cursor, 0);
 			if (!read_label(my_asm->labels + my_asm->label_pos - 1, s + i))
-				fail_msg("Syntax error on label");
+				fail_msg(my_asm, "Syntax error on label");
 			else
 			{
 				i += ft_strlen(my_asm->labels[my_asm->label_pos - 1].name) + 1;
@@ -507,6 +526,11 @@ int		get_asm(char *path, t_asm *my_asm)
 		free(s);
 	}
 
+	free(s);
+
+	if (!my_asm->header.prog_name[0] || !my_asm->header.comment[0])
+		fail_msg(my_asm, "Error: Name and Comment must be declared before any instruction or label");
+
 	write_label_holders(my_asm);
 
 	write_final_length(my_asm);
@@ -517,7 +541,7 @@ int		get_asm(char *path, t_asm *my_asm)
 	//printf("My comment is %s\n", my_asm->header.comment);
 
 
-	write_output(my_asm);
+	write_output(my_asm, path);
 	//printf("%s\n", my_asm->output);
 /*
 	for (int i = 0; i < my_asm->label_holder_pos; i++)
@@ -561,7 +585,7 @@ char	*get_base_name(char *s)
 	res = ft_strjoin(s, ".cor");
 	free(s);
 	if (!res)
-		fail_msg("Malloc failed");
+		fail_msg(0, "Malloc failed");
 	return (res);
 }
 
