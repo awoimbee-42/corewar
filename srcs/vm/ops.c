@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 14:56:02 by skiessli          #+#    #+#             */
-/*   Updated: 2019/05/14 15:19:22 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/14 18:07:14 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -294,7 +294,8 @@ void			op_aff(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 	uint8_t	c;
 
 	c = proc->reg[reg_num[0]] % 256;
-	ft_printf("{grn}aff: %c{eoc}\n", c);
+	if (vm->verbosity > 0)
+		ft_printf("{grn}aff: %c{eoc}\n", c);
 }
 
 int				check_valid_return_size(unsigned char cb, t_arg_type types, t_bool dir2)

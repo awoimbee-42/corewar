@@ -6,22 +6,9 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 14:51:50 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/14 15:15:09 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/14 21:28:34 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-// each process has :
-// 	REG_NUMBER registers, each of size REG_SIZE bytes, All registers but the PC are set to 0 by default
-// 	A Programm Counter: a special register containing the address of the next instruction
-// 	A 'carry' flag
-
-// each player has:
-// 	An id number, written in the r1 register of their first process at startup
-// 	They are space equivalently in ram
-
-// the vm should create a memory space dedicated to combat, will load the champions inside and their processes and execute everything until death
-
-// every CYCLE_TO_DIE (...)
 
 // ./corewar [-dump nbr_cycles] [[-n number] champion1.cor] ...
 
@@ -35,15 +22,15 @@ const t_vm_op g_op[16] = {
 	{"st",   2, {T_REG, T_IND | T_REG},                                 3,    5, 1, 0, 0, 0, op_st},
 	{"add",  3, {T_REG, T_REG, T_REG},                                  4,   10, 1, 1, 0, 0, op_add},
 	{"sub",  3, {T_REG, T_REG, T_REG},                                  5,   10, 1, 1, 0, 0, op_sub},
-	{"and",  3, {T_REG | T_DIR | T_IND, T_REG | T_IND | T_DIR, T_REG},  6,    6, 1, 1, 0, 0, op_live},
-	{"or",   3, {T_REG | T_IND | T_DIR, T_REG | T_IND | T_DIR, T_REG},  7,    6, 1, 1, 0, 0, op_live},
-	{"xor",  3, {T_REG | T_IND | T_DIR, T_REG | T_IND | T_DIR, T_REG},  8,    6, 1, 1, 0, 0, op_live},
+	{"and",  3, {T_REG | T_DIR | T_IND, T_REG | T_IND | T_DIR, T_REG},  6,    6, 1, 1, 0, 0, op_and},
+	{"or",   3, {T_REG | T_IND | T_DIR, T_REG | T_IND | T_DIR, T_REG},  7,    6, 1, 1, 0, 0, op_or},
+	{"xor",  3, {T_REG | T_IND | T_DIR, T_REG | T_IND | T_DIR, T_REG},  8,    6, 1, 1, 0, 0, op_xor},
 	{"zjmp", 1, {T_DIR},                                                9,   20, 0, 0, 1, 0, op_zjmp},
-	{"ldi",  3, {T_REG | T_DIR | T_IND, T_DIR | T_REG, T_REG},         10,   25, 1, 0, 1, 0, op_live},
-	{"sti",  3, {T_REG, T_REG | T_DIR | T_IND, T_DIR | T_REG},         11,   25, 1, 0, 1, 0, op_live},
+	{"ldi",  3, {T_REG | T_DIR | T_IND, T_DIR | T_REG, T_REG},         10,   25, 1, 0, 1, 0, op_ldi},
+	{"sti",  3, {T_REG, T_REG | T_DIR | T_IND, T_DIR | T_REG},         11,   25, 1, 0, 1, 0, op_sti},
 	{"fork", 1, {T_DIR},                                               12,  800, 0, 0, 1, 0, op_fork},
-	{"lld",  2, {T_DIR | T_IND, T_REG},                                13,   10, 1, 1, 0, 1, op_live},
-	{"lldi", 3, {T_REG | T_DIR | T_IND, T_DIR | T_REG, T_REG},         14,   50, 1, 1, 1, 1, op_live},
+	{"lld",  2, {T_DIR | T_IND, T_REG},                                13,   10, 1, 1, 0, 1, op_lld},
+	{"lldi", 3, {T_REG | T_DIR | T_IND, T_DIR | T_REG, T_REG},         14,   50, 1, 1, 1, 1, op_lldi},
 	{"lfork",1, {T_DIR},                                               15, 1000, 0, 0, 1, 1, op_lfork},
 	{"aff",  1, {T_REG},                                               16,    2, 1, 0, 0, 0, op_aff},
 
@@ -69,9 +56,12 @@ void	exit_vm(t_vm *env, char *err_msg)
 	exit(EXIT_FAILURE);
 }
 
-int		usage(void)
+int		usage(const char *pname)
 {
-	ft_printf("<bold>{inv}va bien niquer ta grosse mère fdp<rst>\n");
+	ft_printf("<bold>Usage: %s"
+		" [-visu]"
+		" [-dump nbr_cycles (not implemented yet)]"
+		" [[-n number] champion.cor]<rst>\n", pname);
 	return (0);
 }
 
@@ -80,7 +70,7 @@ int		main(int argc, char **argv)
 	t_vm		env;
 
 	if (argc == 1)// || argc > MAX_ARGS_NUMBER)
-		return(usage());
+		return(usage(argv[0]));
 	ft_bzero(&env, sizeof(env));
 	gb_init_existing(&env.gb);
 	read_argv_init(&env, argc, argv);

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/14 14:00:11 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/14 21:27:57 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@
 # define COLOR_BRIGHT_MAGENTA 13
 # define COLOR_BRIGHT_CYAN 14
 # define COLOR_BRIGHT_WHITE 15
+
+# define DELT_PLAY_ID_CURS_COLOR	5
 
 /*
 **	#################
@@ -188,15 +190,18 @@ uint8_t			*write8(t_vm *vm, t_proc *proc, int aptr, uint8_t data);
 /*
 **
 */
-int				usage(void);
+int				usage(const char *pname);
 void			exit_vm(t_vm *env, char *err_msg);
 
 void			loop(t_vm *env);
 
 /* ops.c */
 void			launch_instruction(t_vm *vm, t_play *play, t_proc *proc);
+
+/* visu */
 void			visu_loop(t_vm *vm);
 void			visu_init_memview(t_vm *vm);
+void			visu_memview(t_vm *vm);
 
 /*
 **
@@ -211,8 +216,15 @@ void		op_ld(t_vm *vm, t_play *p, t_proc *proc, int reg_num[3]);
 void		op_st(t_vm *vm, t_play *p, t_proc *proc, int reg_num[3]);
 void		op_add(t_vm *vm, t_play *p, t_proc *proc, int reg_num[3]);
 void		op_sub(t_vm *vm, t_play *p, t_proc *proc, int reg_num[3]);
+void		op_and(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3]);
+void		op_or(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3]);
+void		op_xor(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3]);
 void		op_zjmp(t_vm *vm, t_play *p, t_proc *proc, int reg_num[3]);
+void		op_ldi(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3]);
+void		op_sti(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3]);
 void		op_fork(t_vm *vm, t_play *p, t_proc *proc, int reg_num[3]);
+void		op_lld(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3]);
+void		op_lldi(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3]);
 void		op_lfork(t_vm *vm, t_play *p, t_proc *proc, int reg_num[3]);
 void		op_aff(t_vm *vm, t_play *p, t_proc *proc, int reg_num[3]);
 

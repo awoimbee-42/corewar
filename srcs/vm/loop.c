@@ -6,10 +6,10 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 17:59:57 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/14 15:20:49 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/14 21:33:01 by awoimbee         ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
 
-#include "corewar.h"
 #include "vm.h"
 
 //	si le cycle_to_die tombe en meme temps qu'une instruction live on fait quoi ?
@@ -98,6 +98,7 @@ void			loop(t_vm *env)
 			if (loop_player(env, &env->players.d[i]) == 1)
 				alive = 1;
 		}
+		usleep(5000);
 		// print_memory(env->arena, MEM_SIZE);
 	}
 }

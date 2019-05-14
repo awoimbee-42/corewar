@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/05/14 13:56:36 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/05/14 21:19:16 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,10 @@ SRC_NAME_CORE =	main.c								\
 				ops.c								\
 				arena_mem_load.c					\
 				arena_mem_write.c					\
-				visu_loop.c							\
+				\
+				visu/visu_loop.c					\
+				visu/visu_memview.c					\
+				\
 				operators/vecproc/init.c			\
 				operators/vecproc/new.c				\
 				operators/vecproc/point_last.c		\
@@ -43,7 +46,8 @@ ASM_FD = asm/
 ASM_SRC_SUBFOLDERS =
 CORE_FD = vm/
 CORE_SRC_SUBFOLDERS =	operators/vecplay		\
-						operators/vecproc
+						operators/vecproc		\
+						visu
 BUILD_FOLDER =	build
 
 ################################################################################
