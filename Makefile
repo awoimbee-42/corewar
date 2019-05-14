@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/05/14 18:59:18 by cpoirier         ###   ########.fr        #
+#    Updated: 2019/05/14 20:32:55 by cpoirier         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,10 @@ SRC_NAME_CORE =	main.c								\
 SRC_NAME_ASM =	asm.c					\
 				get_arg_type.c			\
 				write.c					\
+				labels.c				\
+				helper.c				\
+				handle_op.c				\
+				get_asm.c				\
 				utils.c
 
 ASM_FD = asm/

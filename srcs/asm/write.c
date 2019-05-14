@@ -6,7 +6,7 @@
 /*   By: cpoirier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 18:55:36 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/14 19:00:56 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/14 20:11:11 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,9 @@ void		write_nb_to_output(t_asm *my_asm, int nb, int pre)
 	free(s);
 }
 
-void		write_output(t_asm *my_asm, char *path)
+void		write_output(t_asm *my_asm)
 {
 	int		fd;
-	char	*new_path;
 
 	fd = open(my_asm->file_name, O_CREAT | O_WRONLY, 0777);
 	if (fd >= 0)
@@ -72,7 +71,7 @@ void		write_output(t_asm *my_asm, char *path)
 	else
 		fail_msg(0, "Cannot write to output file");
 	close(fd);
-	printf("Written output program to %s\n", my_asm->file_name);
+	ft_printf("Written output program to %s\n", my_asm->file_name);
 	free(my_asm->file_name);
 }
 
