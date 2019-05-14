@@ -27,9 +27,7 @@ SRC_NAME_CORE =	main.c								\
 				ops.c								\
 				arena_mem_load.c					\
 				arena_mem_write.c					\
-				load_from_mem.c						\
 				visu_loop.c							\
-				\
 				operators/vecproc/init.c			\
 				operators/vecproc/new.c				\
 				operators/vecproc/point_last.c		\

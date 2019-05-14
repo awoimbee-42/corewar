@@ -6,11 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-<<<<<<< HEAD
 /*   Updated: 2019/05/14 14:00:11 by awoimbee         ###   ########.fr       */
-=======
-/*   Updated: 2019/05/13 04:03:42 by awoimbee         ###   ########.fr       */
->>>>>>> visu
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,13 +193,10 @@ void			exit_vm(t_vm *env, char *err_msg);
 
 void			loop(t_vm *env);
 
-<<<<<<< HEAD
 /* ops.c */
 void			launch_instruction(t_vm *vm, t_play *play, t_proc *proc);
-=======
 void			visu_loop(t_vm *vm);
 void			visu_init_memview(t_vm *vm);
->>>>>>> visu
 
 /*
 **
