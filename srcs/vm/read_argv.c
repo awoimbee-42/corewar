@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 19:24:05 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/10 16:43:04 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/14 14:04:09 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 **		.cor data address (inside t_vm.arena)
 */
 
-static void		load_cor(t_vm *env, t_play *p, char *buffer)
+static void		load_cor(t_vm *env, t_play *p, uint8_t *buffer)
 {
 	int			fd;
 	t_garbage	*gb;
@@ -29,7 +29,7 @@ static void		load_cor(t_vm *env, t_play *p, char *buffer)
 	uint		size;
 
 	ft_printf("{grn}Load .cor file{eoc} \"%s\"\n", p->cor);
-	fname = p->cor;
+	fname = (char*)p->cor;
 	gb = &env->gb;
 	fd = open(fname, O_RDONLY);
 	if (fd == -1)
@@ -80,6 +80,7 @@ static int		read_champ(t_vm *env, char **input, int i)
 
 	ft_printf("{grn}read_champ{eoc}\n"); // REMOVE
 	champ = &env->players.d[env->players.len++];
+	// champ->index = env->players.len - 1;
 	champ->id = RESERVED_ID;
 	if (!ft_strcmp(input[i], "-n") && ++i)
 	{
@@ -97,7 +98,7 @@ static int		read_champ(t_vm *env, char **input, int i)
 				input[i], CHAMP_MAX_SIZE)));
 	vecproc_push_empty(&env->gb, &champ->procs);
 	champ->procs.d->reg[0] = 0;
-	champ->cor = input[i];
+	champ->cor = (uint8_t*)input[i];
 	return (i);
 }
 

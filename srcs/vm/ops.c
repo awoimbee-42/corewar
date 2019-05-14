@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 14:56:02 by skiessli          #+#    #+#             */
-/*   Updated: 2019/05/13 17:57:13 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/14 14:31:29 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,10 +215,10 @@ void			op_ld(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 
 void			op_st(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 {
-	if (vm->arena[(proc->pc + 1) % MEM_SIZE] >> 4 & 0b11 == IND_CODE)
-		vm->arena[(proc->pc + (load16(vm, proc->pc + 3) % IDX_MOD)) % MEM_SIZE] = proc->reg[reg_num[0]];
+	if (((vm->arena[(proc->pc + 1) % MEM_SIZE] >> 4) & 0b11) == IND_CODE)
+		write32(vm, proc, proc->pc + (load16(vm, proc->pc + 3) % IDX_MOD), proc->reg[reg_num[0]]);
 	else
-		vm->arena[(proc->pc + (proc->reg[reg_num[1]] % IDX_MOD)) % MEM_SIZE] = proc->reg[reg_num[0]];	
+		write32(vm, proc, (proc->pc + (proc->reg[reg_num[1]] % IDX_MOD)), proc->reg[reg_num[0]]);
 }
 
 void			op_add(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
@@ -262,7 +262,7 @@ void			op_sti(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 	int addr;
 
 	addr = (proc->reg[reg_num[1]] + proc->reg[reg_num[2]]) % IDX_MOD;
-	vm->arena[(proc->pc + addr) % MEM_SIZE] = proc->reg[reg_num[0]];
+	write32(vm, proc, proc->pc + addr, proc->reg[reg_num[0]]);
 }
 
 void			op_fork(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
@@ -311,7 +311,7 @@ int				check_valid_return_size(unsigned char cb, t_arg_type types, t_bool dir2)
 int				read_one_arg(t_vm *vm, t_proc *proc, uint8_t cb, int cur_arg)
 {
 	int		op_id;
-	int		size;
+	// int		size;
 	int		tmp;
 
 	op_id = vm->arena[proc->pc] - 1;

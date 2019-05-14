@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/13 17:56:57 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/14 14:00:11 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ typedef struct	s_vecproc
 
 typedef struct	s_play
 {
+	// int					index;
 	int					id;
 	uint8_t				*cor; // useless ?
 	t_header			head;
@@ -113,6 +114,7 @@ typedef struct	s_vm
 	struct s_vecplay	players;
 	struct s_garbage	gb;
 	uint8_t				arena[MEM_SIZE];
+	uint8_t				mem_owner[MEM_SIZE];
 }				t_vm;
 
 /*
@@ -146,9 +148,18 @@ t_vecproc		*vecproc_del_at(t_vecproc *v, int at);
 uint32_t		swap32_endian(uint32_t val);
 uint16_t		swap16_endian(uint16_t val);
 void			print_memory(const void *addr, size_t size);
+
+/*
+**	arena_mem_*.c
+**		The write functions need the procs PC
+**		to be located on the instructions id byte.
+*/
 uint32_t		load32(t_vm *vm, t_register pc);
 uint16_t		load16(t_vm *vm, t_register pc);
 uint8_t			load8(t_vm *vm, t_register pc);
+uint8_t			*write32(t_vm *vm, t_proc *proc, int aptr, uint32_t data);
+uint8_t			*write16(t_vm *vm, t_proc *proc, int aptr, uint16_t data);
+uint8_t			*write8(t_vm *vm, t_proc *proc, int aptr, uint8_t data);
 
 /*
 **
