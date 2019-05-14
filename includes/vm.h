@@ -6,7 +6,11 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2019/05/14 14:00:11 by awoimbee         ###   ########.fr       */
+=======
+/*   Updated: 2019/05/13 04:03:42 by awoimbee         ###   ########.fr       */
+>>>>>>> visu
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +18,8 @@
 # define VM_H
 # include "corewar.h"
 # include "libft.h"
+# include <ncurses.h>
+# include <pthread.h>
 
 /*
 **	################
@@ -22,6 +28,14 @@
 */
 
 # define RESERVED_ID -2147483648
+# define COLOR_BRIGHT_BLACK 8
+# define COLOR_BRIGHT_RED 9
+# define COLOR_BRIGHT_GREEN 10
+# define COLOR_BRIGHT_YELLOW 11
+# define COLOR_BRIGHT_BLUE 12
+# define COLOR_BRIGHT_MAGENTA 13
+# define COLOR_BRIGHT_CYAN 14
+# define COLOR_BRIGHT_WHITE 15
 
 /*
 **	#################
@@ -76,6 +90,19 @@ typedef struct	s_vecplay
 }				t_vecplay;
 
 /*
+**
+*/
+
+typedef struct	s_visu
+{
+	pthread_t			thread;
+	WINDOW				*rootw;
+	WINDOW				*arenaw;
+	WINDOW				*sidepw;
+}				t_visu;
+
+
+/*
 **	OPs
 */
 
@@ -106,6 +133,7 @@ extern const t_vm_op g_op[16];
 
 typedef struct	s_vm
 {
+	t_visu				visu;
 	int					verbosity;
 	int					cycle_dump;
 	int					cycle_die;
@@ -169,8 +197,13 @@ void			exit_vm(t_vm *env, char *err_msg);
 
 void			loop(t_vm *env);
 
+<<<<<<< HEAD
 /* ops.c */
 void			launch_instruction(t_vm *vm, t_play *play, t_proc *proc);
+=======
+void			visu_loop(t_vm *vm);
+void			visu_init_memview(t_vm *vm);
+>>>>>>> visu
 
 /*
 **

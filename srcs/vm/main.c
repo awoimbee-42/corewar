@@ -53,8 +53,17 @@ void	exit_vm(t_vm *env, char *err_msg)
 {
 	size_t		msg_len;
 
+	if (env->visu.thread)
+	{
+		delwin(env->visu.arenaw);
+		delwin(env->visu.sidepw);
+		echo();
+		curs_set(TRUE);
+		endwin();
+	}
 	msg_len = ft_strlen(err_msg);
 	err_msg[msg_len] = '\n';
+	write(2, "Error:\n", 7);
 	write(2, err_msg, msg_len + 1);
 	gb_freeall(&env->gb);
 	exit(EXIT_FAILURE);
@@ -73,20 +82,18 @@ int		main(int argc, char **argv)
 	if (argc == 1)// || argc > MAX_ARGS_NUMBER)
 		return(usage());
 	ft_bzero(&env, sizeof(env));
-	ft_printf("gb len addr %p status: %lu\n", &env.gb.arr_len, env.gb.arr_len);
 	gb_init_existing(&env.gb);
-	ft_printf("gb len addr %p status: %lu\n", &env.gb.arr_len, env.gb.arr_len);
 	read_argv_init(&env, argc, argv);
-	env.verbosity = 4;
-
+	env.verbosity = 0;
+	sleep(2);
+	if (env.verbosity > 0)
 	{
 		ft_printf("Our contestants are:\n");
 		for (int i = 0; i < env.players.len; ++i)
 			ft_printf("\tJean michel %s #%d avec un programme d'une taille de %ld octets\n", env.players.d[i].head.prog_name, env.players.d[i].id, env.players.d[i].head.prog_size);
+		ft_printf("Arena:\n");
+		print_memory(env.arena, MEM_SIZE);
 	}
-	ft_printf("Arena:\n");
-	print_memory(env.arena, MEM_SIZE);
-
 	loop(&env);
 	gb_freeall(&env.gb);
 	return (0);

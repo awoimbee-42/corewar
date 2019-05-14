@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 17:12:50 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/09 14:16:52 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/12 22:46:25 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,7 @@ void	print_memory(const void *addr, size_t size)
 {
 	size_t			a;
 	const uint8_t	*ptr;
-	// char			*output[58];
 
-	// output[56] = '\n';
-	// output[57] = '\0';
 	ptr = addr;
 	while (size)
 	{

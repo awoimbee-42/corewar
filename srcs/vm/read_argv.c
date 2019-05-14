@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 19:24:05 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/14 14:04:09 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/13 04:03:06 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void		load_cor(t_vm *env, t_play *p, uint8_t *buffer)
 	char		*fname;
 	uint		size;
 
-	ft_printf("{grn}Load .cor file{eoc} \"%s\"\n", p->cor);
+	// ft_printf("{grn}Load .cor file{eoc} \"%s\"\n", p->cor);
 	fname = (char*)p->cor;
 	gb = &env->gb;
 	fd = open(fname, O_RDONLY);
@@ -78,7 +78,9 @@ static int		read_champ(t_vm *env, char **input, int i)
 {
 	t_play		*champ;
 
-	ft_printf("{grn}read_champ{eoc}\n"); // REMOVE
+	// ft_printf("{grn}read_champ{eoc}\n"); // REMOVE
+	if (env->players.len == 4)
+		exit_vm(env, gb_add(&env->gb, ft_cprintf("Too many champions !")));
 	champ = &env->players.d[env->players.len++];
 	// champ->index = env->players.len - 1;
 	champ->id = RESERVED_ID;
@@ -137,6 +139,31 @@ static void		set_remaining_play_id(t_vm *env)
 	}
 }
 
+void		init_ncurses(t_vm *vm)
+{
+	vm->verbosity = -1;
+	initscr();
+	noecho();
+	curs_set(FALSE);
+	start_color();
+	vm->visu.rootw = newwin(66, 232, 0, 0);
+	//init_color(COLOR_CYAN, 200, 200, 200);
+	init_pair(32, COLOR_WHITE, 0b00001000);
+	init_pair(1, COLOR_GREEN, COLOR_BLACK);
+	init_pair(2, COLOR_BLUE, COLOR_BLACK);
+	init_pair(3, COLOR_RED, COLOR_BLACK);
+	init_pair(4, COLOR_YELLOW, COLOR_BLACK);
+	wbkgd(vm->visu.rootw, COLOR_PAIR(32));
+	vm->visu.arenaw = subwin(vm->visu.rootw, 64, 193, 1, 2);
+	//init_pair(2, COLOR_WHITE, COLOR_BLACK);
+	wbkgd(vm->visu.arenaw, COLOR_PAIR(0));
+	vm->visu.sidepw = subwin(vm->visu.rootw, 64, 30, 1, 197);
+	wbkgd(vm->visu.sidepw, COLOR_PAIR(0));
+	wrefresh(vm->visu.rootw);
+	//visu_init_memview(vm);
+	pthread_create(&vm->visu.thread, NULL, (void*(*)(void *))visu_loop, (void*)vm);
+}
+
 void		read_argv_init(t_vm *env, int argc, char **argv)
 {
 	int		i;
@@ -145,12 +172,16 @@ void		read_argv_init(t_vm *env, int argc, char **argv)
 	i = 0;
 	while (++i < argc)
 	{
-		ft_printf("--reading argument #%d--\n", i); // REMOVE
+		// ft_printf("--reading argument #%d--\n", i); // REMOVE
 		if (!ft_strcmp(argv[i], "-dump"))
 			read_dump_cycle(env, argv[++i]);
+		else if (!ft_strncmp(argv[i], "-visu", 5))
+			env->verbosity = -1;
 		else
 			i = read_champ(env, argv, i);
 	}
 	set_remaining_play_id(env);
 	load_cor_files(env); // also sets the PC & r0
+	if (env->verbosity == -1)
+		init_ncurses(env);
 }
