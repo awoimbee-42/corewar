@@ -386,8 +386,12 @@ void			launch_instruction(t_vm *vm, t_play *play, t_proc *proc)
 	{
 		proc->pc = (proc->pc + 1) % MEM_SIZE;
 		 // I dunno what is needed here
+		 if (g_op[op_id].modcarry)
+		 	proc->carry = 0;
 		return ;
 	}
 	g_op[op_id].fun(vm, play, proc, reg_num);
-	proc->pc = proc->new_pc;
+	if (g_op[op_id].modcarry)
+		proc->carry = 1;
+	proc->pc = proc->new_pc % MEM_SIZE;
 }

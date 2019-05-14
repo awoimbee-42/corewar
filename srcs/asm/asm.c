@@ -286,15 +286,21 @@ void	write_label_holders(t_asm *my_asm)
 	}
 }
 
-void	write_output(t_asm *my_asm)
+void	write_output(t_asm *my_asm, char *path)
 {
 	int		fd;
+	char	*new_path;
 
-	fd = open("out.cor", O_CREAT | O_WRONLY, 0777);
+	new_path = ft_strnew(ft_strlen(path) + 2);
+	ft_strcpy(new_path, path);
+	ft_strcpy(new_path + ft_strlen(path) - 1, "cor");
+	printf("%s", new_path);
+	fd = open(new_path, O_CREAT | O_WRONLY, 0777);
 	printf("Current cursor: %lu\n", my_asm->cursor);
 	if (fd >= 0)
 		write(fd, my_asm->output, my_asm->cursor);
 	close(fd);
+	free(new_path);
 }
 
 void	write_opcode(t_asm *my_asm, t_arg_type types[3])
@@ -514,7 +520,7 @@ int		get_asm(char *path, t_asm *my_asm)
 	printf("My comment is %s\n", my_asm->header.comment);
 
 
-	write_output(my_asm);
+	write_output(my_asm, path);
 	//printf("%s\n", my_asm->output);
 
 	for (int i = 0; i < my_asm->label_holder_pos; i++)
