@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 14:56:02 by skiessli          #+#    #+#             */
-/*   Updated: 2019/05/14 14:31:29 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/14 15:19:22 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,7 +203,7 @@ void			op_live(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 		ft_printf("un processus dit que le joueur x(nom_champion) est en vie\n");
 	}
 	proc->live++;
-	proc->pc = (proc->pc + 5) % MEM_SIZE;
+	// proc->pc = (proc->pc + 5) % MEM_SIZE;
 	if (vm->verbosity > 3)
 		ft_printf("P #%-5d | live %d\n", play->id, player);
 }
@@ -294,7 +294,7 @@ void			op_aff(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 	uint8_t	c;
 
 	c = proc->reg[reg_num[0]] % 256;
-	write(1, &c, 1);
+	ft_printf("{grn}aff: %c{eoc}\n", c);
 }
 
 int				check_valid_return_size(unsigned char cb, t_arg_type types, t_bool dir2)
@@ -318,13 +318,13 @@ int				read_one_arg(t_vm *vm, t_proc *proc, uint8_t cb, int cur_arg)
 	if (cb == REG_CODE && (T_REG & g_op[op_id].args_type[cur_arg]))
 	{
 		tmp = load8(vm, proc->new_pc);
-		proc->new_pc = (proc->pc + 1) % MEM_SIZE;
+		proc->new_pc = (proc->new_pc + 1) % MEM_SIZE;
 		return (tmp <= REG_NUMBER && tmp >= 1 ? tmp : -1);
 	}
 	else if (cb == DIR_CODE && T_DIR & g_op[op_id].args_type[cur_arg])
 	{
 		proc->reg[REG_NUMBER + cur_arg] = g_op[op_id].dir2 ? load16(vm, proc->new_pc) : load32(vm, proc->new_pc);
-		proc->new_pc = g_op[op_id].dir2 ? (proc->pc + 2) % MEM_SIZE : (proc->pc + 4) % MEM_SIZE;
+		proc->new_pc = g_op[op_id].dir2 ? (proc->new_pc + 2) % MEM_SIZE : (proc->new_pc + 4) % MEM_SIZE;
 	}
 	else if (cb == IND_CODE && T_IND & g_op[op_id].args_type[cur_arg])
 	{
@@ -332,7 +332,7 @@ int				read_one_arg(t_vm *vm, t_proc *proc, uint8_t cb, int cur_arg)
 			proc->reg[REG_NUMBER + cur_arg] = load32(vm, proc->pc + (load16(vm, proc->new_pc) % IDX_MOD));
 		else
 			proc->reg[REG_NUMBER + cur_arg] = load32(vm, proc->pc + load16(vm, proc->new_pc));
-		proc->new_pc = (proc->pc + 2) % MEM_SIZE;
+		proc->new_pc = (proc->new_pc + 2) % MEM_SIZE;
 	}
 	else
 		return (-1);
@@ -344,18 +344,18 @@ int				read_one_arg(t_vm *vm, t_proc *proc, uint8_t cb, int cur_arg)
 int			load_arg_into_regs(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 {
 	int		op_id;
-	// int		reg_num[3];
+	uint8_t	cb;
 	int		i;
 
 	op_id = vm->arena[proc->pc] - 1;
 	if (g_op[op_id].coding_byte == TRUE)
 	{
 		i = 0;
+		cb = vm->arena[(proc->pc + 1) % MEM_SIZE];
 		proc->new_pc = (proc->pc + 2) % MEM_SIZE;
 		while (i < g_op[op_id].nb_args)
 		{
-			reg_num[i] = read_one_arg(vm, proc,
-						vm->arena[(proc->pc + 1) % MEM_SIZE] >> (6 - (i * 2)) & 0b11, i);
+			reg_num[i] = read_one_arg(vm, proc, (cb >> (6 - i * 2)) & 0b11, i);
 			if (reg_num[i] == -1)
 				return (0);
 			i++;
@@ -367,6 +367,7 @@ int			load_arg_into_regs(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 		reg_num[0] = read_one_arg(vm, proc, T_DIR, 0);
 		if (reg_num[0] == -1)
 			return (0);
+		// proc->new_pc = (proc->new_pc + 2) % MEM_SIZE;
 	}
 	// g_op[op_id].fun(vm, play, proc, reg_num);
 	return (1);
@@ -383,9 +384,10 @@ void			launch_instruction(t_vm *vm, t_play *play, t_proc *proc)
 	op_id = vm->arena[proc->pc] - 1;
 	if (!load_arg_into_regs(vm, play, proc, reg_num))
 	{
-		proc->pc += 1;
+		proc->pc = (proc->pc + 1) % MEM_SIZE;
 		 // I dunno what is needed here
 		return ;
 	}
 	g_op[op_id].fun(vm, play, proc, reg_num);
+	proc->pc = proc->new_pc;
 }

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 17:59:57 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/13 17:58:13 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/14 15:20:49 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void			read_instruction(t_proc *proc, t_play *play, t_vm *env)
 	if (op_id < 0 || 15 < op_id)
 	{
 		ft_printf("\t\t\t{red}load fail op: %#x -> %lld, PC: %d{eoc}\n", op_id, op_id, proc->pc);                             // ignore and continue reading until next valid instruction byte
-		proc->pc++;
+		proc->pc = (proc->pc + 1) % MEM_SIZE;
 		proc->op_cycles = 0;
 	}
 	else
@@ -93,5 +93,6 @@ void			loop(t_vm *env)
 			if (loop_player(env, &env->players.d[i]) == 1) // if (something); {} <- worst fucking bug
 				alive = 1;
 		}
+		// print_memory(env->arena, MEM_SIZE);
 	}
 }

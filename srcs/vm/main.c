@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 14:51:50 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/13 15:42:03 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/14 15:15:09 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,14 @@ const t_vm_op g_op[16] = {
 	{"and",  3, {T_REG | T_DIR | T_IND, T_REG | T_IND | T_DIR, T_REG},  6,    6, 1, 1, 0, 0, op_live},
 	{"or",   3, {T_REG | T_IND | T_DIR, T_REG | T_IND | T_DIR, T_REG},  7,    6, 1, 1, 0, 0, op_live},
 	{"xor",  3, {T_REG | T_IND | T_DIR, T_REG | T_IND | T_DIR, T_REG},  8,    6, 1, 1, 0, 0, op_live},
-	{"zjmp", 1, {T_DIR},                                                9,   20, 0, 0, 1, 0, op_live},
+	{"zjmp", 1, {T_DIR},                                                9,   20, 0, 0, 1, 0, op_zjmp},
 	{"ldi",  3, {T_REG | T_DIR | T_IND, T_DIR | T_REG, T_REG},         10,   25, 1, 0, 1, 0, op_live},
 	{"sti",  3, {T_REG, T_REG | T_DIR | T_IND, T_DIR | T_REG},         11,   25, 1, 0, 1, 0, op_live},
-	{"fork", 1, {T_DIR},                                               12,  800, 0, 0, 1, 0, op_live},
+	{"fork", 1, {T_DIR},                                               12,  800, 0, 0, 1, 0, op_fork},
 	{"lld",  2, {T_DIR | T_IND, T_REG},                                13,   10, 1, 1, 0, 1, op_live},
 	{"lldi", 3, {T_REG | T_DIR | T_IND, T_DIR | T_REG, T_REG},         14,   50, 1, 1, 1, 1, op_live},
-	{"lfork",1, {T_DIR},                                               15, 1000, 0, 0, 1, 1, op_live},
-	{"aff",  1, {T_REG},                                               16,    2, 1, 0, 0, 0, op_live},
+	{"lfork",1, {T_DIR},                                               15, 1000, 0, 0, 1, 1, op_lfork},
+	{"aff",  1, {T_REG},                                               16,    2, 1, 0, 0, 0, op_aff},
 
 };
 
