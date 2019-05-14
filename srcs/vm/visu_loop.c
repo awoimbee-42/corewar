@@ -21,6 +21,7 @@ void		visu_memview(t_vm *vm)
 	int				mem;
 	int				mem_pc;
 
+	wmove(vm->visu.arenaw, 0, 0);
 	mem = 0;
 	while (mem != 4096)
 	{
@@ -54,7 +55,6 @@ void		visu_memview(t_vm *vm)
 			mem++;
 		}
 	}*/
-	wmove(vm->visu.arenaw, 0, 0);
 	wrefresh(vm->visu.arenaw);
 }
 
