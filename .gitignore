@@ -6,7 +6,7 @@
 ._*
 *.dSYM
 build/
-asm
+./asm
 !asm/
 !ressources/*
 corewar
