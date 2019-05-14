@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/05/14 21:19:16 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/05/14 21:36:11 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,6 +40,12 @@ SRC_NAME_CORE =	main.c								\
 				operators/vecproc/vector_del_at.c	\
 
 SRC_NAME_ASM =	asm.c					\
+				get_arg_type.c			\
+				write.c					\
+				labels.c				\
+				helper.c				\
+				handle_op.c				\
+				get_asm.c				\
 				utils.c
 
 ASM_FD = asm/
