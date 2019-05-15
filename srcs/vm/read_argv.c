@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 19:24:05 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/15 18:48:45 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/15 19:48:03 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,10 +163,9 @@ box(vm->visu.sidep.statusw, '%', '%');
 				ft_cprintf("Windows too small (%dx%d), minimum is (270x68)",
 					dim[0], dim[1])));
 
-	ft_memset(vm->mem_owner, UNSET_MEM_COLOR, MEM_SIZE);
-
+	ft_memset(vm->mem_owner, PLAY_COLOR_START, MEM_SIZE);
 	init_pair(32, COLOR_WHITE, 0b00001000);  // contour
-	init_pair(UNSET_MEM_COLOR, COLOR_WHITE, COLOR_BLACK);
+	init_pair(PLAY_COLOR_START, COLOR_WHITE, COLOR_BLACK);
 	init_pair(PLAY0_COLOR + 0, COLOR_GREEN, COLOR_BLACK);  // p1
 	init_pair(PLAY0_COLOR + 1, COLOR_BLUE, COLOR_BLACK);   // p2
 	init_pair(PLAY0_COLOR + 2, COLOR_RED, COLOR_BLACK);    // p3
@@ -179,7 +178,7 @@ box(vm->visu.sidep.statusw, '%', '%');
 	init_pair(CURS0_COLOR + 4, COLOR_BLACK, COLOR_YELLOW);
 
 
-	init_pair(DELT_CURS_COLOR + 5, 232, 255); //useless
+	// init_pair(DELT_CURS_COLOR + 5, 232, 255); //useless
 
 
 	wattron(vm->visu.rootw, COLOR_PAIR(32));
@@ -194,10 +193,9 @@ box(vm->visu.sidep.statusw, '%', '%');
 	wrefresh(vm->visu.rootw);
 	wrefresh(vm->visu.sidep.rootw);
 	wrefresh(vm->visu.sidep.statusw);
-
 	visu_init_memview(vm);
 
-	pthread_create(&vm->visu.keys_handler, NULL, visu_khandler, (void*)vm);
+	// pthread_create(&vm->visu.keys_handler, NULL, visu_khandler, (void*)vm);
 }
 
 void		read_argv_init(t_vm *env, int argc, char **argv)

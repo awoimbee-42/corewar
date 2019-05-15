@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/15 18:47:35 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/15 19:45:46 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@
 # define COLOR_BRIGHT_CYAN 14
 # define COLOR_BRIGHT_WHITE 15
 
-# define UNSET_MEM_COLOR	1
-# define PLAY0_COLOR		2
-# define CURS0_COLOR		PLAY0_COLOR + 10
+# define PLAY_COLOR_START	2
 # define DELT_CURS_COLOR	10
+# define PLAY0_COLOR		PLAY_COLOR_START + 1
+# define CURS0_COLOR		PLAY0_COLOR + DELT_CURS_COLOR
 
 # define OPS_PER_SEC 10.
 

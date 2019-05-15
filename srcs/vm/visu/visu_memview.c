@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 18:57:21 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/15 18:48:45 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/15 19:47:44 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void		visu_init_memview(t_vm *vm)
 		}
 		wattroff(vm->visu.arenaw, COLOR_PAIR(i + PLAY0_COLOR));
 	}
-	wrefresh(vm->visu.arenaw);
 }
 
 static void	memview_cursors(t_vm *vm)
@@ -80,5 +79,4 @@ void		visu_memview(t_vm *vm)
 		wprintw(vm->visu.arenaw, "\n", vm->arena[mem]);
 	}
 	memview_cursors(vm);
-	wrefresh(vm->visu.arenaw);
 }
