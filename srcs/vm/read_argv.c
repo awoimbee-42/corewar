@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 19:24:05 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/13 04:03:06 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/14 21:13:43 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,21 +146,38 @@ void		init_ncurses(t_vm *vm)
 	noecho();
 	curs_set(FALSE);
 	start_color();
-	vm->visu.rootw = newwin(66, 232, 0, 0);
-	//init_color(COLOR_CYAN, 200, 200, 200);
+
+	vm->visu.rootw = newwin(68, 270, 0, 0);
+	vm->visu.arenaw = subwin(vm->visu.rootw, 64, 193, 2, 2);
+	vm->visu.sidepw = subwin(vm->visu.rootw, 68, 74, 0, 196);
+
 	init_pair(32, COLOR_WHITE, 0b00001000);
 	init_pair(1, COLOR_GREEN, COLOR_BLACK);
 	init_pair(2, COLOR_BLUE, COLOR_BLACK);
 	init_pair(3, COLOR_RED, COLOR_BLACK);
 	init_pair(4, COLOR_YELLOW, COLOR_BLACK);
-	wbkgd(vm->visu.rootw, COLOR_PAIR(32));
-	vm->visu.arenaw = subwin(vm->visu.rootw, 64, 193, 1, 2);
-	//init_pair(2, COLOR_WHITE, COLOR_BLACK);
+
+	init_pair(DELT_PLAY_ID_CURS_COLOR, COLOR_BLACK, COLOR_GREEN);
+	init_pair(DELT_PLAY_ID_CURS_COLOR + 1, COLOR_BLACK, COLOR_BLUE);
+	init_pair(DELT_PLAY_ID_CURS_COLOR + 2, COLOR_BLACK, COLOR_RED);
+	init_pair(DELT_PLAY_ID_CURS_COLOR + 3, COLOR_BLACK, COLOR_YELLOW);
+
+	// wbkgd(vm->visu.rootw, COLOR_PAIR(32));
+	wattron(vm->visu.rootw, COLOR_PAIR(32));
+	box(vm->visu.rootw, '*', '*');
+	wattroff(vm->visu.rootw, COLOR_PAIR(32));
 	wbkgd(vm->visu.arenaw, COLOR_PAIR(0));
-	vm->visu.sidepw = subwin(vm->visu.rootw, 64, 30, 1, 197);
-	wbkgd(vm->visu.sidepw, COLOR_PAIR(0));
+
+	wattron(vm->visu.sidepw, COLOR_PAIR(32));
+	box(vm->visu.sidepw, '*', '*');
+	wattroff(vm->visu.sidepw, COLOR_PAIR(32));
+	// wbkgd(vm->visu.sidepw, COLOR_PAIR(0));
+
 	wrefresh(vm->visu.rootw);
-	//visu_init_memview(vm);
+	wrefresh(vm->visu.sidepw);
+
+	visu_init_memview(vm);
+
 	pthread_create(&vm->visu.thread, NULL, (void*(*)(void *))visu_loop, (void*)vm);
 }
 
