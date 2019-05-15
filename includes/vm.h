@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/14 21:27:57 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/15 18:47:35 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,12 @@
 # define COLOR_BRIGHT_CYAN 14
 # define COLOR_BRIGHT_WHITE 15
 
-# define DELT_PLAY_ID_CURS_COLOR	5
+# define UNSET_MEM_COLOR	1
+# define PLAY0_COLOR		2
+# define CURS0_COLOR		PLAY0_COLOR + 10
+# define DELT_CURS_COLOR	10
+
+# define OPS_PER_SEC 10.
 
 /*
 **	#################
@@ -88,15 +93,34 @@ typedef struct	s_vecplay
 }				t_vecplay;
 
 /*
-**
+**	+-------------------------+------------------------------+
+**	|                         |           sidepw             |
+**	|                         |                              |
+**	|                         |  +------------------------+  |
+**	|                         |  |      spstatusw         |  |
+**	|         arenaw          |  |                        |  |
+**	|                         |  +------------------------+  |
+**	|                         |                              |
+**	|                         |                              |
+**	|                         |                              |
+**	|                         |                              |
+**	|                         |                              |
+**	|                         |                              |
+**	|                         |                              |
+**	+-------------------------+------------------------------+
 */
 
 typedef struct	s_visu
 {
-	pthread_t			thread;
+	float				op_per_sec;
+	pthread_t			keys_handler;
 	WINDOW				*rootw;
 	WINDOW				*arenaw;
-	WINDOW				*sidepw;
+	struct
+	{
+		WINDOW				*rootw;
+		WINDOW				*statusw;
+	}					sidep;
 }				t_visu;
 
 
@@ -199,9 +223,11 @@ void			loop(t_vm *env);
 void			launch_instruction(t_vm *vm, t_play *play, t_proc *proc);
 
 /* visu */
-void			visu_loop(t_vm *vm);
+void			visu_update(t_vm *vm);
+void			*visu_khandler(void *vm);
 void			visu_init_memview(t_vm *vm);
 void			visu_memview(t_vm *vm);
+void			visu_sidepview(t_vm *vm);
 
 /*
 **

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 18:57:21 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/14 21:32:45 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/15 18:48:45 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void		visu_init_memview(t_vm *vm)
 		wmove(vm->visu.arenaw, mem_pc / 64, mem_pc % 64);
 		mem = 0;
 		mem_pc = vm->players.d[i].procs.d->pc;
-		wattron(vm->visu.arenaw, COLOR_PAIR(i + 1));
+		wattron(vm->visu.arenaw, COLOR_PAIR(PLAY0_COLOR + i));
 		while (mem < vm->players.d[i].head.prog_size)
 		{
 			if (mem_pc % 64 == 0)
@@ -34,7 +34,7 @@ void		visu_init_memview(t_vm *vm)
 			mem_pc++;
 			mem++;
 		}
-		wattroff(vm->visu.arenaw, COLOR_PAIR(i + 1));
+		wattroff(vm->visu.arenaw, COLOR_PAIR(i + PLAY0_COLOR));
 	}
 	wrefresh(vm->visu.arenaw);
 }
@@ -53,9 +53,9 @@ static void	memview_cursors(t_vm *vm)
 		{
 			pc = vm->players.d[pl].procs.d[pr].pc;
 			wmove(vm->visu.arenaw, pc / 64, (pc % 64) * 3 + 1);
-			wattron(vm->visu.arenaw, COLOR_PAIR(pl + DELT_PLAY_ID_CURS_COLOR));
-			wprintw(vm->visu.arenaw, " %02hhx", vm->arena[pc]);
-			wattroff(vm->visu.arenaw, COLOR_PAIR(pl + DELT_PLAY_ID_CURS_COLOR));
+			wattron(vm->visu.arenaw, COLOR_PAIR(vm->mem_owner[pc] + DELT_CURS_COLOR));
+			wprintw(vm->visu.arenaw, "%02hhx", vm->arena[pc]);
+			wattroff(vm->visu.arenaw, COLOR_PAIR(vm->mem_owner[pc] + DELT_CURS_COLOR));
 		}
 	}
 }

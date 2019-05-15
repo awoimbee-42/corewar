@@ -6,10 +6,11 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 17:59:57 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/14 21:33:01 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/15 17:38:12 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <time.h>
 #include "vm.h"
 
 //	si le cycle_to_die tombe en meme temps qu'une instruction live on fait quoi ?
@@ -72,33 +73,46 @@ static int		loop_player(t_vm *env, t_play *p)
 	return (1);
 }
 
-void			loop(t_vm *env)
+int				run_vm_cycle(t_vm *vm)
 {
 	int			i;
 	int			alive;
 
-	alive = 1;
-	while (alive)
+	++vm->cycle_curr;
+	if (vm->verbosity > 4)
+		ft_printf("{PNK}cycle: %lu{eoc}\n", vm->cycle_curr);
+	if (!(vm->cycle_curr % vm->cycle_die))
+		vm->die_cycle_checks++;
+	if (vm->die_cycle_checks == MAX_CHECKS)
 	{
-		++env->cycle_curr;
-		if (env->verbosity > 4)
-			ft_printf("{PNK}cycle: %lu{eoc}\n", env->cycle_curr);
-		if (!(env->cycle_curr % env->cycle_die))
-			env->die_cycle_checks++;
-		if (env->die_cycle_checks == MAX_CHECKS)
+		vm->die_cycle_checks = 0;
+		if ((vm->cycle_die -= CYCLE_DELTA) <= 0) // should I decrement by 1 or CYCLE DELTA ?
+			vm->cycle_die = 1;
+	}
+	i = vm->players.len;
+	while (i-- != 0)
+	{
+		if (loop_player(vm, &vm->players.d[i]) == 1)
+			alive = 1;
+	}
+	return (alive);
+}
+
+void			loop(t_vm *env)
+{
+	int			alive;
+	clock_t		t0;
+
+	alive = 1;
+	while ((t0 = clock()) && run_vm_cycle(env))
+	{
+		if (env->verbosity == -1)
 		{
-			env->die_cycle_checks = 0;
-			if ((env->cycle_die -= CYCLE_DELTA) <= 0) // should I decrement by 1 or CYCLE DELTA ?
-				env->cycle_die = 1;
+			visu_update(env);
+			if ((t0 = (clock() - t0) / CLOCKS_PER_SEC) < (1. / OPS_PER_SEC))
+				usleep(((1. / OPS_PER_SEC) - t0) * 1000000);
 		}
-		alive = 0;
-		i = env->players.len;
-		while (i-- != 0)
-		{
-			if (loop_player(env, &env->players.d[i]) == 1)
-				alive = 1;
-		}
-		usleep(5000);
-		// print_memory(env->arena, MEM_SIZE);
+
+
 	}
 }

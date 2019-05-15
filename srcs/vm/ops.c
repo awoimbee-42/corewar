@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 14:56:02 by skiessli          #+#    #+#             */
-/*   Updated: 2019/05/14 18:07:14 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/15 17:52:24 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,7 +249,7 @@ void			op_xor(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 void			op_zjmp(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 {
 	if (proc->carry)
-		proc->new_pc = proc->reg[reg_num[0]] % MEM_SIZE;
+		proc->new_pc = proc->reg[reg_num[0] % IDX_MOD] % MEM_SIZE;
 }
 
 void			op_ldi(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
@@ -285,7 +285,7 @@ void			op_lldi(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 void			op_lfork(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 {
 	vecproc_push(&vm->gb, &play->procs, *proc);
-	play->procs.d[play->procs.len - 1].pc = (proc->pc + proc->reg[reg_num[0]])% MEM_SIZE;
+	play->procs.d[play->procs.len - 1].pc = (proc->pc + proc->reg[reg_num[0]]) % MEM_SIZE;
 	play->procs.d[play->procs.len - 1].op_cycles = 0;
 }
 
