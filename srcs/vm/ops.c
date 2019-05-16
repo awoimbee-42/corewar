@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 14:56:02 by skiessli          #+#    #+#             */
-/*   Updated: 2019/05/16 15:07:20 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/16 19:15:00 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,14 @@ void			op_live(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 			fail = 1;
 	if (!fail)
 	{
-		// vm->players.d[i].live(..)
-		ft_printf("un processus dit que le joueur x(nom_champion) est en vie\n");
+		vm->players.d[i].period_lives += 1;
+		if (vm->verbosity >= VE_LIVE)
+			ft_printf("un processus dit que le joueur %d(%s) est en vie\n",
+				vm->players.d[i].id, vm->players.d[i].head.prog_name);
 	}
 	proc->live++;
-	// proc->pc = (proc->pc + 5) % MEM_SIZE;
-	if (vm->verbosity > 3)
-		ft_printf("P #%-5d | live %d\n", play->id, player);
+	// if (vm->verbosity > 3)
+	// 	ft_printf("P #%-5d | live %d\n", play->id, player);
 }
 
 void			op_ld(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
@@ -60,7 +61,7 @@ void			op_st(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 	if (((vm->arena[(proc->pc + 1) % MEM_SIZE] >> 4) & 0b11) == IND_CODE)
 		write32(vm, proc, proc->pc + (load16(vm, proc->pc + 3) % IDX_MOD), proc->reg[reg_num[0]]);
 	else
-		write32(vm, proc, (proc->pc + (proc->reg[reg_num[1]] % IDX_MOD)), proc->reg[reg_num[0]]);
+		proc->reg[reg_num[1]] = proc->reg[reg_num[0]];
 }
 
 void			op_add(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
@@ -104,6 +105,7 @@ void			op_sti(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 	int addr;
 
 	addr = (proc->reg[reg_num[1]] + proc->reg[reg_num[2]]) % IDX_MOD;
+	// ft_fprintf(2, "addr: %d\nreg_num[1]: %d, reg_num[2]: %d\n", addr, proc->reg[reg_num[1]], proc->reg[reg_num[2]]); //PUUUTE
 	write32(vm, proc, proc->pc + addr, proc->reg[reg_num[0]]);
 }
 
@@ -136,8 +138,10 @@ void			op_aff(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 	uint8_t	c;
 
 	c = proc->reg[reg_num[0]] % 256;
-	if (vm->verbosity > 0)
+	if (vm->verbosity >= VE_AFF)
 		ft_printf("{grn}aff: %c{eoc}\n", c);
+	else if (vm->verbosity == VE_VISU)
+		; // /!\ /!\ /!\ /!\ DO SOMETHING  /!\ /!\ /!\ /!\ /!\ /!\ /!\ /!\ /!\ /
 }
 
 int				check_valid_return_size(unsigned char cb, t_arg_type types, t_bool dir2)

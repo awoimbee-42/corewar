@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/05/16 13:03:47 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/05/16 20:00:27 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,6 @@ ASM  =	asm
 CFLAGS	=	-g3 -Wall -Wextra #-Ofast -march=native#-fsanitize=address #-Werror -Ofast -march=native
 
 SRC_NAME_CORE =	main.c								\
-				read_argv.c							\
 				print_memory.c						\
 				swap_endianess.c					\
 				loop.c								\
@@ -28,6 +27,10 @@ SRC_NAME_CORE =	main.c								\
 				arena_mem_load.c					\
 				arena_mem_write.c					\
 				run_cycle.c							\
+				\
+				init/read_argv.c					\
+				init/read_champ.c					\
+				init/visu_init.c					\
 				\
 				visu/visu_update.c					\
 				visu/visu_memview.c					\
@@ -53,9 +56,9 @@ SRC_NAME_ASM =	asm.c					\
 ASM_FD = asm/
 ASM_SRC_SUBFOLDERS =
 CORE_FD = vm/
-CORE_SRC_SUBFOLDERS =	operators/vecplay		\
-						operators/vecproc		\
-						visu
+CORE_SRC_SUBFOLDERS =	operators/vecproc		\
+						visu					\
+						init
 BUILD_FOLDER =	build
 
 ################################################################################
@@ -122,7 +125,7 @@ $(OBJ_FOLDER)/%.o : $(SRC_PATH)/%.c $(LSDL2) $(LSDL2_TTF) | $(BUILD_FOLDER)/obj
 
 # Add rules written in .d files (by gcc -MMD)
 # The '-' makes it doesn't care if the file exists or not
--include $(OBJ_DOOM:.o=.d) $(OBJ_EDITOR:.o=.d)
+-include $(OBJ_CORE:.o=.d) $(OBJ_ASM:.o=.d)
 
 obj_clean :
 	@printf "$(RED)Cleaning $(OBJ_FOLDER)$(EOC)\n"

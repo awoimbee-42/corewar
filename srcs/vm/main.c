@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 14:51:50 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/16 14:23:50 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/16 20:00:45 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ const t_vm_op g_op[16] = {
 
 void	exit_vm(t_vm *env, char *err_msg)
 {
-	if (env->verbosity == -1)
+	if (env->verbosity == VE_VISU)
 	{
 		delwin(env->visu.arenaw);
 		delwin(env->visu.sidep.rootw);
@@ -65,11 +65,41 @@ void	exit_vm(t_vm *env, char *err_msg)
 int		usage(const char *pname)
 {
 	ft_printf("<bold>Usage: %s"
-		" [-visu]"
+		" [-visu | -vi]"
+		" [-verbose n | -ve n]"
 		" [-dump nbr_cycles (not implemented yet)]"
-		" [[-n number] champion.cor]<rst>\n", pname);
+		" [[-n number] champion.cor]<rst>\n"
+		"\t-visu or -vi enables the ncurses visualizer mode\n"
+		"\t-verbosity or -ve sets the verbosity level\n"
+		"\t\t0: winner (le joueur x(nom_champion) a gagne)\n"
+		"\t\t1: aff\n"
+		"\t\t2: live {red}<- DEFAULT SETTING{eoc}\n"
+		"\t\t3: greetings message (list of competitors & dump at start)\n"
+		"\t\t4: player death\n"
+		"\t\t5: process creation-death\n"
+		"\t\t6: Maximum level\n",
+		pname);
 	return (0);
 }
+
+/*
+	/!\ Le dernier joueur aura le premier processus dans l’ordre d’exécution.
+	NEED TO ADD DUMP
+		(Au bout de nbr_cycles cycles d’exécution,
+		dump la mémoire sur la sortie stan- dard,
+		puis quitte la partie.
+		La mémoire doit être dumpée au format hexadécimal,
+		avec 32 octets par ligne.)
+	Verbosity: TODO
+		-1: visu
+		0:  winner (le joueur x(nom_champion) a gagne)
+		1:  aff
+DEFAULT	2:  live (un processus dit que le joueur x(nom_champion) est en vie)  <- DEFAULT SETTING
+		3:  greetings message (list of competitors & dump at start)
+		4:  player death
+		5:  process creation-death
+		6:  PC info
+*/
 
 int		main(int argc, char **argv)
 {
@@ -79,16 +109,17 @@ int		main(int argc, char **argv)
 		return(usage(argv[0]));
 	ft_bzero(&vm, sizeof(vm));
 	gb_init_existing(&vm.gb);
+	vm.verbosity = VE_LIVE;
 	read_argv_init(&vm, argc, argv);
-	if (vm.verbosity > 0)
+	if (vm.verbosity >= VE_GREET)
 	{
 		ft_printf("Our contestants are:\n");
 		for (int i = 0; i < vm.players.len; ++i)
 			ft_printf("\tJean michel %s #%d avec un programme d'une taille de %ld octets\n", vm.players.d[i].head.prog_name, vm.players.d[i].id, vm.players.d[i].head.prog_size);
 		ft_printf("Arena:\n");
-		print_memory(vm.arena, MEM_SIZE);
+		print_memory(vm.arena);
 	}
-	if (vm.verbosity == -1)
+	if (vm.verbosity == VE_VISU)
 		visu_loop(&vm);
 	else
 		loop(&vm);

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/16 14:37:25 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/16 19:59:25 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,23 @@
 */
 
 # define RESERVED_ID	-2147483648
+
+/*
+**	Verbosity levels are defined so new ones can be added in between easily
+*/
+
+# define VE_VISU		-1
+# define VE_WINNER		0
+# define VE_AFF			1
+# define VE_LIVE		2
+# define VE_GREET		3
+# define VE_PLAYDEATH	4
+# define VE_PROCDEATH	5
+# define VE_ALL			6
+
+/*
+**	Ncurses sucks and doesnt define all the colors
+*/
 
 # define COLOR_BRIGHT_BLACK		8
 # define COLOR_BRIGHT_RED		9
@@ -53,7 +70,7 @@
 **	#################
 */
 
-typedef uint32_t	t_register;
+typedef int32_t	t_register;
 struct s_proc;
 struct s_play;
 struct s_vecproc;
@@ -88,6 +105,7 @@ typedef struct	s_play
 {
 	// int					index;
 	int					id;
+	int					period_lives;
 	uint8_t				*cor; // useless ?
 	t_header			head;
 	struct s_vecproc	procs;
@@ -204,16 +222,16 @@ t_vecproc		*vecproc_del_at(t_vecproc *v, int at);
 */
 uint32_t		swap32_endian(uint32_t val);
 uint16_t		swap16_endian(uint16_t val);
-void			print_memory(const void *addr, size_t size);
+void			print_memory(const void *addr);
 
 /*
 **	arena_mem_*.c
 **		The write functions need the procs PC
 **		to be located on the instructions id byte.
 */
-uint32_t		load32(t_vm *vm, t_register pc);
-uint16_t		load16(t_vm *vm, t_register pc);
-uint8_t			load8(t_vm *vm, t_register pc);
+int32_t			load32(t_vm *vm, t_register pc);
+int16_t			load16(t_vm *vm, t_register pc);
+int8_t			load8(t_vm *vm, t_register pc);
 uint8_t			*write32(t_vm *vm, t_proc *proc, int aptr, uint32_t data);
 uint8_t			*write16(t_vm *vm, t_proc *proc, int aptr, uint16_t data);
 uint8_t			*write8(t_vm *vm, t_proc *proc, int aptr, uint8_t data);
@@ -224,6 +242,7 @@ uint8_t			*write8(t_vm *vm, t_proc *proc, int aptr, uint8_t data);
 int				usage(const char *pname);
 void			exit_vm(t_vm *env, char *err_msg);
 
+int				run_vm_cycle(t_vm *vm);
 void			loop(t_vm *env);
 void			visu_loop(t_vm *vm);
 
