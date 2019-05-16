@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 14:56:02 by skiessli          #+#    #+#             */
-/*   Updated: 2019/05/16 19:15:00 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/16 23:21:28 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void			op_ld(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 
 void			op_st(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 {
-	if (((vm->arena[(proc->pc + 1) % MEM_SIZE] >> 4) & 0b11) == IND_CODE)
+	if (((vm->arena[circumem(proc->pc + 1)] >> 4) & 0b11) == IND_CODE)
 		write32(vm, proc, proc->pc + (load16(vm, proc->pc + 3) % IDX_MOD), proc->reg[reg_num[0]]);
 	else
 		proc->reg[reg_num[1]] = proc->reg[reg_num[0]];
@@ -92,7 +92,7 @@ void			op_xor(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 void			op_zjmp(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 {
 	if (proc->carry)
-		proc->new_pc = proc->reg[reg_num[0] % IDX_MOD] % MEM_SIZE;
+		proc->new_pc = proc->pc + circumem(proc->reg[reg_num[0] % IDX_MOD]);
 }
 
 void			op_ldi(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
@@ -112,7 +112,7 @@ void			op_sti(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 void			op_fork(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 {
 	vecproc_push(&vm->gb, &play->procs, *proc);
-	play->procs.d[play->procs.len - 1].pc = (proc->pc + (proc->reg[reg_num[0]] % IDX_MOD)) % MEM_SIZE;
+	play->procs.d[play->procs.len - 1].pc = circumem(proc->pc + (proc->reg[reg_num[0]] % IDX_MOD));
 	play->procs.d[play->procs.len - 1].op_cycles = 0;
 }
 
@@ -129,7 +129,7 @@ void			op_lldi(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 void			op_lfork(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 {
 	vecproc_push(&vm->gb, &play->procs, *proc);
-	play->procs.d[play->procs.len - 1].pc = (proc->pc + proc->reg[reg_num[0]]) % MEM_SIZE;
+	play->procs.d[play->procs.len - 1].pc = circumem(proc->pc + proc->reg[reg_num[0]]);
 	play->procs.d[play->procs.len - 1].op_cycles = 0;
 }
 

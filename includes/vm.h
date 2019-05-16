@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/16 19:59:25 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/16 22:58:07 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,6 +235,7 @@ int8_t			load8(t_vm *vm, t_register pc);
 uint8_t			*write32(t_vm *vm, t_proc *proc, int aptr, uint32_t data);
 uint8_t			*write16(t_vm *vm, t_proc *proc, int aptr, uint16_t data);
 uint8_t			*write8(t_vm *vm, t_proc *proc, int aptr, uint8_t data);
+int				circumem(int ptr);
 
 /*
 **
