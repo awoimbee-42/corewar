@@ -6,12 +6,13 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 18:06:53 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/16 19:29:41 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/17 01:26:19 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 #include "init.h"
+#include <signal.h>
 
 static void	init_ncwindows(t_vm *vm)
 {

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/16 22:58:07 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/17 01:21:08 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,6 +251,7 @@ void			visu_loop(t_vm *vm);
 void			launch_instruction(t_vm *vm, t_play *play, t_proc *proc);
 
 /* visu */
+void			clean_visu(t_vm *vm);
 void			visu_update(t_vm *vm);
 void			visu_khandler(t_vm *vm);
 void			visu_init_memview(t_vm *vm);

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 14:51:50 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/16 20:00:45 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/17 01:20:25 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,18 @@ const t_vm_op g_op[16] = {
 
 };
 
+void	clean_visu(t_vm *vm)
+{
+	delwin(vm->visu.arenaw);
+	delwin(vm->visu.sidep.rootw);
+	delwin(vm->visu.sidep.statusw);
+	echo();
+	nocbreak();
+	curs_set(TRUE);
+	reset_shell_mode();
+	endwin();
+}
+
 /*
 **	Lots of times we pass strerror() to exit_vm,
 **	this function should return a const char* (according to man),
@@ -45,16 +57,7 @@ const t_vm_op g_op[16] = {
 void	exit_vm(t_vm *env, char *err_msg)
 {
 	if (env->verbosity == VE_VISU)
-	{
-		delwin(env->visu.arenaw);
-		delwin(env->visu.sidep.rootw);
-		delwin(env->visu.sidep.statusw);
-		echo();
-		nocbreak();
-		curs_set(TRUE);
-		reset_shell_mode();
-		endwin();
-	}
+		clean_visu(env);
 	write(2, "Error:\n", 7);
 	write(2, err_msg, ft_strlen(err_msg));
 	write(2, "\n", 1);
@@ -123,6 +126,8 @@ int		main(int argc, char **argv)
 		visu_loop(&vm);
 	else
 		loop(&vm);
+	if (vm.verbosity == VE_VISU)
+		clean_visu(&vm);
 	gb_freeall(&vm.gb);
 	return (0);
 }
