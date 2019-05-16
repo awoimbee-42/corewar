@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 19:24:05 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/14 21:13:43 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/16 13:50:53 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void		load_cor(t_vm *env, t_play *p, uint8_t *buffer)
 	gb = &env->gb;
 	fd = open(fname, O_RDONLY);
 	if (fd == -1)
-		exit_vm(env, gb_add(gb, ft_cprintf("%s '%s'", gb_add(gb, strerror(errno)), fname)));
+		exit_vm(env, gb_add(gb, ft_cprintf("%s '%s'", strerror(errno), fname)));
 	if ((size = lseek(fd, 0, SEEK_END)) <= sizeof(t_header))
 		exit_vm(env, gb_add(gb, ft_cprintf("Too small/empty file %s", fname)));
 	size -= sizeof(t_header);
@@ -42,7 +42,7 @@ static void		load_cor(t_vm *env, t_play *p, uint8_t *buffer)
 	lseek(fd, 0, SEEK_SET);
 	if (read(fd, &p->head, sizeof(t_header)) != sizeof(t_header)
 		|| read(fd, buffer, size) != size)
-		exit_vm(env, gb_add(gb, ft_cprintf("%s '%s'", gb_add(gb, strerror(errno)), fname)));
+		exit_vm(env, gb_add(gb, ft_cprintf("%s '%s'", strerror(errno), fname)));
 	p->head.magic = swap32_endian(p->head.magic);
 	p->head.prog_size = swap32_endian(p->head.prog_size);
 	if (p->head.magic != COREWAR_EXEC_MAGIC)
@@ -141,44 +141,44 @@ static void		set_remaining_play_id(t_vm *env)
 
 void		init_ncurses(t_vm *vm)
 {
+	int		dim[2];
+
 	vm->verbosity = -1;
+	vm->visu.op_per_sec = 10;
 	initscr();
 	noecho();
 	curs_set(FALSE);
 	start_color();
+	// cbreak();
+	nodelay(stdscr, TRUE);
 
 	vm->visu.rootw = newwin(68, 270, 0, 0);
 	vm->visu.arenaw = subwin(vm->visu.rootw, 64, 193, 2, 2);
-	vm->visu.sidepw = subwin(vm->visu.rootw, 68, 74, 0, 196);
+	vm->visu.sidep.rootw = subwin(vm->visu.rootw, 68, 74, 0, 196);
+	vm->visu.sidep.statusw = subwin(vm->visu.sidep.rootw, 64, 68, 2, 199);
 
-	init_pair(32, COLOR_WHITE, 0b00001000);
-	init_pair(1, COLOR_GREEN, COLOR_BLACK);
-	init_pair(2, COLOR_BLUE, COLOR_BLACK);
-	init_pair(3, COLOR_RED, COLOR_BLACK);
-	init_pair(4, COLOR_YELLOW, COLOR_BLACK);
+	getmaxyx(stdscr, dim[1], dim[0]);
+	if (dim[0] < 270 || dim[1] < 68)
+		exit_vm(vm, gb_add(&vm->gb,
+				ft_cprintf("Windows too small (%dx%d), minimum is (270x68)",
+					dim[0], dim[1])));
 
-	init_pair(DELT_PLAY_ID_CURS_COLOR, COLOR_BLACK, COLOR_GREEN);
-	init_pair(DELT_PLAY_ID_CURS_COLOR + 1, COLOR_BLACK, COLOR_BLUE);
-	init_pair(DELT_PLAY_ID_CURS_COLOR + 2, COLOR_BLACK, COLOR_RED);
-	init_pair(DELT_PLAY_ID_CURS_COLOR + 3, COLOR_BLACK, COLOR_YELLOW);
+	ft_memset(vm->mem_owner, PLAY0_COLOR - 1, MEM_SIZE);   // set default mem owner
 
-	// wbkgd(vm->visu.rootw, COLOR_PAIR(32));
-	wattron(vm->visu.rootw, COLOR_PAIR(32));
-	box(vm->visu.rootw, '*', '*');
-	wattroff(vm->visu.rootw, COLOR_PAIR(32));
-	wbkgd(vm->visu.arenaw, COLOR_PAIR(0));
+	init_pair(32, COLOR_WHITE, 0b00001000);                // contour
+	init_pair(PLAY0_COLOR - 1, COLOR_WHITE, COLOR_BLACK);  // unset mem color
+	init_pair(PLAY0_COLOR + 0, COLOR_GREEN, COLOR_BLACK);  // p1
+	init_pair(PLAY0_COLOR + 1, COLOR_BLUE, COLOR_BLACK);   // p2
+	init_pair(PLAY0_COLOR + 2, COLOR_RED, COLOR_BLACK);    // p3
+	init_pair(PLAY0_COLOR + 3, COLOR_YELLOW, COLOR_BLACK); // p4
 
-	wattron(vm->visu.sidepw, COLOR_PAIR(32));
-	box(vm->visu.sidepw, '*', '*');
-	wattroff(vm->visu.sidepw, COLOR_PAIR(32));
-	// wbkgd(vm->visu.sidepw, COLOR_PAIR(0));
-
-	wrefresh(vm->visu.rootw);
-	wrefresh(vm->visu.sidepw);
+	init_pair(CURS0_COLOR + -1, COLOR_BLACK, COLOR_WHITE);
+	init_pair(CURS0_COLOR + 0, COLOR_BLACK, COLOR_GREEN);
+	init_pair(CURS0_COLOR + 1, COLOR_BLACK, COLOR_BLUE);
+	init_pair(CURS0_COLOR + 2, COLOR_BLACK, COLOR_RED);
+	init_pair(CURS0_COLOR + 3, COLOR_BLACK, COLOR_YELLOW);
 
 	visu_init_memview(vm);
-
-	pthread_create(&vm->visu.thread, NULL, (void*(*)(void *))visu_loop, (void*)vm);
 }
 
 void		read_argv_init(t_vm *env, int argc, char **argv)

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 14:51:50 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/14 21:28:34 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/16 13:11:43 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,22 +36,28 @@ const t_vm_op g_op[16] = {
 
 };
 
+/*
+**	Lots of times we pass strerror() to exit_vm,
+**	this function should return a const char* (according to man),
+**		but macOS is a special little snowflake and returns a malloced string.
+*/
+
 void	exit_vm(t_vm *env, char *err_msg)
 {
-	size_t		msg_len;
-
-	if (env->visu.thread)
+	if (env->verbosity == -1)
 	{
 		delwin(env->visu.arenaw);
-		delwin(env->visu.sidepw);
+		delwin(env->visu.sidep.rootw);
+		delwin(env->visu.sidep.statusw);
 		echo();
+		nocbreak();
 		curs_set(TRUE);
+		reset_shell_mode();
 		endwin();
 	}
-	msg_len = ft_strlen(err_msg);
-	err_msg[msg_len] = '\n';
 	write(2, "Error:\n", 7);
-	write(2, err_msg, msg_len + 1);
+	write(2, err_msg, ft_strlen(err_msg));
+	write(2, "\n", 1);
 	gb_freeall(&env->gb);
 	exit(EXIT_FAILURE);
 }
@@ -67,24 +73,25 @@ int		usage(const char *pname)
 
 int		main(int argc, char **argv)
 {
-	t_vm		env;
+	t_vm		vm;
 
 	if (argc == 1)// || argc > MAX_ARGS_NUMBER)
 		return(usage(argv[0]));
-	ft_bzero(&env, sizeof(env));
-	gb_init_existing(&env.gb);
-	read_argv_init(&env, argc, argv);
-	env.verbosity = 0;
-	sleep(2);
-	if (env.verbosity > 0)
+	ft_bzero(&vm, sizeof(vm));
+	gb_init_existing(&vm.gb);
+	read_argv_init(&vm, argc, argv);
+	if (vm.verbosity > 0)
 	{
 		ft_printf("Our contestants are:\n");
-		for (int i = 0; i < env.players.len; ++i)
-			ft_printf("\tJean michel %s #%d avec un programme d'une taille de %ld octets\n", env.players.d[i].head.prog_name, env.players.d[i].id, env.players.d[i].head.prog_size);
+		for (int i = 0; i < vm.players.len; ++i)
+			ft_printf("\tJean michel %s #%d avec un programme d'une taille de %ld octets\n", vm.players.d[i].head.prog_name, vm.players.d[i].id, vm.players.d[i].head.prog_size);
 		ft_printf("Arena:\n");
-		print_memory(env.arena, MEM_SIZE);
+		print_memory(vm.arena, MEM_SIZE);
 	}
-	loop(&env);
-	gb_freeall(&env.gb);
+	if (vm.verbosity == -1)
+		visu_loop(&vm);
+	else
+		loop(&vm);
+	gb_freeall(&vm.gb);
 	return (0);
 }
