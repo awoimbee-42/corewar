@@ -61,6 +61,9 @@ void			load_cor_files(t_vm *env)
 	int			spacing;
 	int			offset;
 
+	if (env->players.len < 1)
+		exit_vm(env, gb_add(&env->gb,
+					ft_cprintf("Minimum number of players is one.")));
 	offset = 0;
 	spacing = MEM_SIZE / env->players.len;
 	i = -1;
