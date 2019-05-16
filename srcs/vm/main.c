@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 14:51:50 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/16 13:11:43 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/16 14:23:50 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "vm.h"
 
 const t_vm_op g_op[16] = {
-	//  name - nb_args -- args_types --                id -- nb_cycles -- uses_coding_byte -- modcarry -- dir2 -- ldx_mod --  fun
+	//  name - nb_args -- args_types --                          id -- nb_cycles -- uses_coding_byte -- modcarry -- dir2 -- ldx_mod --  fun
 	{"live", 1, {T_DIR},                                                1,   10, 0, 0, 0, 0, op_live},
 	{"ld",   2, {T_DIR | T_IND, T_REG},                                 2,    5, 1, 1, 0, 0, op_ld},
 	{"st",   2, {T_REG, T_IND | T_REG},                                 3,    5, 1, 0, 0, 0, op_st},

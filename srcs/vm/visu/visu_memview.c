@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 18:57:21 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/16 12:53:13 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/16 14:39:51 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,10 @@ void		visu_memview(t_vm *vm)
 		while (++i < 64)
 		{
 			wattron(vm->visu.arenaw, COLOR_PAIR(vm->mem_owner[mem + i]));
-			// wprintw(vm->visu.arenaw, " %02hhx", vm->mem_owner[mem + i]);
 			wprintw(vm->visu.arenaw, " %02hhx", vm->arena[mem + i]);
 			wattroff(vm->visu.arenaw, COLOR_PAIR(vm->mem_owner[mem + i]));
+			if (vm->mem_owner[mem + i] >= FRESH0_COLOR)
+				vm->mem_owner[mem + i] -= DELT_FRESH_COLOR;
 		}
 		mem += 64;
 		wprintw(vm->visu.arenaw, "\n", vm->arena[mem]);

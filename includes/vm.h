@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/16 13:28:59 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/16 14:37:25 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,24 +23,29 @@
 **	################
 */
 
-# define RESERVED_ID -2147483648
-# define COLOR_BRIGHT_BLACK 8
-# define COLOR_BRIGHT_RED 9
-# define COLOR_BRIGHT_GREEN 10
-# define COLOR_BRIGHT_YELLOW 11
-# define COLOR_BRIGHT_BLUE 12
-# define COLOR_BRIGHT_MAGENTA 13
-# define COLOR_BRIGHT_CYAN 14
-# define COLOR_BRIGHT_WHITE 15
+# define RESERVED_ID	-2147483648
+
+# define COLOR_BRIGHT_BLACK		8
+# define COLOR_BRIGHT_RED		9
+# define COLOR_BRIGHT_GREEN		10
+# define COLOR_BRIGHT_YELLOW	11
+# define COLOR_BRIGHT_BLUE		12
+# define COLOR_BRIGHT_MAGENTA	13
+# define COLOR_BRIGHT_CYAN		14
+# define COLOR_BRIGHT_WHITE		15
 
 /*
-**	These define the COLOR_PAIR we'll use for players and cursors,
+**	Define the COLOR_PAIR we'll use for players, cursors & newly written mem,
 **		1 PLAY0_COLOR-1 & CURS0_COLOR-1 are reserved for unset memory.
+**	/!\ code assumes CONTOUR_COLOR < FRESH0_COLOR
 */
 
+# define CONTOUR_COLOR		1
 # define PLAY0_COLOR		3
 # define DELT_CURS_COLOR	10
 # define CURS0_COLOR		13
+# define DELT_FRESH_COLOR	20
+# define FRESH0_COLOR		23
 
 /*
 **	#################

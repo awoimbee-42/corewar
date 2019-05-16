@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/12 22:29:22 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/16 13:44:00 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/16 14:38:11 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@ void		visu_update(t_vm *vm)
 {
 	visu_khandler(vm); // BIG PIECE OF HOT POO HERE
 
-	wattron(vm->visu.rootw, COLOR_PAIR(32));
+	wattron(vm->visu.rootw, COLOR_PAIR(CONTOUR_COLOR));
 	box(vm->visu.rootw, '*', '*');
-	wattroff(vm->visu.rootw, COLOR_PAIR(32));
-	wbkgd(vm->visu.arenaw, COLOR_PAIR(0));
+	wattroff(vm->visu.rootw, COLOR_PAIR(CONTOUR_COLOR));
+	// wbkgd(vm->visu.arenaw, COLOR_PAIR(0));
 
 	visu_sidepview(vm);
 	visu_memview(vm);
