@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 19:24:05 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/15 19:48:03 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/16 13:50:53 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,13 +149,13 @@ void		init_ncurses(t_vm *vm)
 	noecho();
 	curs_set(FALSE);
 	start_color();
+	// cbreak();
+	nodelay(stdscr, TRUE);
 
 	vm->visu.rootw = newwin(68, 270, 0, 0);
 	vm->visu.arenaw = subwin(vm->visu.rootw, 64, 193, 2, 2);
 	vm->visu.sidep.rootw = subwin(vm->visu.rootw, 68, 74, 0, 196);
-	vm->visu.sidep.statusw = subwin(vm->visu.sidep.rootw, 4, 68, 2, 199);
-
-box(vm->visu.sidep.statusw, '%', '%');
+	vm->visu.sidep.statusw = subwin(vm->visu.sidep.rootw, 64, 68, 2, 199);
 
 	getmaxyx(stdscr, dim[1], dim[0]);
 	if (dim[0] < 270 || dim[1] < 68)
@@ -163,39 +163,22 @@ box(vm->visu.sidep.statusw, '%', '%');
 				ft_cprintf("Windows too small (%dx%d), minimum is (270x68)",
 					dim[0], dim[1])));
 
-	ft_memset(vm->mem_owner, PLAY_COLOR_START, MEM_SIZE);
-	init_pair(32, COLOR_WHITE, 0b00001000);  // contour
-	init_pair(PLAY_COLOR_START, COLOR_WHITE, COLOR_BLACK);
+	ft_memset(vm->mem_owner, PLAY0_COLOR - 1, MEM_SIZE);   // set default mem owner
+
+	init_pair(32, COLOR_WHITE, 0b00001000);                // contour
+	init_pair(PLAY0_COLOR - 1, COLOR_WHITE, COLOR_BLACK);  // unset mem color
 	init_pair(PLAY0_COLOR + 0, COLOR_GREEN, COLOR_BLACK);  // p1
 	init_pair(PLAY0_COLOR + 1, COLOR_BLUE, COLOR_BLACK);   // p2
 	init_pair(PLAY0_COLOR + 2, COLOR_RED, COLOR_BLACK);    // p3
 	init_pair(PLAY0_COLOR + 3, COLOR_YELLOW, COLOR_BLACK); // p4
 
-	init_pair(CURS0_COLOR + 0, COLOR_BLACK, COLOR_WHITE);
-	init_pair(CURS0_COLOR + 1, COLOR_BLACK, COLOR_GREEN);
-	init_pair(CURS0_COLOR + 2, COLOR_BLACK, COLOR_BLUE);
-	init_pair(CURS0_COLOR + 3, COLOR_BLACK, COLOR_RED);
-	init_pair(CURS0_COLOR + 4, COLOR_BLACK, COLOR_YELLOW);
+	init_pair(CURS0_COLOR + -1, COLOR_BLACK, COLOR_WHITE);
+	init_pair(CURS0_COLOR + 0, COLOR_BLACK, COLOR_GREEN);
+	init_pair(CURS0_COLOR + 1, COLOR_BLACK, COLOR_BLUE);
+	init_pair(CURS0_COLOR + 2, COLOR_BLACK, COLOR_RED);
+	init_pair(CURS0_COLOR + 3, COLOR_BLACK, COLOR_YELLOW);
 
-
-	// init_pair(DELT_CURS_COLOR + 5, 232, 255); //useless
-
-
-	wattron(vm->visu.rootw, COLOR_PAIR(32));
-	box(vm->visu.rootw, '*', '*');
-	wattroff(vm->visu.rootw, COLOR_PAIR(32));
-	wbkgd(vm->visu.arenaw, COLOR_PAIR(0));
-
-	wattron(vm->visu.sidep.rootw, COLOR_PAIR(32));
-	box(vm->visu.sidep.rootw, '*', '*');
-	wattroff(vm->visu.sidep.rootw, COLOR_PAIR(32));
-
-	wrefresh(vm->visu.rootw);
-	wrefresh(vm->visu.sidep.rootw);
-	wrefresh(vm->visu.sidep.statusw);
 	visu_init_memview(vm);
-
-	// pthread_create(&vm->visu.keys_handler, NULL, visu_khandler, (void*)vm);
 }
 
 void		read_argv_init(t_vm *env, int argc, char **argv)

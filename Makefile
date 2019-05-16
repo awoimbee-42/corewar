@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/05/15 18:28:04 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/05/16 13:03:47 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ SRC_NAME_CORE =	main.c								\
 				ops.c								\
 				arena_mem_load.c					\
 				arena_mem_write.c					\
+				run_cycle.c							\
 				\
 				visu/visu_update.c					\
 				visu/visu_memview.c					\

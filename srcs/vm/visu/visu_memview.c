@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 18:57:21 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/15 19:47:44 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/16 12:53:13 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void		visu_init_memview(t_vm *vm)
 			if (mem_pc % 64 == 0)
 				wprintw(vm->visu.arenaw, "\n");
 			wprintw(vm->visu.arenaw, " %02hhx", vm->arena[mem_pc]);
-			vm->mem_owner[mem_pc] = i + 1;
+			vm->mem_owner[mem_pc] = i + PLAY0_COLOR;
 			mem_pc++;
 			mem++;
 		}
@@ -72,6 +72,7 @@ void		visu_memview(t_vm *vm)
 		while (++i < 64)
 		{
 			wattron(vm->visu.arenaw, COLOR_PAIR(vm->mem_owner[mem + i]));
+			// wprintw(vm->visu.arenaw, " %02hhx", vm->mem_owner[mem + i]);
 			wprintw(vm->visu.arenaw, " %02hhx", vm->arena[mem + i]);
 			wattroff(vm->visu.arenaw, COLOR_PAIR(vm->mem_owner[mem + i]));
 		}

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/15 19:45:46 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/16 13:28:59 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,14 @@
 # define COLOR_BRIGHT_CYAN 14
 # define COLOR_BRIGHT_WHITE 15
 
-# define PLAY_COLOR_START	2
-# define DELT_CURS_COLOR	10
-# define PLAY0_COLOR		PLAY_COLOR_START + 1
-# define CURS0_COLOR		PLAY0_COLOR + DELT_CURS_COLOR
+/*
+**	These define the COLOR_PAIR we'll use for players and cursors,
+**		1 PLAY0_COLOR-1 & CURS0_COLOR-1 are reserved for unset memory.
+*/
 
-# define OPS_PER_SEC 10.
+# define PLAY0_COLOR		3
+# define DELT_CURS_COLOR	10
+# define CURS0_COLOR		13
 
 /*
 **	#################
@@ -113,7 +115,7 @@ typedef struct	s_vecplay
 typedef struct	s_visu
 {
 	float				op_per_sec;
-	pthread_t			keys_handler;
+	t_bool				paused;
 	WINDOW				*rootw;
 	WINDOW				*arenaw;
 	struct
@@ -218,13 +220,14 @@ int				usage(const char *pname);
 void			exit_vm(t_vm *env, char *err_msg);
 
 void			loop(t_vm *env);
+void			visu_loop(t_vm *vm);
 
 /* ops.c */
 void			launch_instruction(t_vm *vm, t_play *play, t_proc *proc);
 
 /* visu */
 void			visu_update(t_vm *vm);
-void			*visu_khandler(void *vm);
+void			visu_khandler(t_vm *vm);
 void			visu_init_memview(t_vm *vm);
 void			visu_memview(t_vm *vm);
 void			visu_sidepview(t_vm *vm);
