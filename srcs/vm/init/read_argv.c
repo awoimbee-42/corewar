@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 19:24:05 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/16 19:24:20 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/16 23:35:58 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ void			set_verbosity(t_vm *vm, char *input)
 {
 	if (vm->verbosity == VE_VISU)
 		exit_vm(vm, "Cannot set verbosity in visual mode!");
+	if (!input)
+		exit_vm(vm, "Mbenjell fuck off");
 	vm->verbosity = ft_atoi(input);
 	if (vm->verbosity < 0)
 		vm->verbosity = -2;
@@ -88,6 +90,8 @@ void			read_argv_init(t_vm *env, int argc, char **argv)
 		else
 			i = read_champ(env, argv, i);
 	}
+	if (!env->players.len)
+		exit_vm(env, "At least one player is required");
 	set_remaining_play_id(env);
 	load_cor_files(env); // also sets the PC & r0
 	if (env->verbosity == VE_VISU)
