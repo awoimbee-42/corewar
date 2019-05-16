@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   write.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpoirier <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 18:55:36 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/14 20:11:11 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/16 20:58:44 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void		write_output(t_asm *my_asm)
 {
 	int		fd;
 
-	fd = open(my_asm->file_name, O_CREAT | O_WRONLY, 0777);
+	fd = open(my_asm->file_name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd >= 0)
 		write(fd, my_asm->output, my_asm->cursor);
 	else
