@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 13:03:25 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/17 22:45:08 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/17 23:15:17 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,19 @@
 
 //	si le cycle_to_die tombe en meme temps qu'une instruction live on fait quoi ?
 //	quand die_cycle_checks == MAX_CHECKS on décrémente de 1 ou de CYCLE_DELTA ?
+
+void			launch_instruction(t_vm *vm, t_play *play, t_proc *proc)
+{
+	int		op_id;
+	int		reg_num[MAX_ARGS_NUMBER];
+
+	op_id = vm->arena[proc->pc] - 1;
+	if (load_arg_into_regs(vm, play, proc, reg_num))
+		g_op[op_id].fun(vm, play, proc, reg_num);
+	proc->pc = proc->new_pc % MEM_SIZE;
+	// if (vm->verbosity >= VE_OPS)
+	// 	ve_print_operation(vm, play, proc, reg_num);
+}
 
 static void		read_instruction(t_proc *proc, t_play *play, t_vm *env)
 {

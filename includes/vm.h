@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/17 20:53:41 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/17 23:21:22 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 **	Verbosity levels are defined so new ones can be added in between easily
 */
 
+# define VE_VI_NOTINIT	-2
 # define VE_VISU		-1
 # define VE_WINNER		0
 # define VE_AFF			1
@@ -267,6 +268,9 @@ void			read_argv_init(t_vm *env, int argc, char **argv);
 /*
 **	OPs
 */
+int			read_one_arg(t_vm *vm, t_proc *proc, uint8_t cb, int cur_arg);
+int			load_arg_into_regs(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3]);
+
 void		op_live(t_vm *vm, t_play *p, t_proc *proc, int reg_num[3]);
 void		op_ld(t_vm *vm, t_play *p, t_proc *proc, int reg_num[3]);
 void		op_st(t_vm *vm, t_play *p, t_proc *proc, int reg_num[3]);

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 19:24:05 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/16 23:35:58 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/17 23:22:47 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,13 @@ static void		set_remaining_play_id(t_vm *env)
 
 void			set_verbosity(t_vm *vm, char *input)
 {
-	if (vm->verbosity == VE_VISU)
+	if (vm->verbosity == VE_VISU || vm->verbosity == VE_VI_NOTINIT)
 		exit_vm(vm, "Cannot set verbosity in visual mode!");
 	if (!input)
 		exit_vm(vm, "Mbenjell fuck off");
 	vm->verbosity = ft_atoi(input);
 	if (vm->verbosity < 0)
-		vm->verbosity = -2;
+		vm->verbosity = 0;
 	if (input == NULL
 		|| ft_strlen(input) > 10
 		|| vm->verbosity < 0)
@@ -84,7 +84,7 @@ void			read_argv_init(t_vm *env, int argc, char **argv)
 		if (!ft_strcmp(argv[i], "-dump"))
 			read_dump_cycle(env, argv[++i]);
 		else if (!ft_strcmp(argv[i], "-visu") || !ft_strcmp(argv[i], "-vi"))
-			env->verbosity = -1;
+			env->verbosity = VE_VI_NOTINIT;
 		else if (!ft_strcmp(argv[i], "-verbose") || !ft_strcmp(argv[i], "-ve"))
 			set_verbosity(env, argv[++i]);
 		else
@@ -94,6 +94,6 @@ void			read_argv_init(t_vm *env, int argc, char **argv)
 		exit_vm(env, "At least one player is required");
 	set_remaining_play_id(env);
 	load_cor_files(env); // also sets the PC & r0
-	if (env->verbosity == VE_VISU)
+	if (env->verbosity == VE_VI_NOTINIT)
 		init_ncurses(env);
 }
