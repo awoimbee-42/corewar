@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 22:54:47 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/16 22:57:54 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/17 17:34:50 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int		circumem(int ptr)
 {
 	while (ptr < 0)
-		ptr = MEM_SIZE - ptr;
+		ptr = MEM_SIZE + ptr;
 	while (ptr >= MEM_SIZE)
 		ptr = ptr - MEM_SIZE;
 	return (ptr);
