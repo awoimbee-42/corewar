@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 13:03:25 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/17 23:15:17 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/18 00:09:03 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,10 @@
 
 void			launch_instruction(t_vm *vm, t_play *play, t_proc *proc)
 {
-	int		op_id;
 	int		reg_num[MAX_ARGS_NUMBER];
 
-	op_id = vm->arena[proc->pc] - 1;
 	if (load_arg_into_regs(vm, play, proc, reg_num))
-		g_op[op_id].fun(vm, play, proc, reg_num);
+		g_op[proc->op_id].fun(vm, play, proc, reg_num);
 	proc->pc = proc->new_pc % MEM_SIZE;
 	// if (vm->verbosity >= VE_OPS)
 	// 	ve_print_operation(vm, play, proc, reg_num);
@@ -33,15 +31,18 @@ static void		read_instruction(t_proc *proc, t_play *play, t_vm *env)
 	int			op_id;
 
 	op_id = env->arena[proc->pc] - 1;
-	if (op_id < 0 || 15 < op_id)
+	if (0 <= op_id && op_id <= 15)
+	{
+		proc->op_id = op_id;
+		proc->op_cycles = g_op[op_id].cycles;
+	}
+	else
 	{
 		if (proc->new_pc == 0)
 			proc->pc = (proc->pc + 1) % MEM_SIZE;
 		proc->new_pc = 0;
 		proc->op_cycles = 0;
 	}
-	else
-		proc->op_cycles = g_op[op_id].cycles;
 }
 
 static int		loop_player(t_vm *env, t_play *p)

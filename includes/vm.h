@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/17 23:21:22 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/18 00:05:55 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ typedef struct	s_proc
 	t_register			pc;
 	t_register			new_pc;
 	int					live;
+	int					op_id;    // The op code inside the arena can be updated while the process is waiting fo op_cycles !!
 	int					op_cycles;
 	t_bool				carry;
 }				t_proc;

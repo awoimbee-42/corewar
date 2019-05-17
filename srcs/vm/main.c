@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 14:51:50 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/17 01:20:25 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/17 23:49:02 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,19 +68,19 @@ void	exit_vm(t_vm *env, char *err_msg)
 int		usage(const char *pname)
 {
 	ft_printf("<bold>Usage: %s"
-		" [-visu | -vi]"
-		" [-verbose n | -ve n]"
+		" [-visu | verbose]"
 		" [-dump nbr_cycles (not implemented yet)]"
 		" [[-n number] champion.cor]<rst>\n"
-		"\t-visu or -vi enables the ncurses visualizer mode\n"
-		"\t-verbosity or -ve sets the verbosity level\n"
+		"\t-vi(su)      : enable the ncurses visualizer mode\n"
+		"\t-ve(rbosity) : verbosity level, it is cumulative\n"
 		"\t\t0: winner (le joueur x(nom_champion) a gagne)\n"
 		"\t\t1: aff\n"
 		"\t\t2: live {red}<- DEFAULT SETTING{eoc}\n"
 		"\t\t3: greetings message (list of competitors & dump at start)\n"
 		"\t\t4: player death\n"
 		"\t\t5: process creation-death\n"
-		"\t\t6: Maximum level\n",
+		"\t\t6: OPs\n"
+		"\t\t7: Maximum level ? (deprecated)\n",
 		pname);
 	return (0);
 }
