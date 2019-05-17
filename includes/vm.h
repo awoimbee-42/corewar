@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/17 01:21:08 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/17 20:53:41 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@
 # define VE_GREET		3
 # define VE_PLAYDEATH	4
 # define VE_PROCDEATH	5
-# define VE_ALL			6
+# define VE_OPS			6
+# define VE_ALL			7 // deprecated
 
 /*
 **	Ncurses sucks and doesnt define all the colors

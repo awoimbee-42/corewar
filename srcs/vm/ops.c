@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 14:56:02 by skiessli          #+#    #+#             */
-/*   Updated: 2019/05/17 20:17:16 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/17 22:13:04 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ void			op_live(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 void			op_ld(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 {
 	proc->carry = proc->reg[reg_num[0]] ? 0 : 1;
-	printf("In ld, carry is %d\n", proc->carry);
 	proc->reg[reg_num[1]] = proc->reg[reg_num[0]];
 }
 
@@ -168,7 +167,6 @@ int				check_valid_return_size(unsigned char cb, t_arg_type types, t_bool dir2)
 int				read_one_arg(t_vm *vm, t_proc *proc, uint8_t cb, int cur_arg)
 {
 	int		op_id;
-	// int		size;
 	int		tmp;
 
 	op_id = vm->arena[proc->pc] - 1;
@@ -203,7 +201,9 @@ int			load_arg_into_regs(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 	int		op_id;
 	uint8_t	cb;
 	int		i;
+	t_bool	fail;
 
+	fail = FALSE;
 	op_id = vm->arena[proc->pc] - 1;
 	if (g_op[op_id].coding_byte == TRUE)
 	{
@@ -214,7 +214,7 @@ int			load_arg_into_regs(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 		{
 			reg_num[i] = read_one_arg(vm, proc, (cb >> (6 - i * 2)) & 0b11, i);
 			if (reg_num[i] == -1)
-				return (0);
+				fail = TRUE;
 			i++;
 		}
 	}
@@ -223,31 +223,43 @@ int			load_arg_into_regs(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 		proc->new_pc = (proc->pc + 1) % MEM_SIZE;
 		reg_num[0] = read_one_arg(vm, proc, T_DIR, 0);
 		if (reg_num[0] == -1)
-			return (0);
-		// proc->new_pc = (proc->new_pc + 2) % MEM_SIZE;
+			fail = TRUE;
 	}
-	// g_op[op_id].fun(vm, play, proc, reg_num);
-	return (1);
+	return (!fail);
 }
 
+// void			ve_print_operation(t_vm *vm, t_play *play, t_proc *proc, int reg_num[MAX_ARGS_NUMBER])
+// {
+// 	char		*args;
+// 	int			i;
+// 	int			op_id;
 
-
+// 	args = NULL;
+// 	op_id = vm->arena[proc->pc] - 1; // not so great
+// 	i = -1;
+// 	while (++i < g_op[op_id].nb_args && reg_num[i] != -1)
+// 	{
+// 		ft_printf("Track the uninitialized: %d %d (%d) %d\n", op_id,  g_op[op_id].nb_args, proc->reg[reg_num[i]], reg_num[i]);
+// 		ft_strcat_join(&args, ft_cprintf(" %d", proc->reg[reg_num[i]]));
+// 	}
+// 	if (i != g_op[op_id].nb_args)
+// 		ft_strcat_join(&args, ft_cprintf(" {RED}_{eoc}"));
+// 	ft_printf("P   %d | %s %s\n", play->id, g_op[op_id].name, args);
+// }
 
 void			launch_instruction(t_vm *vm, t_play *play, t_proc *proc)
 {
 	int		op_id;
-	int		reg_num[3];
+	int		reg_num[MAX_ARGS_NUMBER];
 
 	op_id = vm->arena[proc->pc] - 1;
 	if (!load_arg_into_regs(vm, play, proc, reg_num))
 	{
-		if (g_op[op_id].coding_byte == 1)
-			proc->pc = (proc->pc + 2) % MEM_SIZE;
-		else
-			proc->pc = (proc->pc + 1) % MEM_SIZE;
-		 // I dunno what is needed here
-		return ;
+		ft_printf("fail\n");
 	}
-	g_op[op_id].fun(vm, play, proc, reg_num);
+	else
+		g_op[op_id].fun(vm, play, proc, reg_num);
 	proc->pc = proc->new_pc % MEM_SIZE;
+	// if (vm->verbosity >= VE_OPS)
+	// 	ve_print_operation(vm, play, proc, reg_num);
 }
