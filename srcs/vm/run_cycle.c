@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 13:03:25 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/17 22:41:16 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/17 22:45:08 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@ static void		read_instruction(t_proc *proc, t_play *play, t_vm *env)
 	op_id = env->arena[proc->pc] - 1;
 	if (op_id < 0 || 15 < op_id)
 	{
-		//proc->pc = (proc->pc + 1) % MEM_SIZE;
+		if (proc->new_pc == 0)
+			proc->pc = (proc->pc + 1) % MEM_SIZE;
+		proc->new_pc = 0;
 		proc->op_cycles = 0;
 	}
 	else

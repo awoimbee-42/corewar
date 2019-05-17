@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 14:56:02 by skiessli          #+#    #+#             */
-/*   Updated: 2019/05/17 22:39:59 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/17 22:48:07 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,12 +215,10 @@ int			load_arg_into_regs(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 		proc->new_pc = (proc->pc + 2) % MEM_SIZE;
 		while (i < g_op[op_id].nb_args)
 		{
-			printf("Reading at %d\n", proc->new_pc);
 			reg_num[i] = read_one_arg(vm, proc, (cb >> (6 - i * 2)) & 0b11, i);
 			if (reg_num[i] == -1)
 				fail = TRUE;
 			i++;
-			printf("Reading, after, at %d\n", proc->new_pc);
 		}
 	}
 	else
