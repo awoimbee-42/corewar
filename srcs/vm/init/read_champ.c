@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 18:08:33 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/16 19:23:33 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/16 23:39:03 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,6 @@ void			load_cor_files(t_vm *env)
 	int			spacing;
 	int			offset;
 
-	if (env->players.len < 1)
-		exit_vm(env, gb_add(&env->gb,
-					ft_cprintf("Minimum number of players is one.")));
 	offset = 0;
 	spacing = MEM_SIZE / env->players.len;
 	i = -1;

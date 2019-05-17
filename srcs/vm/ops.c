@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 14:56:02 by skiessli          #+#    #+#             */
-/*   Updated: 2019/05/16 23:21:28 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/17 20:14:26 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ void			op_live(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 
 void			op_ld(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 {
+	proc->carry = proc->reg[reg_num[0]] ? 0 : 1;
+	printf("In ld, carry is %d\n", proc->carry);
 	proc->reg[reg_num[1]] = proc->reg[reg_num[0]];
 }
 
@@ -66,6 +68,7 @@ void			op_st(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 
 void			op_add(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 {
+	proc->carry = proc->reg[reg_num[0]] + proc->reg[reg_num[1]] ? 0 : 1;
 	proc->reg[reg_num[2]] = proc->reg[reg_num[0]] + proc->reg[reg_num[1]];
 }
 
@@ -76,6 +79,7 @@ void			op_sub(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 
 void			op_and(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 {
+	proc->carry = proc->reg[reg_num[0]] & proc->reg[reg_num[1]] ? 0 : 1;
 	proc->reg[reg_num[2]] = proc->reg[reg_num[0]] & proc->reg[reg_num[1]];
 }
 
@@ -91,6 +95,8 @@ void			op_xor(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 
 void			op_zjmp(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 {
+	printf("Carry is : %d\n", proc->carry);
+	printf("Value is : %d\n", circumem(proc->reg[reg_num[0] % IDX_MOD]));
 	if (proc->carry)
 		proc->new_pc = proc->pc + circumem(proc->reg[reg_num[0] % IDX_MOD]);
 }
@@ -118,11 +124,17 @@ void			op_fork(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 
 void			op_lld(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 {
+	proc->carry = proc->reg[reg_num[0]] ? 0 : 1;
 	proc->reg[reg_num[1]] = proc->reg[reg_num[0]];
 }
 
 void			op_lldi(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 {
+	int		res;
+
+	res = load32(vm, proc->pc + (proc->reg[reg_num[0]] + proc->reg[reg_num[1]]));
+	proc->carry = res ? 0 : 1;
+	// Might segfault ?
 	proc->reg[reg_num[2]] = load32(vm, proc->pc + (proc->reg[reg_num[0]] + proc->reg[reg_num[1]]));
 }
 
@@ -236,12 +248,8 @@ void			launch_instruction(t_vm *vm, t_play *play, t_proc *proc)
 		else
 			proc->pc = (proc->pc + 1) % MEM_SIZE;
 		 // I dunno what is needed here
-		 if (g_op[op_id].modcarry)
-		 	proc->carry = 0;
 		return ;
 	}
 	g_op[op_id].fun(vm, play, proc, reg_num);
-	if (g_op[op_id].modcarry)
-		proc->carry = 1;
 	proc->pc = proc->new_pc % MEM_SIZE;
 }
