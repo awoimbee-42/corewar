@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 14:56:02 by skiessli          #+#    #+#             */
-/*   Updated: 2019/05/17 20:14:26 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/17 20:17:16 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,12 +93,10 @@ void			op_xor(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 	proc->reg[reg_num[2]] = proc->reg[reg_num[0]] ^ proc->reg[reg_num[1]];
 }
 
-void			op_zjmp(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
+void			op_zjmp(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3]) // I don't understand how zjmp works..
 {
-	printf("Carry is : %d\n", proc->carry);
-	printf("Value is : %d\n", circumem(proc->reg[reg_num[0] % IDX_MOD]));
 	if (proc->carry)
-		proc->new_pc = proc->pc + circumem(proc->reg[reg_num[0] % IDX_MOD]);
+		proc->new_pc = circumem(proc->pc + (proc->reg[reg_num[0]] % IDX_MOD));
 }
 
 void			op_ldi(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
@@ -110,9 +108,9 @@ void			op_sti(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 {
 	int addr;
 
-	addr = (proc->reg[reg_num[1]] + proc->reg[reg_num[2]]) % IDX_MOD;
+	addr = proc->pc + (proc->reg[reg_num[1]] + proc->reg[reg_num[2]]) % IDX_MOD;
 	// ft_fprintf(2, "addr: %d\nreg_num[1]: %d, reg_num[2]: %d\n", addr, proc->reg[reg_num[1]], proc->reg[reg_num[2]]); //PUUUTE
-	write32(vm, proc, proc->pc + addr, proc->reg[reg_num[0]]);
+	write32(vm, proc, addr, proc->reg[reg_num[0]]);
 }
 
 void			op_fork(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
