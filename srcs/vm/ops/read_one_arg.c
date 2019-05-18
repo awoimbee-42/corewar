@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/17 22:57:41 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/18 00:08:44 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/18 14:20:55 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static int		load_ind(t_vm *vm, t_proc *proc, int cur_arg)
 
 int				read_one_arg(t_vm *vm, t_proc *proc, uint8_t cb, int cur_arg)
 {
-	int		tmp;
+	// int		tmp;
 
 	if (cb == REG_CODE)
 		return (load_reg(vm, proc, cur_arg));

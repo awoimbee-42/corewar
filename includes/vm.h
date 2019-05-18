@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/18 00:05:55 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/18 15:48:28 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
 # define VE_PLAYDEATH	4
 # define VE_PROCDEATH	5
 # define VE_OPS			6
-# define VE_ALL			7 // deprecated
+# define VE_CYCLE		7
 
 /*
 **	Ncurses sucks and doesnt define all the colors
@@ -186,6 +186,7 @@ typedef struct	s_vm
 	t_visu				visu;
 	int					verbosity;
 	int					cycle_dump;
+	int					dump_width;
 	int					cycle_die;
 	int					cycle_curr;
 	int					die_cycle_checks;

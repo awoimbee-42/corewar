@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 17:12:50 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/16 20:01:31 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/18 15:36:16 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	print_memory(t_vm *env, const void *addr)
 	while (size)
 	{
 		write(1, "0x", 2);
-		ft_putnbr_hex((ptr - (uint8_t *)addr), 4);	
+		ft_putnbr_hex((ptr - (uint8_t *)addr), 4);
 		write(1, " : ", 3);
 		/*if (ptr - 32 >= (uint8_t*)addr && !ft_memcmp(ptr - 32, ptr, size > 32 ? 32 : size))
 		{
@@ -58,13 +58,13 @@ void	print_memory(t_vm *env, const void *addr)
 		else*/
 		{
 			a = 0;
-			while (a < 64 && a < size)
+			while (a < env->dump_width && a < size)
 			{
 				ft_putnbr_hex(*(ptr + a), 2);
 				write(1, " ", 1);
 				a++;
 			}
-			while (a < 64)
+			while (a < env->dump_width)
 			{
 				write(1, "   ", 3);
 				// if (a % 2)
@@ -72,12 +72,12 @@ void	print_memory(t_vm *env, const void *addr)
 				a++;
 			}
 			if (env->verbosity >= VE_GREET)
-				sp_putstr(ptr, size > 64 ? 64 : size);
+				sp_putstr(ptr, size > env->dump_width ? env->dump_width : size);
 			write(1, "\n", 1);
 		}
 
-		size -= 64;
-		ptr += 64;
+		size -= env->dump_width;
+		ptr += env->dump_width;
 
 	}
 }

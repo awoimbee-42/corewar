@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 19:24:05 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/17 23:22:47 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/18 15:46:56 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,32 @@
 
 static void		read_dump_cycle(t_vm *env, char *input)
 {
+	if (env->dump_width)
+		exit_vm(env, "Dump cycle set multiple times !");
+	env->dump_width = 32;
 	if (input == NULL
 		|| ft_strlen(input) > 10
 		|| (env->cycle_dump = ft_atoi(input)) <= 0)
 		exit_vm(env, gb_add(&env->gb,
 			ft_cprintf("Dump cycle badly formatted ('%s')", input)));
+}
+
+static void		read_ndump_cycle(t_vm *env, char **argv, int *agid)
+{
+	if (env->dump_width)
+		exit_vm(env, "Dump cycle set multiple times !");
+	++(*agid);
+	if (argv[*agid] == NULL
+		|| ft_strlen(argv[*agid]) > 10
+		|| (env->dump_width = ft_atoi(argv[*agid])) <= 0)
+		exit_vm(env, gb_add(&env->gb,
+			ft_cprintf("Dump width badly formatted ('%s')", argv[*agid])));
+	++(*agid);
+	if (argv[*agid] == NULL
+		|| ft_strlen(argv[*agid]) > 10
+		|| (env->cycle_dump = ft_atoi(argv[*agid])) <= 0)
+		exit_vm(env, gb_add(&env->gb,
+			ft_cprintf("Dump cycle badly formatted ('%s')", argv[*agid])));
 }
 
 static void		set_remaining_play_id(t_vm *env)
@@ -80,9 +101,10 @@ void			read_argv_init(t_vm *env, int argc, char **argv)
 	i = 0;
 	while (++i < argc)
 	{
-		// ft_printf("--reading argument #%d--\n", i); // REMOVE
 		if (!ft_strcmp(argv[i], "-dump"))
 			read_dump_cycle(env, argv[++i]);
+		else if (!ft_strcmp(argv[i], "-ndump"))
+			read_ndump_cycle(env, argv, &i);
 		else if (!ft_strcmp(argv[i], "-visu") || !ft_strcmp(argv[i], "-vi"))
 			env->verbosity = VE_VI_NOTINIT;
 		else if (!ft_strcmp(argv[i], "-verbose") || !ft_strcmp(argv[i], "-ve"))

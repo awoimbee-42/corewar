@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 13:03:25 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/18 00:09:03 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/18 15:24:32 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ int				run_vm_cycle(t_vm *vm)
 	int			alive;
 
 	++vm->cycle_curr;
-	if (vm->verbosity >= VE_ALL)
+	if (vm->verbosity >= VE_CYCLE)
 		ft_printf("{PNK}cycle: %lu{eoc}\n", vm->cycle_curr);
 	check_live(vm);
 	i = vm->players.len;

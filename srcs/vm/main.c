@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 14:51:50 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/17 23:49:02 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/18 15:27:48 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,11 @@ void	exit_vm(t_vm *env, char *err_msg)
 int		usage(const char *pname)
 {
 	ft_printf("<bold>Usage: %s"
-		" [-visu | verbose]"
-		" [-dump nbr_cycles (not implemented yet)]"
+		" [-visu | -verbose]"
+		" [-dump nbr_cycles | -ndump width nbr_cycles]"
 		" [[-n number] champion.cor]<rst>\n"
+		"\t-dump        : Dumps the VMs 'RAM' after nbr_cycles, 32bits/line\n"
+		"\t-ndump       : Dumps the VMs 'RAM' after nbr_cycles, nbits/line\n"
 		"\t-vi(su)      : enable the ncurses visualizer mode\n"
 		"\t-ve(rbosity) : verbosity level, it is cumulative\n"
 		"\t\t0: winner (le joueur x(nom_champion) a gagne)\n"
@@ -80,29 +82,10 @@ int		usage(const char *pname)
 		"\t\t4: player death\n"
 		"\t\t5: process creation-death\n"
 		"\t\t6: OPs\n"
-		"\t\t7: Maximum level ? (deprecated)\n",
+		"\t\t7: Show Cycles\n",
 		pname);
 	return (0);
 }
-
-/*
-	/!\ Le dernier joueur aura le premier processus dans l’ordre d’exécution.
-	NEED TO ADD DUMP
-		(Au bout de nbr_cycles cycles d’exécution,
-		dump la mémoire sur la sortie stan- dard,
-		puis quitte la partie.
-		La mémoire doit être dumpée au format hexadécimal,
-		avec 32 octets par ligne.)
-	Verbosity: TODO
-		-1: visu
-		0:  winner (le joueur x(nom_champion) a gagne)
-		1:  aff
-DEFAULT	2:  live (un processus dit que le joueur x(nom_champion) est en vie)  <- DEFAULT SETTING
-		3:  greetings message (list of competitors & dump at start)
-		4:  player death
-		5:  process creation-death
-		6:  PC info
-*/
 
 int		main(int argc, char **argv)
 {
