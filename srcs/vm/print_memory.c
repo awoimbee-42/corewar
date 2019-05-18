@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 17:12:50 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/18 15:36:16 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/18 15:54:05 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ void	print_memory(t_vm *env, const void *addr)
 	int				size;
 	const uint8_t	*ptr;
 
+	if (env->dump_width <= 0)
+		env->dump_width = 64;
 	size = MEM_SIZE;
 	ptr = addr;
 	while (size)
