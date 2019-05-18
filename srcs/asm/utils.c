@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 18:13:30 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/14 20:02:51 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/17 01:27:58 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@
 
 void	fail_msg(t_asm *my_asm, char *s)
 {
-	size_t			len;
+	// size_t			len; //set but not used
 
-	len = ft_strlen(s);
+	// len = ft_strlen(s);
 	if (my_asm)
 		ft_printf("%s on [%d:%d]\n", s, my_asm->curr_line, my_asm->curr_char);
 	else

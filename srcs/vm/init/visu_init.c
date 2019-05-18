@@ -6,12 +6,13 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 18:06:53 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/16 19:29:41 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/17 23:22:26 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 #include "init.h"
+#include <signal.h>
 
 static void	init_ncwindows(t_vm *vm)
 {
@@ -33,7 +34,7 @@ static void	init_ncwindows(t_vm *vm)
 
 void		init_ncurses(t_vm *vm)
 {
-	vm->verbosity = -1;
+	vm->verbosity = VE_VISU;
 	vm->visu.op_per_sec = 10;
 	vm->visu.paused = TRUE;
 	initscr();

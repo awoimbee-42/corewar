@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 13:03:25 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/16 20:15:23 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/18 00:09:03 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,23 +15,33 @@
 //	si le cycle_to_die tombe en meme temps qu'une instruction live on fait quoi ?
 //	quand die_cycle_checks == MAX_CHECKS on décrémente de 1 ou de CYCLE_DELTA ?
 
+void			launch_instruction(t_vm *vm, t_play *play, t_proc *proc)
+{
+	int		reg_num[MAX_ARGS_NUMBER];
+
+	if (load_arg_into_regs(vm, play, proc, reg_num))
+		g_op[proc->op_id].fun(vm, play, proc, reg_num);
+	proc->pc = proc->new_pc % MEM_SIZE;
+	// if (vm->verbosity >= VE_OPS)
+	// 	ve_print_operation(vm, play, proc, reg_num);
+}
+
 static void		read_instruction(t_proc *proc, t_play *play, t_vm *env)
 {
 	int			op_id;
 
 	op_id = env->arena[proc->pc] - 1;
-	if (op_id < 0 || 15 < op_id)
+	if (0 <= op_id && op_id <= 15)
 	{
-		if (env->verbosity >= VE_ALL)
-			ft_printf("\t\t\t{red}load fail op: %#x -> %lld, PC: %d{eoc}\n", op_id, op_id, proc->pc);                             // ignore and continue reading until next valid instruction byte
-		proc->pc = (proc->pc + 1) % MEM_SIZE;
-		proc->op_cycles = 0;
+		proc->op_id = op_id;
+		proc->op_cycles = g_op[op_id].cycles;
 	}
 	else
 	{
-		proc->op_cycles = g_op[op_id].cycles;
-		if (env->verbosity >= VE_ALL)
-			ft_printf("\t\t\t{blu}load OP: %s PC: %d{eoc}\n", g_op[op_id].name, proc->pc);
+		if (proc->new_pc == 0)
+			proc->pc = (proc->pc + 1) % MEM_SIZE;
+		proc->new_pc = 0;
+		proc->op_cycles = 0;
 	}
 }
 
@@ -39,17 +49,13 @@ static int		loop_player(t_vm *env, t_play *p)
 {
 	int			i;
 
-	// if (env->verbosity >= VE_ALL)
-	// 	ft_printf("\tPlayer: %d\n", p->id);
 	i = p->procs.len;
 	while (i-- != 0)
 	{
-		// if (env->verbosity >= VE_ALL)
-		// 	ft_printf("\t\tProcess: %d\n", i);
 		--p->procs.d[i].op_cycles;
-		if (p->procs.d[i].op_cycles == 0 && --p->procs.d[i].op_cycles) // launch instruction
+		if (p->procs.d[i].op_cycles == 0 && --p->procs.d[i].op_cycles)
 			launch_instruction(env, p, &p->procs.d[i]);
-		if (p->procs.d[i].op_cycles == -1) // read next instruction
+		if (p->procs.d[i].op_cycles == -1)
 			read_instruction(&p->procs.d[i], p, env);
 	}
 	if (p->procs.len == 0)
@@ -92,7 +98,6 @@ void			check_live(t_vm *vm)
 			vm->cycle_die = 1;
 		vm->die_cycle_checks = 0;
 	}
-	// ft_printf("pupute\n");
 }
 
 int				run_vm_cycle(t_vm *vm)

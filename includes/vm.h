@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/16 19:59:25 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/18 00:05:55 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 **	Verbosity levels are defined so new ones can be added in between easily
 */
 
+# define VE_VI_NOTINIT	-2
 # define VE_VISU		-1
 # define VE_WINNER		0
 # define VE_AFF			1
@@ -36,7 +37,8 @@
 # define VE_GREET		3
 # define VE_PLAYDEATH	4
 # define VE_PROCDEATH	5
-# define VE_ALL			6
+# define VE_OPS			6
+# define VE_ALL			7 // deprecated
 
 /*
 **	Ncurses sucks and doesnt define all the colors
@@ -90,6 +92,7 @@ typedef struct	s_proc
 	t_register			pc;
 	t_register			new_pc;
 	int					live;
+	int					op_id;    // The op code inside the arena can be updated while the process is waiting fo op_cycles !!
 	int					op_cycles;
 	t_bool				carry;
 }				t_proc;
@@ -235,6 +238,7 @@ int8_t			load8(t_vm *vm, t_register pc);
 uint8_t			*write32(t_vm *vm, t_proc *proc, int aptr, uint32_t data);
 uint8_t			*write16(t_vm *vm, t_proc *proc, int aptr, uint16_t data);
 uint8_t			*write8(t_vm *vm, t_proc *proc, int aptr, uint8_t data);
+int				circumem(int ptr);
 
 /*
 **
@@ -250,6 +254,7 @@ void			visu_loop(t_vm *vm);
 void			launch_instruction(t_vm *vm, t_play *play, t_proc *proc);
 
 /* visu */
+void			clean_visu(t_vm *vm);
 void			visu_update(t_vm *vm);
 void			visu_khandler(t_vm *vm);
 void			visu_init_memview(t_vm *vm);
@@ -264,6 +269,9 @@ void			read_argv_init(t_vm *env, int argc, char **argv);
 /*
 **	OPs
 */
+int			read_one_arg(t_vm *vm, t_proc *proc, uint8_t cb, int cur_arg);
+int			load_arg_into_regs(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3]);
+
 void		op_live(t_vm *vm, t_play *p, t_proc *proc, int reg_num[3]);
 void		op_ld(t_vm *vm, t_play *p, t_proc *proc, int reg_num[3]);
 void		op_st(t_vm *vm, t_play *p, t_proc *proc, int reg_num[3]);

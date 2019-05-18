@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 18:06:46 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/14 20:33:56 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/17 01:29:14 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ typedef struct	s_asm
 
 extern const t_op	g_op_tab[17];
 
+void				write_param(t_asm *my_asm, t_arg_type type, char *s);
+void				free_asm(t_asm *my_asm);
 void				fail_msg(t_asm *my_asm, char *s);
 t_arg_type			get_arg_type(char *s);
 void				write_to_output(char **output, size_t *pos, char *src);
@@ -68,7 +70,7 @@ int					read_label(t_label *label, char *s);
 void				init_labels(t_asm *my_asm);
 void				add_label(t_label **l, size_t *pos, char *name, size_t p);
 void				write_label_holders(t_asm *my_asm);
-void				create_label_holder(t_asm *my_asm, char *s, size_t *i, 
+void				create_label_holder(t_asm *my_asm, char *s, size_t *i,
 		char *name);
 int					get_name(char *s, char name[], size_t len);
 int					get_op_id(char *s);

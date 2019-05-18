@@ -6,7 +6,7 @@
 /*   By: cpoirier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 19:57:59 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/14 20:00:39 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/16 23:04:54 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	handle_op(t_asm *my_asm, char *s)
 					& types[current_param]))
 			fail_msg(my_asm, "Invalid type");
 		write_param(my_asm, types[current_param], s + i);
-		while (s[i] && s[i] != SEPARATOR_CHAR)
+		while (s[i] && s[i] != COMMENT_CHAR && s[i] != SEPARATOR_CHAR)
 			i++;
 		handle_current_op(my_asm, s, &i, &current_param);
 	}
