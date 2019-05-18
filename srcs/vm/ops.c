@@ -159,9 +159,9 @@ void			op_sti(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 
 void			op_fork(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 {
-	vecproc_push(&vm->gb, &play->procs, *proc, vm);
+	vecproc_push(&vm->gb, &play->procs, *proc);
 	play->procs.d[play->procs.len - 1].pc = circumem(proc->pc + (proc->reg[reg_num[0]] % IDX_MOD));
-	play->procs.d[play->procs.len - 1].op_cycles = 0;
+	read_instruction(&play->procs.d[play->procs.len - 1], vm);
 	(void)vm;
 	(void)play;
 	(void)proc;
@@ -193,9 +193,9 @@ void			op_lldi(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 
 void			op_lfork(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 {
-	vecproc_push(&vm->gb, &play->procs, *proc, vm);
+	vecproc_push(&vm->gb, &play->procs, *proc);
 	play->procs.d[play->procs.len - 1].pc = circumem(proc->pc + proc->reg[reg_num[0]]);
-	play->procs.d[play->procs.len - 1].op_cycles = 0;
+	read_instruction(&play->procs.d[play->procs.len - 1], vm);
 	(void)vm;
 	(void)play;
 	(void)proc;

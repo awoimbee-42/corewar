@@ -217,7 +217,7 @@ typedef struct	s_vm
 t_vecproc		*vecproc_init(t_garbage *gb, t_vecproc *vec, size_t reserv_len);
 t_vecproc		*vecproc_new(t_garbage *gb, size_t reserved_len);
 t_vecproc		*vecproc_push_empty(t_garbage *gb, t_vecproc *vec);
-t_vecproc		*vecproc_push(t_garbage *gb, t_vecproc *vec, t_proc d, t_vm *env);
+t_vecproc		*vecproc_push(t_garbage *gb, t_vecproc *vec, t_proc d);
 t_vecproc		*vecproc_realloc(t_garbage *gb, t_vecproc *vec);
 t_vecproc		*vecproc_del_at(t_vecproc *v, int at);
 

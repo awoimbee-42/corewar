@@ -19,6 +19,5 @@ t_vecproc		*vecproc_push_empty(t_garbage *gb, t_vecproc *vec)
 	if (vec->len == vec->mem)
 		vecproc_realloc(gb, vec);
 	ft_bzero(&vec->d[vec->len++], sizeof(*vec->d));
-	vec->d[vec->len - 1].carry = 1;
 	return (vec);
 }
