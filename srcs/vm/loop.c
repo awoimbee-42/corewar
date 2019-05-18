@@ -15,8 +15,18 @@
 
 void			loop(t_vm *env)
 {
+	int		cycle;
+
+	cycle = 0;
 	while (run_vm_cycle(env))
-		;
+	{
+		cycle++;
+		if (env->cycle_dump == cycle)
+		{
+			print_memory(env, env->arena);
+			break;
+		}
+	}
 }
 
 void			visu_loop(t_vm *vm)

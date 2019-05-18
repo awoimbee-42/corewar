@@ -120,7 +120,7 @@ int		main(int argc, char **argv)
 		for (int i = 0; i < vm.players.len; ++i)
 			ft_printf("\tJean michel %s #%d avec un programme d'une taille de %ld octets\n", vm.players.d[i].head.prog_name, vm.players.d[i].id, vm.players.d[i].head.prog_size);
 		ft_printf("Arena:\n");
-		print_memory(vm.arena);
+		print_memory(&vm, vm.arena);
 	}
 	if (vm.verbosity == VE_VISU)
 		visu_loop(&vm);

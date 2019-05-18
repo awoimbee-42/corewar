@@ -225,7 +225,7 @@ t_vecproc		*vecproc_del_at(t_vecproc *v, int at);
 */
 uint32_t		swap32_endian(uint32_t val);
 uint16_t		swap16_endian(uint16_t val);
-void			print_memory(const void *addr);
+void			print_memory(t_vm *env, const void *addr);
 
 /*
 **	arena_mem_*.c

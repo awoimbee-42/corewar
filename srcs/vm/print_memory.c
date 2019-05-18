@@ -13,6 +13,7 @@
 #include <unistd.h>
 #include "corewar.h"
 #include "libft.h"
+#include "vm.h"
 
 static void	ft_putnbr_hex(int byte, int rem)
 {
@@ -35,7 +36,7 @@ static void	sp_putstr(const uint8_t *ptr, int len)
 	}
 }
 
-void	print_memory(const void *addr)
+void	print_memory(t_vm *env, const void *addr)
 {
 	int				a;
 	int				size;
@@ -45,34 +46,38 @@ void	print_memory(const void *addr)
 	ptr = addr;
 	while (size)
 	{
-		if (ptr - 32 >= (uint8_t*)addr && !ft_memcmp(ptr - 32, ptr, size > 32 ? 32 : size))
+		write(1, "0x", 2);
+		ft_putnbr_hex((ptr - (uint8_t *)addr), 4);	
+		write(1, " : ", 3);
+		/*if (ptr - 32 >= (uint8_t*)addr && !ft_memcmp(ptr - 32, ptr, size > 32 ? 32 : size))
 		{
 			if (a != -1)
 				write(1, "*\n", 2);
 			a = -1;
 		}
-		else
+		else*/
 		{
 			a = 0;
-			while (a < 32 && a < size)
+			while (a < 64 && a < size)
 			{
 				ft_putnbr_hex(*(ptr + a), 2);
 				write(1, " ", 1);
 				a++;
 			}
-			while (a < 32)
+			while (a < 64)
 			{
 				write(1, "   ", 3);
 				// if (a % 2)
 				// 	write(1, " ", 1);
 				a++;
 			}
-			sp_putstr(ptr, size > 32 ? 32 : size);
+			if (env->verbosity >= VE_GREET)
+				sp_putstr(ptr, size > 64 ? 64 : size);
 			write(1, "\n", 1);
 		}
 
-		size -= 16;
-		ptr += 16;
+		size -= 64;
+		ptr += 64;
 
 	}
 }
