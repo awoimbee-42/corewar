@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 13:03:25 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/18 18:13:01 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/18 19:10:02 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void		read_instruction(t_proc *proc, t_vm *env)
 	}
 	else
 	{
-		// if (proc->new_pc == 0)
+		if (proc->new_pc == 0)
 			proc->pc = (proc->pc + 1) % MEM_SIZE;
 		proc->new_pc = 0;
 		proc->op_cycles = 0;
@@ -55,6 +55,7 @@ static int		loop_player(t_vm *env, t_play *p)
 			launch_instruction(env, p, &p->procs.d[i]);
 		if (p->procs.d[i].op_cycles == -1)
 			read_instruction(&p->procs.d[i], env);
+		p->procs.d[i].new_pc = 0;
 	}
 	if (p->procs.len == 0)
 		return (0);

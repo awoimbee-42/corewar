@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 14:56:02 by skiessli          #+#    #+#             */
-/*   Updated: 2019/05/18 16:30:30 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/18 19:09:45 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,7 @@ void			op_fork(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 {
 	vecproc_push(&vm->gb, &play->procs, *proc);
 	play->procs.d[play->procs.len - 1].pc = circumem(proc->pc + (proc->reg[reg_num[0]] % IDX_MOD));
+	play->procs.d[play->procs.len - 1].new_pc = 0;
 	read_instruction(&play->procs.d[play->procs.len - 1], vm);
 	(void)vm;
 	(void)play;
@@ -196,6 +197,7 @@ void			op_lfork(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 {
 	vecproc_push(&vm->gb, &play->procs, *proc);
 	play->procs.d[play->procs.len - 1].pc = circumem(proc->pc + proc->reg[reg_num[0]]);
+	play->procs.d[play->procs.len - 1].new_pc = 0;
 	read_instruction(&play->procs.d[play->procs.len - 1], vm);
 	(void)vm;
 	(void)play;
