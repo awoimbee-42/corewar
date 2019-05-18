@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 18:17:49 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/17 01:36:00 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/18 16:32:02 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ static void	print_ops(t_vm *vm) //for debug more than anything else
 {
 	int		i;
 	int		j;
-	// int		pc;
 
 	i = -1;
 	while (++i < vm->players.len)
@@ -49,9 +48,7 @@ static void	print_ops(t_vm *vm) //for debug more than anything else
 static void	print_players(t_vm *vm)
 {
 	int		i;
-	// int		p_nb;
 
-	// p_nb = 0;
 	i = -1;
 	while (++i < vm->players.len)
 	{
@@ -60,8 +57,9 @@ static void	print_players(t_vm *vm)
 		wprintw(vm->visu.sidep.statusw, "%s", vm->players.d[i].head.prog_name);
 		wattroff(vm->visu.sidep.statusw, COLOR_PAIR(PLAY0_COLOR + i));
 		wprintw(vm->visu.sidep.statusw,
-			"\n\tLast live: N/A"
-			"\n\tLives in current period: N/A");
+			"\n\tLast live: %d"
+			"\n\tLives in current period: %d",
+			vm->players.d[i].last_live, vm->players.d[i].period_lives);
 	}
 }
 
@@ -100,6 +98,6 @@ void		visu_sidepview(t_vm *vm)
 		s, vm->visu.op_per_sec, vm->cycle_curr);
 	print_proc_nb(vm);
 	print_players(vm);
-	print_ops(vm);
 	print_cycles_info(vm);
+	print_ops(vm);
 }

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 14:51:50 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/18 15:27:48 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/18 17:08:10 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ int		main(int argc, char **argv)
 		visu_loop(&vm);
 	else
 		loop(&vm);
+	print_winner(&vm);
 	if (vm.verbosity == VE_VISU)
 		clean_visu(&vm);
 	gb_freeall(&vm.gb);

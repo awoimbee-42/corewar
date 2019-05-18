@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 13:03:25 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/18 15:24:32 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/18 16:48:55 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ void			launch_instruction(t_vm *vm, t_play *play, t_proc *proc)
 	if (load_arg_into_regs(vm, play, proc, reg_num))
 		g_op[proc->op_id].fun(vm, play, proc, reg_num);
 	proc->pc = proc->new_pc % MEM_SIZE;
-	// if (vm->verbosity >= VE_OPS)
-	// 	ve_print_operation(vm, play, proc, reg_num);
 }
 
 void		read_instruction(t_proc *proc, t_vm *env)
@@ -56,7 +54,7 @@ static int		loop_player(t_vm *env, t_play *p)
 		if (p->procs.d[i].op_cycles == 0 && --p->procs.d[i].op_cycles)
 			launch_instruction(env, p, &p->procs.d[i]);
 		if (p->procs.d[i].op_cycles == -1)
-			read_instruction(&p->procs.d[i], env);	
+			read_instruction(&p->procs.d[i], env);
 	}
 	if (p->procs.len == 0)
 		return (0);
@@ -68,9 +66,8 @@ void			check_live(t_vm *vm)
 	int			nbr_live;
 	int			i[2];
 
-	if (vm->cycle_curr % vm->cycle_die)
+	if (vm->cycle_die && vm->cycle_curr % vm->cycle_die)
 		return ;
-	// ft_printf("check live: %d %% %d\n", vm->cycle_curr, vm->cycle_die);
 	vm->die_cycle_checks++;
 	nbr_live = 0;
 	i[0] = vm->players.len;
@@ -79,11 +76,9 @@ void			check_live(t_vm *vm)
 		i[1] = vm->players.d[i[0]].procs.len;
 		while (i[1]-- != 0)
 		{
-			// ft_printf("\t\tProcess %lu of player %d\n", i[1], vm->players.d[i[0]].id);
 			nbr_live += vm->players.d[i[0]].procs.d[i[1]].live;
 			if (vm->players.d[i[0]].procs.d[i[1]].live == 0)
 			{
-				// ft_printf("{red}");
 				if (vm->verbosity >= VE_PROCDEATH)
 					ft_printf("\tProcess %lu of player %d died\n",
 						i[1], vm->players.d[i[0]].id);
@@ -94,8 +89,7 @@ void			check_live(t_vm *vm)
 	}
 	if (nbr_live < NBR_LIVE || vm->die_cycle_checks == MAX_CHECKS)
 	{
-		if ((vm->cycle_die -= CYCLE_DELTA) <= 0)
-			vm->cycle_die = 1;
+		vm->cycle_die -= CYCLE_DELTA;
 		vm->die_cycle_checks = 0;
 	}
 }
@@ -106,11 +100,12 @@ int				run_vm_cycle(t_vm *vm)
 	int			alive;
 
 	++vm->cycle_curr;
+	alive = FALSE;
 	if (vm->verbosity >= VE_CYCLE)
 		ft_printf("{PNK}cycle: %lu{eoc}\n", vm->cycle_curr);
 	check_live(vm);
 	i = vm->players.len;
-	while (i-- != 0)
+	while (i-- != 0 && vm->cycle_die > 0)
 	{
 		// alive = 0;
 		alive = loop_player(vm, &vm->players.d[i]);

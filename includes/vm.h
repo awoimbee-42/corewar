@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/18 15:48:28 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/18 16:29:51 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ typedef struct	s_play
 {
 	// int					index;
 	int					id;
+	int					last_live;
 	int					period_lives;
 	uint8_t				*cor; // useless ?
 	t_header			head;

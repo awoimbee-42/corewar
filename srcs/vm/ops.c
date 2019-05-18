@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 14:56:02 by skiessli          #+#    #+#             */
-/*   Updated: 2019/05/18 14:27:03 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/18 16:30:30 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void			op_live(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 	if (!fail)
 	{
 		vm->players.d[i].period_lives += 1;
+		vm->players.d[i].last_live = vm->cycle_curr;
 		if (vm->verbosity >= VE_LIVE)
 			ft_printf("un processus dit que le joueur %d(%s) est en vie\n",
 				vm->players.d[i].id, vm->players.d[i].head.prog_name);
