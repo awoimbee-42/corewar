@@ -17,6 +17,8 @@ void		print_winner(t_vm *vm)
 	int		i;
 	int		win_i;
 
+	if (vm->cycle_curr == vm->cycle_dump)
+		return ;
 	win_i = 0;
 	i = 0;
 	while (++i < vm->players.len)
@@ -27,5 +29,5 @@ void		print_winner(t_vm *vm)
 			if (vm->players.d[i].period_lives > vm->players.d[win_i].period_lives)
 				win_i = i;
 	}
-	ft_printf("le joueur %d(%s) a gagne", vm->players.d[win_i].id, vm->players.d[win_i].head.prog_name);
+	ft_printf("Contestant 1, \"%s\", has won !\n", vm->players.d[win_i].id, vm->players.d[win_i].head.prog_name);
 }
