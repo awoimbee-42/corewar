@@ -217,7 +217,7 @@ typedef struct	s_vm
 t_vecproc		*vecproc_init(t_garbage *gb, t_vecproc *vec, size_t reserv_len);
 t_vecproc		*vecproc_new(t_garbage *gb, size_t reserved_len);
 t_vecproc		*vecproc_push_empty(t_garbage *gb, t_vecproc *vec);
-t_vecproc		*vecproc_push(t_garbage *gb, t_vecproc *vec, t_proc d);
+t_vecproc		*vecproc_push(t_garbage *gb, t_vecproc *vec, t_proc d, t_vm *env);
 t_vecproc		*vecproc_realloc(t_garbage *gb, t_vecproc *vec);
 t_vecproc		*vecproc_del_at(t_vecproc *v, int at);
 
@@ -270,6 +270,7 @@ void			read_argv_init(t_vm *env, int argc, char **argv);
 /*
 **	OPs
 */
+void		read_instruction(t_proc *proc, t_vm *env);
 int			read_one_arg(t_vm *vm, t_proc *proc, uint8_t cb, int cur_arg);
 int			load_arg_into_regs(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3]);
 
@@ -289,5 +290,4 @@ void		op_lld(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3]);
 void		op_lldi(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3]);
 void		op_lfork(t_vm *vm, t_play *p, t_proc *proc, int reg_num[3]);
 void		op_aff(t_vm *vm, t_play *p, t_proc *proc, int reg_num[3]);
-
 #endif

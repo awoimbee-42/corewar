@@ -13,6 +13,7 @@
 #include "vm.h"
 #include "libft.h"
 
+
 t_vecproc		*vecproc_push_empty(t_garbage *gb, t_vecproc *vec)
 {
 	if (vec->len == vec->mem)

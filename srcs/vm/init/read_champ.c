@@ -71,6 +71,7 @@ void			load_cor_files(t_vm *env)
 		env->players.d[i].procs.d->pc = offset;
 		env->players.d[i].procs.d->reg[0] = env->players.d[i].id;
 		offset += spacing;
+		read_instruction(env->players.d[i].procs.d, env);
 	}
 }
 

@@ -26,7 +26,7 @@ void			launch_instruction(t_vm *vm, t_play *play, t_proc *proc)
 	// 	ve_print_operation(vm, play, proc, reg_num);
 }
 
-static void		read_instruction(t_proc *proc, t_play *play, t_vm *env)
+void		read_instruction(t_proc *proc, t_vm *env)
 {
 	int			op_id;
 
@@ -56,7 +56,7 @@ static int		loop_player(t_vm *env, t_play *p)
 		if (p->procs.d[i].op_cycles == 0 && --p->procs.d[i].op_cycles)
 			launch_instruction(env, p, &p->procs.d[i]);
 		if (p->procs.d[i].op_cycles == -1)
-			read_instruction(&p->procs.d[i], p, env);
+			read_instruction(&p->procs.d[i], env);	
 	}
 	if (p->procs.len == 0)
 		return (0);

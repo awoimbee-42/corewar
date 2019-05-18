@@ -40,6 +40,7 @@
 # define MEM_SIZE				(4*1024)
 # define IDX_MOD				(MEM_SIZE / 8)
 # define CHAMP_MAX_SIZE			(MEM_SIZE / 6)
+# define NBR_OPERATIONS			16
 
 # define COMMENT_CHAR			'#'
 # define LABEL_CHAR				':'
