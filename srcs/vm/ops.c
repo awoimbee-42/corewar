@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 14:56:02 by skiessli          #+#    #+#             */
-/*   Updated: 2019/05/17 23:10:28 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/18 13:22:10 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ void			op_add(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 
 void			op_sub(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 {
+	proc->carry = proc->reg[reg_num[0]] - proc->reg[reg_num[1]] ? 0 : 1;
 	proc->reg[reg_num[2]] = proc->reg[reg_num[0]] - proc->reg[reg_num[1]];
 }
 
@@ -84,11 +85,13 @@ void			op_and(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 
 void			op_or(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 {
+	proc->carry = proc->reg[reg_num[0]] | proc->reg[reg_num[1]] ? 0 : 1;
 	proc->reg[reg_num[2]] = proc->reg[reg_num[0]] | proc->reg[reg_num[1]];
 }
 
 void			op_xor(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 {
+	proc->carry = proc->reg[reg_num[0]] ^ proc->reg[reg_num[1]] ? 0 : 1;
 	proc->reg[reg_num[2]] = proc->reg[reg_num[0]] ^ proc->reg[reg_num[1]];
 }
 
