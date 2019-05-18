@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/05/17 23:09:51 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/05/18 16:45:40 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ SRC_NAME_CORE =	main.c								\
 				arena_mem_write.c					\
 				run_cycle.c							\
 				circular_mem.c						\
+				winner.c							\
 				\
 				init/read_argv.c					\
 				init/read_champ.c					\

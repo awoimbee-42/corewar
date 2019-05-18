@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 13:03:25 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/18 16:48:55 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/18 18:13:01 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void		read_instruction(t_proc *proc, t_vm *env)
 	}
 	else
 	{
-		if (proc->new_pc == 0)
+		// if (proc->new_pc == 0)
 			proc->pc = (proc->pc + 1) % MEM_SIZE;
 		proc->new_pc = 0;
 		proc->op_cycles = 0;
@@ -86,8 +86,9 @@ void			check_live(t_vm *vm)
 			}
 			vm->players.d[i[0]].procs.d[i[1]].live = 0;
 		}
+		vm->players.d[i[0]].period_lives = 0;
 	}
-	if (nbr_live < NBR_LIVE || vm->die_cycle_checks == MAX_CHECKS)
+	if (nbr_live >= NBR_LIVE || vm->die_cycle_checks == MAX_CHECKS)
 	{
 		vm->cycle_die -= CYCLE_DELTA;
 		vm->die_cycle_checks = 0;
