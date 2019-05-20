@@ -31,3 +31,14 @@ void		print_winner(t_vm *vm)
 	}
 	ft_printf("Contestant %i \"%s\", has won !\n", win_i + 1, vm->players.d[win_i].head.prog_name);
 }
+
+void		print_register(t_play *p, int id)
+{
+	int		i;
+
+	ft_printf("Proc: %i.%i\n", p->id, id);
+	i = -1;
+	while (++i < REG_NUMBER + 4)
+		ft_printf("r%i: %i ", i + 1, p->procs.d[id].reg[i]);
+	ft_printf("\n");
+}

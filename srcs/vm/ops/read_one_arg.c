@@ -20,7 +20,7 @@ static int		load_reg(t_vm *vm, t_proc *proc, int cur_arg)
 	proc->new_pc = (proc->new_pc + 1) % MEM_SIZE;
 	if (vm->verbosity >= VE_OPS)
 		ft_printf(" r%d", tmp);
-	return (tmp <= REG_NUMBER && tmp >= 1 && (T_REG & g_op[proc->op_id].args_type[cur_arg]) ? tmp : -1);
+	return (tmp <= REG_NUMBER && tmp >= 1 && (T_REG & g_op[proc->op_id].args_type[cur_arg - 1]) ? tmp : -1);
 }
 
 static int		load_dir(t_vm *vm, t_proc *proc, int cur_arg)
@@ -29,7 +29,7 @@ static int		load_dir(t_vm *vm, t_proc *proc, int cur_arg)
 	proc->new_pc = g_op[proc->op_id].dir2 ? (proc->new_pc + 2) % MEM_SIZE : (proc->new_pc + 4) % MEM_SIZE;
 	if (vm->verbosity >= VE_OPS)
 		ft_printf(" %%%d", proc->reg[REG_NUMBER + cur_arg]);
-	if (!(T_DIR & g_op[proc->op_id].args_type[cur_arg]))
+	if (!(T_DIR & g_op[proc->op_id].args_type[cur_arg - 1]))
 		return (-1);
 	else
 		return (REG_NUMBER + cur_arg);
@@ -47,7 +47,7 @@ static int		load_ind(t_vm *vm, t_proc *proc, int cur_arg)
 	proc->new_pc = (proc->new_pc + 2) % MEM_SIZE;
 	if (vm->verbosity >= VE_OPS)
 		ft_printf(" %d", ind);
-	if (!(T_IND & g_op[proc->op_id].args_type[cur_arg]))
+	if (!(T_IND & g_op[proc->op_id].args_type[cur_arg - 1]))
 		return (-1);
 	else
 		return (REG_NUMBER + cur_arg);

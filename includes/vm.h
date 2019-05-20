@@ -39,6 +39,7 @@
 # define VE_PROCDEATH	5
 # define VE_OPS			6
 # define VE_CYCLE		7
+# define VE_REGISTER	8
 
 /*
 **	Ncurses sucks and doesnt define all the colors
@@ -88,7 +89,7 @@ struct s_vm;
 
 typedef struct	s_proc
 {
-	t_register			reg[REG_NUMBER + 4];
+	t_register			reg[REG_NUMBER + 5];
 	t_register			pc;
 	t_register			new_pc;
 	int					live;
@@ -267,6 +268,8 @@ void			visu_sidepview(t_vm *vm);
 **
 */
 void			read_argv_init(t_vm *env, int argc, char **argv);
+void			print_register(t_play *p, int id);
+void			print_winner(t_vm *vm);
 
 /*
 **	OPs

@@ -24,7 +24,7 @@ static t_bool	load_cb(t_vm *vm, t_proc *proc, int reg_num[3])
 	proc->new_pc = (proc->pc + 2) % MEM_SIZE;
 	while (i < g_op[proc->op_id].nb_args)
 	{
-		reg_num[i] = read_one_arg(vm, proc, (cb >> (6 - i * 2)) & 0b11, i);
+		reg_num[i] = read_one_arg(vm, proc, (cb >> (6 - i * 2)) & 0b11, i + 1);
 		if (reg_num[i] == -1)
 			fail = TRUE;
 		i++;
@@ -38,7 +38,7 @@ static t_bool	load_nocb(t_vm *vm, t_proc *proc, int reg_num[3])
 
 	fail = FALSE;
 	proc->new_pc = (proc->pc + 1) % MEM_SIZE;
-	reg_num[0] = read_one_arg(vm, proc, T_DIR, 0);
+	reg_num[0] = read_one_arg(vm, proc, T_DIR, 1);
 	if (reg_num[0] == -1)
 		fail = TRUE;
 	return (fail);

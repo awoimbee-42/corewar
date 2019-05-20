@@ -83,6 +83,7 @@ int		usage(const char *pname)
 		"\t\t5: process creation-death\n"
 		"\t\t6: OPs\n"
 		"\t\t7: Show Cycles\n",
+		"\t\t8: Display Register at the beginning of Cycle\n",
 		pname);
 	return (0);
 }

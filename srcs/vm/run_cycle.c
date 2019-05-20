@@ -50,6 +50,8 @@ static int		loop_player(t_vm *env, t_play *p)
 	i = p->procs.len;
 	while (i-- != 0)
 	{
+		if (env->verbosity >= VE_REGISTER)
+			print_register(p, i);
 		--p->procs.d[i].op_cycles;
 		if (p->procs.d[i].op_cycles == 0 && --p->procs.d[i].op_cycles)
 			launch_instruction(env, p, &p->procs.d[i]);
