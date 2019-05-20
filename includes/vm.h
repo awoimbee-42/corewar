@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/20 16:22:07 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/21 00:54:22 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@
 
 /*
 **	Define the COLOR_PAIR we'll use for players, cursors & newly written mem,
-**		1 PLAY0_COLOR-1 & CURS0_COLOR-1 are reserved for unset memory.
+**		PLAY0_COLOR-1 & CURS0_COLOR-1 are reserved for unset memory.
 **	/!\ code assumes CONTOUR_COLOR < FRESH0_COLOR
 */
 
@@ -92,8 +92,9 @@ typedef struct	s_proc
 	t_register			reg[REG_NUMBER + 1 + MAX_ARGS_NUMBER];
 	t_register			pc;
 	t_register			new_pc;
+	struct s_play		*play;
 	int					live;
-	int					op_id;    // The op code inside the arena can be updated while the process is waiting fo op_cycles !!
+	int					op_id;
 	int					op_cycles;
 	t_bool				carry;
 }				t_proc;
@@ -107,13 +108,12 @@ typedef struct	s_vecproc
 
 typedef struct	s_play
 {
-	// int					index;
 	int					id;
 	int					last_live;
 	int					period_lives;
-	uint8_t				*cor; // useless ?
+	char				*fname;
+	// uint8_t				*cor; // useless ?
 	t_header			head;
-	struct s_vecproc	procs;
 }				t_play;
 
 typedef struct	s_vecplay
@@ -158,7 +158,7 @@ typedef struct	s_visu
 **	OPs
 */
 
-typedef void(*t_opfun)(struct s_vm*, t_play*, t_proc*, int[3]);
+typedef void(*t_opfun)(struct s_vm*, int, int[3]);
 
 typedef struct	s_vm_op
 {
@@ -193,6 +193,7 @@ typedef struct	s_vm
 	int					cycle_curr;
 	int					die_cycle_checks;
 	struct s_vecplay	players;
+	struct s_vecproc	procs;
 	struct s_garbage	gb;
 	uint8_t				arena[MEM_SIZE];
 	uint8_t				mem_owner[MEM_SIZE];
@@ -239,9 +240,9 @@ void			print_memory(t_vm *env, const void *addr);
 int32_t			load32(t_vm *vm, t_register pc);
 int16_t			load16(t_vm *vm, t_register pc);
 int8_t			load8(t_vm *vm, t_register pc);
-uint8_t			*write32(t_vm *vm, t_proc *proc, int aptr, uint32_t data);
-uint8_t			*write16(t_vm *vm, t_proc *proc, int aptr, uint16_t data);
-uint8_t			*write8(t_vm *vm, t_proc *proc, int aptr, uint8_t data);
+uint8_t			*write32(t_vm *vm, int pc, int aptr, uint32_t data);
+uint8_t			*write16(t_vm *vm, int pc, int aptr, uint16_t data);
+uint8_t			*write8(t_vm *vm, int pc, int aptr, uint8_t data);
 int				circumem(int ptr);
 
 /*
@@ -254,8 +255,8 @@ int				run_vm_cycle(t_vm *vm);
 void			loop(t_vm *env);
 void			visu_loop(t_vm *vm);
 
-/* ops.c */
-void			launch_instruction(t_vm *vm, t_play *play, t_proc *proc);
+// /* ops.c */
+// void			launch_instruction(t_vm *vm, t_play *play, t_proc *proc);
 
 /* visu */
 void			clean_visu(t_vm *vm);
@@ -269,30 +270,30 @@ void			visu_sidepview(t_vm *vm);
 **
 */
 void			read_argv_init(t_vm *env, int argc, char **argv);
-void			print_register(t_play *p, int id);
+void			print_register(t_vm *vm, t_proc *proc);
 void			print_winner(t_vm *vm);
 
 /*
 **	OPs
 */
-void		read_instruction(t_proc *proc, t_vm *env);
+void		read_instruction(t_vm *vm, int proc);
 int			read_one_arg(t_vm *vm, t_proc *proc, uint8_t cb, int cur_arg);
-int			load_arg_into_regs(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3]);
+int			load_arg_into_regs(t_vm *vm, t_proc *proc, int reg_num[3]);
 
-void		op_live(t_vm *vm, t_play *p, t_proc *proc, int reg_num[3]);
-void		op_ld(t_vm *vm, t_play *p, t_proc *proc, int reg_num[3]);
-void		op_st(t_vm *vm, t_play *p, t_proc *proc, int reg_num[3]);
-void		op_add(t_vm *vm, t_play *p, t_proc *proc, int reg_num[3]);
-void		op_sub(t_vm *vm, t_play *p, t_proc *proc, int reg_num[3]);
-void		op_and(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3]);
-void		op_or(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3]);
-void		op_xor(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3]);
-void		op_zjmp(t_vm *vm, t_play *p, t_proc *proc, int reg_num[3]);
-void		op_ldi(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3]);
-void		op_sti(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3]);
-void		op_fork(t_vm *vm, t_play *p, t_proc *proc, int reg_num[3]);
-void		op_lld(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3]);
-void		op_lldi(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3]);
-void		op_lfork(t_vm *vm, t_play *p, t_proc *proc, int reg_num[3]);
-void		op_aff(t_vm *vm, t_play *p, t_proc *proc, int reg_num[3]);
+void		op_live(t_vm *vm, int proc, int reg_num[3]);
+void		op_ld(t_vm *vm, int proc, int reg_num[3]);
+void		op_st(t_vm *vm, int proc, int reg_num[3]);
+void		op_add(t_vm *vm, int proc, int reg_num[3]);
+void		op_sub(t_vm *vm, int proc, int reg_num[3]);
+void		op_and(t_vm *vm, int proc, int reg_num[3]);
+void		op_or(t_vm *vm, int proc, int reg_num[3]);
+void		op_xor(t_vm *vm, int proc, int reg_num[3]);
+void		op_zjmp(t_vm *vm, int proc, int reg_num[3]);
+void		op_ldi(t_vm *vm, int proc, int reg_num[3]);
+void		op_sti(t_vm *vm, int proc, int reg_num[3]);
+void		op_fork(t_vm *vm, int proc, int reg_num[3]);
+void		op_lld(t_vm *vm, int proc, int reg_num[3]);
+void		op_lldi(t_vm *vm, int proc, int reg_num[3]);
+void		op_lfork(t_vm *vm, int proc, int reg_num[3]);
+void		op_aff(t_vm *vm, int proc, int reg_num[3]);
 #endif

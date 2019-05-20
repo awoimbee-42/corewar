@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 17:46:49 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/13 03:06:32 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/21 00:17:31 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,5 +20,6 @@ uint32_t	swap32_endian(uint32_t val)
 
 uint16_t	swap16_endian(uint16_t val)
 {
-	return ((val << 8) | (val >> 8));
+	val = (uint16_t)(val << 8) | (uint16_t)(val >> 8);
+	return (val);
 }

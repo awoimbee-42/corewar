@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 18:57:21 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/17 01:16:02 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/21 01:08:43 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@ void		visu_init_memview(t_vm *vm)
 	uint			mem;
 
 	i = -1;
-	while (++i < vm->players.len)
+	while (++i < vm->procs.len)
 	{
 		mem = 0;
-		mem_pc = vm->players.d[i].procs.d->pc;
+		mem_pc = vm->procs.d[i].pc;
 		wmove(vm->visu.arenaw, mem_pc / 64, mem_pc % 64);
 		wattron(vm->visu.arenaw, COLOR_PAIR(PLAY0_COLOR + i));
-		while (mem < vm->players.d[i].head.prog_size)
+		while (mem < vm->procs.d[i].play->head.prog_size)
 		{
 			if (mem_pc % 64 == 0)
 				wprintw(vm->visu.arenaw, "\n");
@@ -41,22 +41,21 @@ void		visu_init_memview(t_vm *vm)
 
 static void	memview_cursors(t_vm *vm)
 {
-	int				pl;
 	int				pr;
 	int				pc;
+	int				color_id;
 
-	pl = -1;
-	while (++pl < vm->players.len)
+	pr = -1;
+	while (++pr < vm->procs.len)
 	{
-		pr = -1;
-		while (++pr < vm->players.d[pl].procs.len)
-		{
-			pc = vm->players.d[pl].procs.d[pr].pc;
-			wmove(vm->visu.arenaw, pc / 64, (pc % 64) * 3 + 1);
-			wattron(vm->visu.arenaw, COLOR_PAIR(vm->mem_owner[pc] + DELT_CURS_COLOR));
-			wprintw(vm->visu.arenaw, "%02hhx", vm->arena[pc]);
-			wattroff(vm->visu.arenaw, COLOR_PAIR(vm->mem_owner[pc] + DELT_CURS_COLOR));
-		}
+		pc = vm->procs.d[pr].pc;
+		wmove(vm->visu.arenaw, pc / 64, (pc % 64) * 3 + 1);
+		color_id = vm->mem_owner[pc];
+		color_id -= color_id >= FRESH0_COLOR ? DELT_FRESH_COLOR : 0;
+		color_id += DELT_CURS_COLOR;
+		wattron(vm->visu.arenaw, COLOR_PAIR(color_id));
+		wprintw(vm->visu.arenaw, "%02hhx", vm->arena[pc]);
+		wattroff(vm->visu.arenaw, COLOR_PAIR(color_id));
 	}
 }
 

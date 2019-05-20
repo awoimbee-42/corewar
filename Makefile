@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/05/20 15:35:22 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/05/21 00:18:16 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,13 +17,12 @@
 NAME =	corewar
 ASM  =	asm
 
-CFLAGS	=	-g3 -Wall -Wextra #-Ofast -march=native#-fsanitize=address #-Werror -Ofast -march=native
+CFLAGS	=	-g3 -Wall -Wextra# -Wpedantic -Wconversion #-Ofast -march=native#-fsanitize=address #-Werror -Ofast -march=native
 
 SRC_NAME_CORE =	main.c								\
 				print_memory.c						\
 				swap_endianess.c					\
 				loop.c								\
-				ops.c								\
 				arena_mem_load.c					\
 				arena_mem_write.c					\
 				run_cycle.c							\
@@ -40,6 +39,7 @@ SRC_NAME_CORE =	main.c								\
 				\
 				ops/load_arg_into_regs.c			\
 				ops/read_one_arg.c					\
+				ops/ops.c							\
 				\
 				operators/vecproc/init.c			\
 				operators/vecproc/new.c				\

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 19:24:05 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/18 15:46:56 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/20 23:34:05 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static void		set_remaining_play_id(t_vm *env)
 					env->players.d[i].id = champ_id;
 			}
 		}
-		env->players.d[i].procs.d[0].reg[1] = env->players.d[i].id;
+		// env->players.d[i].procs.d[0].reg[1] = env->players.d[i].id;
 	}
 }
 
@@ -115,7 +115,7 @@ void			read_argv_init(t_vm *env, int argc, char **argv)
 	if (!env->players.len)
 		exit_vm(env, "At least one player is required");
 	set_remaining_play_id(env);
-	load_cor_files(env); // also sets the PC & r0
+	champs_setup(env);
 	if (env->verbosity == VE_VI_NOTINIT)
 		init_ncurses(env);
 }
