@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/16 11:55:20 by awoimbee          #+#    #+#              #
-#    Updated: 2019/05/11 00:04:43 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/05/21 01:48:32 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -110,7 +110,7 @@ fast :
 	@make -s -j$(NUMPROC)
 
 libft.gen :
-	@printf "$(foreach cfile,$(SRCS_VEC4),$(addprefix \n# include \"src/t_vec4/,$(addsuffix \",$(cfile))))" > libft.gen
+	@printf "$(foreach cfile,$(SRCS_VEC4),$(addprefix # include \"src/t_vec4/,$(addsuffix \"\n,$(cfile))))" > libft.gen
 
 $(OBJ_PATH)	:
 	@mkdir -p $(OBJ_PATH) 2> /dev/null
