@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 17:12:50 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/20 15:40:32 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/21 01:15:47 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	print_memory(t_vm *env, const void *addr)
 	while (size)
 	{
 		write(1, "0x", 2);
-		ft_putnbr_hex((ptr - (uint8_t *)addr), 4);
+		ft_putnbr_hex((int)(ptr - (uint8_t*)addr), 4);
 		write(1, " : ", 3);
 		{
 			a = 0;

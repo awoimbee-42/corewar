@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/12 20:56:49 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/16 23:04:18 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/21 01:19:35 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int32_t		load32(t_vm *vm, t_register pc)
 {
-	uint32_t	res;
+	int32_t		res;
 	uint8_t		*r;
 	int			i;
 
@@ -28,17 +28,19 @@ int32_t		load32(t_vm *vm, t_register pc)
 
 int16_t		load16(t_vm *vm, t_register pc)
 {
-	uint16_t	res;
+	int16_t		res;
+	uint8_t		*r;
 
-	res = ((uint16_t)vm->arena[circumem(pc)] << 8)
-		| vm->arena[circumem(pc + 1)];
+	r = (uint8_t*)&res;
+	r[0] = vm->arena[circumem(pc + 1)];
+	r[1] = vm->arena[circumem(pc)];
 	return (res);
 }
 
 int8_t			load8(t_vm *vm, t_register pc)
 {
-	uint8_t		res;
+	int8_t		res;
 
-	res = vm->arena[circumem(pc)];
+	res = (int8_t)vm->arena[circumem(pc)];
 	return (res);
 }
