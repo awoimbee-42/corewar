@@ -6,11 +6,15 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/17 22:57:41 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/18 14:20:55 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/20 17:43:18 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
+
+/*
+**	In here, 1 <= cur_arg <= MAX_ARGS_NUMBER
+*/
 
 static int		load_reg(t_vm *vm, t_proc *proc, int cur_arg)
 {
@@ -20,7 +24,11 @@ static int		load_reg(t_vm *vm, t_proc *proc, int cur_arg)
 	proc->new_pc = (proc->new_pc + 1) % MEM_SIZE;
 	if (vm->verbosity >= VE_OPS)
 		ft_printf(" r%d", tmp);
-	return (tmp <= REG_NUMBER && tmp >= 1 && (T_REG & g_op[proc->op_id].args_type[cur_arg - 1]) ? tmp : -1);
+	if (tmp <= REG_NUMBER && tmp >= 1
+		&& (T_REG & g_op[proc->op_id].args_type[cur_arg - 1]))
+		return (tmp);
+	else
+		return (-1);
 }
 
 static int		load_dir(t_vm *vm, t_proc *proc, int cur_arg)

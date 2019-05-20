@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 13:03:25 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/18 19:10:02 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/20 17:28:45 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ void			launch_instruction(t_vm *vm, t_play *play, t_proc *proc)
 	if (load_arg_into_regs(vm, play, proc, reg_num))
 		g_op[proc->op_id].fun(vm, play, proc, reg_num);
 	proc->pc = proc->new_pc % MEM_SIZE;
+	if (vm->verbosity >= VE_OPS)
+		ft_printf("\n");
 }
 
 void		read_instruction(t_proc *proc, t_vm *env)

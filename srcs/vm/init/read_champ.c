@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 18:08:33 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/18 16:55:59 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/20 18:00:05 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void			load_cor_files(t_vm *env)
 		load_cor(env, &env->players.d[i], &env->arena[offset]);
 		env->players.d[i].cor = &env->arena[offset];
 		env->players.d[i].procs.d->pc = offset;
-		env->players.d[i].procs.d->reg[0] = env->players.d[i].id;
+		env->players.d[i].procs.d->reg[1] = env->players.d[i].id;
 		offset += spacing;
 		// env->players.d[i].procs.d->carry = 1;
 		read_instruction(env->players.d[i].procs.d, env);

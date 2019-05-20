@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/18 16:33:52 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/20 16:22:42 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/20 17:59:26 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,11 @@ void		print_register(t_play *p, int id)
 	out = ft_cprintf("Proc: %i.%i  |", p->id, id);
 	i = -1;
 	while (++i < REG_NUMBER + 1 + MAX_ARGS_NUMBER)
-		ft_strcat_join(&out, ft_cprintf(" r%-2i: %-10i", i + 1, p->procs.d[id].reg[i]));
+	{
+		ft_strcat_join(&out, ft_cprintf(" r%-2i: %-10i", i, p->procs.d[id].reg[i]));
+		if (i == REG_NUMBER)
+			ft_strcat_join(&out, " |");
+	}
 	i = ft_strlen(out);
 	out[i] = '\n';
 	write(STDOUT_FILENO, out, i + 1);

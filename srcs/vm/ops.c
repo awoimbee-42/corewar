@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 14:56:02 by skiessli          #+#    #+#             */
-/*   Updated: 2019/05/18 19:09:45 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/20 17:30:44 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ void			op_live(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 	{
 		vm->players.d[i].period_lives += 1;
 		vm->players.d[i].last_live = vm->cycle_curr;
+		if (vm->verbosity >= VE_OPS)
+			ft_printf("\n");
 		if (vm->verbosity >= VE_LIVE)
 			ft_printf("un processus dit que le joueur %d(%s) est en vie\n",
 				vm->players.d[i].id, vm->players.d[i].head.prog_name);
@@ -164,6 +166,8 @@ void			op_fork(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 	play->procs.d[play->procs.len - 1].pc = circumem(proc->pc + (proc->reg[reg_num[0]] % IDX_MOD));
 	play->procs.d[play->procs.len - 1].new_pc = 0;
 	read_instruction(&play->procs.d[play->procs.len - 1], vm);
+	if (vm->verbosity >= VE_OPS)
+		ft_printf(" (%d)",play->procs.d[play->procs.len - 1].pc);
 	(void)vm;
 	(void)play;
 	(void)proc;

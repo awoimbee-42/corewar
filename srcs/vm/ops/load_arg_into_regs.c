@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/17 22:52:46 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/18 14:58:28 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/20 17:29:14 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int			load_arg_into_regs(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 		fail = load_cb(vm, proc, reg_num);
 	else
 		fail = load_nocb(vm, proc, reg_num);
-	if (vm->verbosity >= VE_OPS)
-		fail ? ft_printf(" {red}FAIL{eoc}\n") : ft_printf("\n");
+	if (vm->verbosity >= VE_OPS && fail)
+		ft_printf(" {red}FAIL{eoc}");
 	return (!fail);
 }
