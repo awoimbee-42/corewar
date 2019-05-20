@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 14:56:02 by skiessli          #+#    #+#             */
-/*   Updated: 2019/05/20 17:30:44 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/20 22:57:23 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 	   sti just doesnt work
 */
 
-void			op_live(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
+void			op_live(t_vm *vm, t_proc *proc, int reg_num[3])
 {
 	int		i;
 	int		player;
@@ -51,103 +51,103 @@ void			op_live(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 	}
 	proc->live++;
 	(void)vm;
-	(void)play;
+
 	(void)proc;
 	(void)reg_num;
 }
 
-void			op_ld(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
+void			op_ld(t_vm *vm, t_proc *proc, int reg_num[3])
 {
 	proc->carry = proc->reg[reg_num[0]] ? 0 : 1;
 	proc->reg[reg_num[1]] = proc->reg[reg_num[0]];
 	(void)vm;
-	(void)play;
+
 	(void)proc;
 	(void)reg_num;
 }
 
-void			op_st(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
+void			op_st(t_vm *vm, t_proc *proc, int reg_num[3])
 {
 	if (((vm->arena[circumem(proc->pc + 1)] >> 4) & 0b11) == IND_CODE)
 		write32(vm, proc, proc->pc + (load16(vm, proc->pc + 3) % IDX_MOD), proc->reg[reg_num[0]]);
 	else
 		proc->reg[reg_num[1]] = proc->reg[reg_num[0]];
 	(void)vm;
-	(void)play;
+
 	(void)proc;
 	(void)reg_num;
 }
 
-void			op_add(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
+void			op_add(t_vm *vm, t_proc *proc, int reg_num[3])
 {
 	proc->carry = proc->reg[reg_num[0]] + proc->reg[reg_num[1]] ? 0 : 1;
 	proc->reg[reg_num[2]] = proc->reg[reg_num[0]] + proc->reg[reg_num[1]];
 	(void)vm;
-	(void)play;
+
 	(void)proc;
 	(void)reg_num;
 }
 
-void			op_sub(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
+void			op_sub(t_vm *vm, t_proc *proc, int reg_num[3])
 {
 	proc->carry = proc->reg[reg_num[0]] - proc->reg[reg_num[1]] ? 0 : 1;
 	proc->reg[reg_num[2]] = proc->reg[reg_num[0]] - proc->reg[reg_num[1]];
 	(void)vm;
-	(void)play;
+
 	(void)proc;
 	(void)reg_num;
 }
 
-void			op_and(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
+void			op_and(t_vm *vm, t_proc *proc, int reg_num[3])
 {
 	proc->carry = proc->reg[reg_num[0]] & proc->reg[reg_num[1]] ? 0 : 1;
 	proc->reg[reg_num[2]] = proc->reg[reg_num[0]] & proc->reg[reg_num[1]];
 	(void)vm;
-	(void)play;
+
 	(void)proc;
 	(void)reg_num;
 }
 
-void			op_or(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
+void			op_or(t_vm *vm, t_proc *proc, int reg_num[3])
 {
 	proc->carry = proc->reg[reg_num[0]] | proc->reg[reg_num[1]] ? 0 : 1;
 	proc->reg[reg_num[2]] = proc->reg[reg_num[0]] | proc->reg[reg_num[1]];
 	(void)vm;
-	(void)play;
+
 	(void)proc;
 	(void)reg_num;
 }
 
-void			op_xor(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
+void			op_xor(t_vm *vm, t_proc *proc, int reg_num[3])
 {
 	proc->carry = proc->reg[reg_num[0]] ^ proc->reg[reg_num[1]] ? 0 : 1;
 	proc->reg[reg_num[2]] = proc->reg[reg_num[0]] ^ proc->reg[reg_num[1]];
 	(void)vm;
-	(void)play;
+
 	(void)proc;
 	(void)reg_num;
 }
 
-void			op_zjmp(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
+void			op_zjmp(t_vm *vm, t_proc *proc, int reg_num[3])
 {
 	if (proc->carry)
 		proc->new_pc = circumem(proc->pc + (proc->reg[reg_num[0]] % IDX_MOD));
 	(void)vm;
-	(void)play;
+
 	(void)proc;
 	(void)reg_num;
 }
 
-void			op_ldi(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
+void			op_ldi(t_vm *vm, t_proc *proc, int reg_num[3])
 {
 	proc->reg[reg_num[2]] = load32(vm, proc->pc + ((proc->reg[reg_num[0]] + proc->reg[reg_num[1]]) % IDX_MOD));
 	(void)vm;
-	(void)play;
+
 	(void)proc;
 	(void)reg_num;
 }
 
-void			op_sti(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
+void			op_sti(t_vm *vm, t_proc *proc, int reg_num[3])
 {
 	int addr;
 
@@ -155,36 +155,36 @@ void			op_sti(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 	// ft_fprintf(2, "addr: %d\nreg_num[1]: %d, reg_num[2]: %d\n", addr, proc->reg[reg_num[1]], proc->reg[reg_num[2]]); //PUUUTE
 	write32(vm, proc, addr, proc->reg[reg_num[0]]);
 	(void)vm;
-	(void)play;
+
 	(void)proc;
 	(void)reg_num;
 }
 
-void			op_fork(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
+void			op_fork(t_vm *vm, t_proc *proc, int reg_num[3])
 {
-	vecproc_push(&vm->gb, &play->procs, *proc);
-	play->procs.d[play->procs.len - 1].pc = circumem(proc->pc + (proc->reg[reg_num[0]] % IDX_MOD));
-	play->procs.d[play->procs.len - 1].new_pc = 0;
-	read_instruction(&play->procs.d[play->procs.len - 1], vm);
+	vecproc_push(&vm->gb, &vm->procs, *proc);
+	vm->procs.d[vm->procs.len - 1].pc = circumem(proc->pc + (proc->reg[reg_num[0]] % IDX_MOD));
+	vm->procs.d[vm->procs.len - 1].new_pc = 0;
+	read_instruction(&vm->procs.d[vm->procs.len - 1], vm);
 	if (vm->verbosity >= VE_OPS)
-		ft_printf(" (%d)",play->procs.d[play->procs.len - 1].pc);
+		ft_printf(" (%d)",vm->procs.d[vm->procs.len - 1].pc);
 	(void)vm;
-	(void)play;
+
 	(void)proc;
 	(void)reg_num;
 }
 
-void			op_lld(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
+void			op_lld(t_vm *vm, t_proc *proc, int reg_num[3])
 {
 	proc->carry = proc->reg[reg_num[0]] ? 0 : 1;
 	proc->reg[reg_num[1]] = proc->reg[reg_num[0]];
 	(void)vm;
-	(void)play;
+
 	(void)proc;
 	(void)reg_num;
 }
 
-void			op_lldi(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
+void			op_lldi(t_vm *vm, t_proc *proc, int reg_num[3])
 {
 	int		res;
 
@@ -192,24 +192,24 @@ void			op_lldi(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 	proc->carry = res ? 0 : 1;
 	proc->reg[reg_num[2]] = load32(vm, proc->pc + (proc->reg[reg_num[0]] + proc->reg[reg_num[1]]));
 	(void)vm;
-	(void)play;
+
 	(void)proc;
 	(void)reg_num;
 }
 
-void			op_lfork(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
+void			op_lfork(t_vm *vm, t_proc *proc, int reg_num[3])
 {
-	vecproc_push(&vm->gb, &play->procs, *proc);
-	play->procs.d[play->procs.len - 1].pc = circumem(proc->pc + proc->reg[reg_num[0]]);
-	play->procs.d[play->procs.len - 1].new_pc = 0;
-	read_instruction(&play->procs.d[play->procs.len - 1], vm);
+	vecproc_push(&vm->gb, &vm->procs, *proc);
+	vm->procs.d[vm->procs.len - 1].pc = circumem(proc->pc + proc->reg[reg_num[0]]);
+	vm->procs.d[vm->procs.len - 1].new_pc = 0;
+	read_instruction(&vm->procs.d[vm->procs.len - 1], vm);
 	(void)vm;
-	(void)play;
+
 	(void)proc;
 	(void)reg_num;
 }
 
-void			op_aff(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
+void			op_aff(t_vm *vm, t_proc *proc, int reg_num[3])
 {
 	uint8_t	c;
 
@@ -219,7 +219,7 @@ void			op_aff(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 	else if (vm->verbosity == VE_VISU)
 		; // /!\ /!\ /!\ /!\ DO SOMETHING  /!\ /!\ /!\ /!\ /!\ /!\ /!\ /!\ /!\ /
 	(void)vm;
-	(void)play;
+
 	(void)proc;
 	(void)reg_num;
 }

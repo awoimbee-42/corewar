@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/17 22:52:46 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/20 17:29:14 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/20 23:05:13 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,13 @@ static t_bool	load_nocb(t_vm *vm, t_proc *proc, int reg_num[3])
 	return (fail);
 }
 
-int			load_arg_into_regs(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
+int			load_arg_into_regs(t_vm *vm, t_proc *proc, int reg_num[3])
 {
 	t_bool	fail;
 
 	fail = FALSE;
 	if (vm->verbosity >= VE_OPS)
-		ft_printf("P %d.%d | %s", play->id, proc - play->procs.d, g_op[proc->op_id].name);
+		ft_printf("P %d.%d | %s", proc->play->id, proc - vm->procs.d, g_op[proc->op_id].name);
 	if (g_op[proc->op_id].coding_byte == TRUE)
 		fail = load_cb(vm, proc, reg_num);
 	else

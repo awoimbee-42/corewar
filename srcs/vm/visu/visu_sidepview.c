@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 18:17:49 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/18 16:32:02 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/20 23:41:30 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,25 +23,21 @@ static void	print_cycles_info(t_vm *vm)
 
 static void	print_ops(t_vm *vm) //for debug more than anything else
 {
-	int		i;
 	int		j;
 
-	i = -1;
-	while (++i < vm->players.len)
+	j = -1;
+	while (++j < vm->procs.len)
 	{
-		wattron(vm->visu.sidep.statusw, COLOR_PAIR(PLAY0_COLOR + i));
-		j = -1;
-		while (++j < vm->players.d[i].procs.len)
+		if (vm->procs.d[j].op_cycles)
 		{
-			// pc = vm->players.d[i].procs.d[j].pc;
-			if (vm->players.d[i].procs.d[j].op_cycles)
-				wprintw(vm->visu.sidep.statusw,
-					"\n\nOperation: %-10s"
-					"\n\tCycles remaining: %-10d",
-					g_op[vm->arena[vm->players.d[i].procs.d[j].pc] - 1].name,
-					vm->players.d[i].procs.d[j].op_cycles);
+			wattron(vm->visu.sidep.statusw, COLOR_PAIR(PLAY0_COLOR + (vm->procs.d[j].play - vm->players.d)));
+			wprintw(vm->visu.sidep.statusw,
+				"\n\nOperation: %-10s"
+				"\n\tCycles remaining: %-10d",
+				g_op[vm->arena[vm->procs.d[j].pc] - 1].name,
+				vm->procs.d[j].op_cycles);
+			wattroff(vm->visu.sidep.statusw, COLOR_PAIR(PLAY0_COLOR + (vm->procs.d[j].play - vm->players.d)));
 		}
-		wattroff(vm->visu.sidep.statusw, COLOR_PAIR(PLAY0_COLOR + i));
 	}
 }
 
@@ -65,18 +61,9 @@ static void	print_players(t_vm *vm)
 
 static void	print_proc_nb(t_vm *vm)
 {
-	int		i;
-	int		p_nb;
-
-	p_nb = 0;
-	i = -1;
-	while (++i < vm->players.len)
-	{
-		p_nb += vm->players.d[i].procs.len;
-	}
 	wprintw(vm->visu.sidep.statusw,
 		"\nProcesses: %d",
-		p_nb);
+		vm->procs.len);
 }
 
 
