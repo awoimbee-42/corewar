@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 18:08:33 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/20 23:34:30 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/21 00:00:07 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void			champs_setup(t_vm *vm)
 		load_cor(vm, vm->procs.d[i].play, &vm->arena[offset]);
 		vm->procs.d[i].reg[1] = vm->procs.d[i].play->id;
 		offset += spacing;
-		read_instruction(&vm->procs.d[i], vm);
+		read_instruction(vm, i);
 	}
 	// while (++i < vm->players.len)
 	// {

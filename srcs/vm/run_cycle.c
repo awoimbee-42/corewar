@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 13:03:25 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/20 23:34:58 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/21 00:21:25 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,33 +15,33 @@
 //	si le cycle_to_die tombe en meme temps qu'une instruction live on fait quoi ?
 //	quand die_cycle_checks == MAX_CHECKS on décrémente de 1 ou de CYCLE_DELTA ?
 
-static void		launch_instruction(t_vm *vm, t_proc *proc)
+static void		launch_instruction(t_vm *vm, int proc)
 {
 	int		reg_num[MAX_ARGS_NUMBER];
 
-	if (load_arg_into_regs(vm, proc, reg_num))
-		g_op[proc->op_id].fun(vm, proc, reg_num);
-	proc->pc = proc->new_pc % MEM_SIZE;
+	if (load_arg_into_regs(vm, &vm->procs.d[proc], reg_num))
+		g_op[vm->procs.d[proc].op_id].fun(vm, proc, reg_num);
+	vm->procs.d[proc].pc = vm->procs.d[proc].new_pc % MEM_SIZE;
 	if (vm->verbosity >= VE_OPS)
 		ft_printf("\n");
 }
 
-void			read_instruction(t_proc *proc, t_vm *env)
+void			read_instruction(t_vm *vm, int proc)
 {
 	int			op_id;
 
-	op_id = env->arena[proc->pc] - 1;
+	op_id = vm->arena[vm->procs.d[proc].pc] - 1;
 	if (0 <= op_id && op_id <= 15)
 	{
-		proc->op_id = op_id;
-		proc->op_cycles = g_op[op_id].cycles;
+		vm->procs.d[proc].op_id = op_id;
+		vm->procs.d[proc].op_cycles = g_op[op_id].cycles;
 	}
 	else
 	{
-		if (proc->new_pc == 0)
-			proc->pc = (proc->pc + 1) % MEM_SIZE;
-		proc->new_pc = 0;
-		proc->op_cycles = 0;
+		if (vm->procs.d[proc].new_pc == 0)
+			vm->procs.d[proc].pc = (vm->procs.d[proc].pc + 1) % MEM_SIZE;
+		vm->procs.d[proc].new_pc = 0;
+		vm->procs.d[proc].op_cycles = 0;
 	}
 }
 
@@ -115,9 +115,9 @@ int				run_vm_cycle(t_vm *vm)
 			print_register(vm, &vm->procs.d[i]);
 		--vm->procs.d[i].op_cycles;
 		if (vm->procs.d[i].op_cycles == 0 && --vm->procs.d[i].op_cycles)
-			launch_instruction(vm, &vm->procs.d[i]);
+			launch_instruction(vm, i);
 		if (vm->procs.d[i].op_cycles == -1)
-			read_instruction(&vm->procs.d[i], vm);
+			read_instruction(vm, i);
 		vm->procs.d[i].new_pc = 0;
 	}
 	if (vm->procs.len == 0)

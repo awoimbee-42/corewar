@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/20 23:34:48 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/21 00:22:47 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,7 @@ typedef struct	s_visu
 **	OPs
 */
 
-typedef void(*t_opfun)(struct s_vm*, t_proc*, int[3]);
+typedef void(*t_opfun)(struct s_vm*, int, int[3]);
 
 typedef struct	s_vm_op
 {
@@ -239,9 +239,9 @@ void			print_memory(t_vm *env, const void *addr);
 int32_t			load32(t_vm *vm, t_register pc);
 int16_t			load16(t_vm *vm, t_register pc);
 int8_t			load8(t_vm *vm, t_register pc);
-uint8_t			*write32(t_vm *vm, t_proc *proc, int aptr, uint32_t data);
-uint8_t			*write16(t_vm *vm, t_proc *proc, int aptr, uint16_t data);
-uint8_t			*write8(t_vm *vm, t_proc *proc, int aptr, uint8_t data);
+uint8_t			*write32(t_vm *vm, int pc, int aptr, uint32_t data);
+uint8_t			*write16(t_vm *vm, int pc, int aptr, uint16_t data);
+uint8_t			*write8(t_vm *vm, int pc, int aptr, uint8_t data);
 int				circumem(int ptr);
 
 /*
@@ -275,24 +275,24 @@ void			print_winner(t_vm *vm);
 /*
 **	OPs
 */
-void		read_instruction(t_proc *proc, t_vm *env);
+void		read_instruction(t_vm *vm, int proc);
 int			read_one_arg(t_vm *vm, t_proc *proc, uint8_t cb, int cur_arg);
 int			load_arg_into_regs(t_vm *vm, t_proc *proc, int reg_num[3]);
 
-void		op_live(t_vm *vm, t_proc *proc, int reg_num[3]);
-void		op_ld(t_vm *vm, t_proc *proc, int reg_num[3]);
-void		op_st(t_vm *vm, t_proc *proc, int reg_num[3]);
-void		op_add(t_vm *vm, t_proc *proc, int reg_num[3]);
-void		op_sub(t_vm *vm, t_proc *proc, int reg_num[3]);
-void		op_and(t_vm *vm, t_proc *proc, int reg_num[3]);
-void		op_or(t_vm *vm, t_proc *proc, int reg_num[3]);
-void		op_xor(t_vm *vm, t_proc *proc, int reg_num[3]);
-void		op_zjmp(t_vm *vm, t_proc *proc, int reg_num[3]);
-void		op_ldi(t_vm *vm, t_proc *proc, int reg_num[3]);
-void		op_sti(t_vm *vm, t_proc *proc, int reg_num[3]);
-void		op_fork(t_vm *vm, t_proc *proc, int reg_num[3]);
-void		op_lld(t_vm *vm, t_proc *proc, int reg_num[3]);
-void		op_lldi(t_vm *vm, t_proc *proc, int reg_num[3]);
-void		op_lfork(t_vm *vm, t_proc *proc, int reg_num[3]);
-void		op_aff(t_vm *vm, t_proc *proc, int reg_num[3]);
+void		op_live(t_vm *vm, int proc, int reg_num[3]);
+void		op_ld(t_vm *vm, int proc, int reg_num[3]);
+void		op_st(t_vm *vm, int proc, int reg_num[3]);
+void		op_add(t_vm *vm, int proc, int reg_num[3]);
+void		op_sub(t_vm *vm, int proc, int reg_num[3]);
+void		op_and(t_vm *vm, int proc, int reg_num[3]);
+void		op_or(t_vm *vm, int proc, int reg_num[3]);
+void		op_xor(t_vm *vm, int proc, int reg_num[3]);
+void		op_zjmp(t_vm *vm, int proc, int reg_num[3]);
+void		op_ldi(t_vm *vm, int proc, int reg_num[3]);
+void		op_sti(t_vm *vm, int proc, int reg_num[3]);
+void		op_fork(t_vm *vm, int proc, int reg_num[3]);
+void		op_lld(t_vm *vm, int proc, int reg_num[3]);
+void		op_lldi(t_vm *vm, int proc, int reg_num[3]);
+void		op_lfork(t_vm *vm, int proc, int reg_num[3]);
+void		op_aff(t_vm *vm, int proc, int reg_num[3]);
 #endif
