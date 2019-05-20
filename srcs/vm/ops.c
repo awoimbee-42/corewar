@@ -167,7 +167,7 @@ void			op_fork(t_vm *vm, t_play *play, t_proc *proc, int reg_num[3])
 	play->procs.d[play->procs.len - 1].new_pc = 0;
 	read_instruction(&play->procs.d[play->procs.len - 1], vm);
 	if (vm->verbosity >= VE_OPS)
-		ft_printf(" (%d)",play->procs.d[play->procs.len - 1].pc);
+		ft_printf(" (%d) new_pc: %d", play->procs.d[play->procs.len - 1].pc, proc->new_pc);
 	(void)vm;
 	(void)play;
 	(void)proc;

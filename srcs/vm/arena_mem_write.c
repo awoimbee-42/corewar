@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <time.h>
 #include "vm.h"
 
 uint8_t			*write32(t_vm *vm, t_proc *proc, int aptr, uint32_t data)
@@ -28,7 +29,11 @@ uint8_t			*write32(t_vm *vm, t_proc *proc, int aptr, uint32_t data)
 		// if (aptr < 0)
 		// 	ft_printf("write to addr: %d, before circumem: %d, before anything: %d\n", tmp, aptr + (3 - i), aptr);
 		vm->arena[tmp] = r[i];
-		vm->mem_owner[tmp] = new_owner;
+		if (vm->verbosity == VE_VISU)
+		{
+			vm->mem_owner[tmp] = new_owner;
+			vm->time_write[tmp] = clock();
+		}
 	}
 	return (&vm->arena[aptr]);
 }
@@ -42,9 +47,14 @@ uint8_t			*write16(t_vm *vm, t_proc *proc, int aptr, uint16_t data)
 	aptr1 = circumem(aptr + 1);
 	vm->arena[aptr1] = (uint8_t)data;
 	vm->arena[aptr] = (uint8_t)(data >> 8);
-	new_owner = vm->mem_owner[proc->pc] + DELT_FRESH_COLOR;
-	vm->mem_owner[aptr1] = new_owner;
-	vm->mem_owner[aptr] = new_owner;
+	if (vm->verbosity == VE_VISU)
+	{
+		new_owner = vm->mem_owner[proc->pc] + DELT_FRESH_COLOR;
+		vm->mem_owner[aptr1] = new_owner;
+		vm->mem_owner[aptr] = new_owner;
+		vm->time_write[aptr1] = clock();
+		vm->time_write[aptr] = clock();
+	}
 	return (&vm->arena[aptr]);
 }
 
@@ -52,6 +62,10 @@ uint8_t			*write8(t_vm *vm, t_proc *proc, int aptr, uint8_t data)
 {
 	aptr = circumem(aptr);
 	vm->arena[aptr] = data;
-	vm->mem_owner[aptr] = vm->mem_owner[proc->pc] + DELT_FRESH_COLOR;
+	if (vm->verbosity == VE_VISU)
+	{
+		vm->time_write[aptr] = clock();
+		vm->mem_owner[aptr] = vm->mem_owner[proc->pc] + DELT_FRESH_COLOR;
+	}
 	return (&vm->arena[aptr]);
 }

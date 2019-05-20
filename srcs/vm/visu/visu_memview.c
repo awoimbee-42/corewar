@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <time.h>
 #include "vm.h"
 
 void		visu_init_memview(t_vm *vm)
@@ -63,9 +64,11 @@ void		visu_memview(t_vm *vm)
 {
 	int				i;
 	int				mem;
+	clock_t			cur_time;
 
 	wmove(vm->visu.arenaw, 0, 0);
 	mem = 0;
+	cur_time = clock();
 	while (mem != 4096)
 	{
 		i = -1;
@@ -74,7 +77,8 @@ void		visu_memview(t_vm *vm)
 			wattron(vm->visu.arenaw, COLOR_PAIR(vm->mem_owner[mem + i]));
 			wprintw(vm->visu.arenaw, " %02hhx", vm->arena[mem + i]);
 			wattroff(vm->visu.arenaw, COLOR_PAIR(vm->mem_owner[mem + i]));
-			if (vm->mem_owner[mem + i] >= FRESH0_COLOR)
+			if (vm->mem_owner[mem + i] >= FRESH0_COLOR
+					&& ((cur_time - vm->time_write[mem + i]) / (float)CLOCKS_PER_SEC) >= TIME_OF_WRITE)
 				vm->mem_owner[mem + i] -= DELT_FRESH_COLOR;
 		}
 		mem += 64;

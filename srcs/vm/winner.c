@@ -30,7 +30,7 @@ void		print_winner(t_vm *vm)
 			if (vm->players.d[i].period_lives > vm->players.d[win_i].period_lives)
 				win_i = i;
 	}
-	ft_printf("Contestant %i \"%s\", has won !\n", win_i + 1, vm->players.d[win_i].head.prog_name);
+	ft_printf("Contestant %i, \"%s\", has won !\n", win_i + 1, vm->players.d[win_i].head.prog_name);
 }
 
 void		print_register(t_play *p, int id)
@@ -39,7 +39,7 @@ void		print_register(t_play *p, int id)
 	char	*out;
 
 	out = NULL;
-	out = ft_cprintf("Proc: %i.%i  |", p->id, id);
+	out = ft_cprintf("Proc: %i.%i PC: %i |", p->id, id, p->procs.d[id].pc);
 	if (p->procs.d[id].reg[0] != 0)
 		ft_printf("{red}r0 is set, WTF ?! (r0: %d)\n", p->procs.d[id].reg[0]); // for debug
 	if (p->procs.d[id].reg[0] != 0)

@@ -24,7 +24,7 @@
 */
 
 # define RESERVED_ID	-2147483648
-
+# define TIME_OF_WRITE	0.3
 /*
 **	Verbosity levels are defined so new ones can be added in between easily
 */
@@ -196,6 +196,7 @@ typedef struct	s_vm
 	struct s_garbage	gb;
 	uint8_t				arena[MEM_SIZE];
 	uint8_t				mem_owner[MEM_SIZE];
+	clock_t				time_write[MEM_SIZE];
 }				t_vm;
 
 /*
