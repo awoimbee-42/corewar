@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 17:12:50 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/18 15:54:05 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/20 15:40:32 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,6 @@ void	print_memory(t_vm *env, const void *addr)
 		write(1, "0x", 2);
 		ft_putnbr_hex((ptr - (uint8_t *)addr), 4);
 		write(1, " : ", 3);
-		/*if (ptr - 32 >= (uint8_t*)addr && !ft_memcmp(ptr - 32, ptr, size > 32 ? 32 : size))
-		{
-			if (a != -1)
-				write(1, "*\n", 2);
-			a = -1;
-		}
-		else*/
 		{
 			a = 0;
 			while (a < env->dump_width && a < size)
@@ -69,15 +62,12 @@ void	print_memory(t_vm *env, const void *addr)
 			while (a < env->dump_width)
 			{
 				write(1, "   ", 3);
-				// if (a % 2)
-				// 	write(1, " ", 1);
 				a++;
 			}
 			if (env->verbosity >= VE_GREET)
 				sp_putstr(ptr, size > env->dump_width ? env->dump_width : size);
 			write(1, "\n", 1);
 		}
-
 		size -= env->dump_width;
 		ptr += env->dump_width;
 

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/18 16:29:51 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/20 16:22:07 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ struct s_vm;
 
 typedef struct	s_proc
 {
-	t_register			reg[REG_NUMBER + 5];
+	t_register			reg[REG_NUMBER + 1 + MAX_ARGS_NUMBER];
 	t_register			pc;
 	t_register			new_pc;
 	int					live;

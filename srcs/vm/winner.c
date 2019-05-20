@@ -6,11 +6,12 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/18 16:33:52 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/18 16:43:42 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/20 16:22:42 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
+#include "libft.h"
 
 void		print_winner(t_vm *vm)
 {
@@ -35,10 +36,15 @@ void		print_winner(t_vm *vm)
 void		print_register(t_play *p, int id)
 {
 	int		i;
+	char	*out;
 
-	ft_printf("Proc: %i.%i\n", p->id, id);
+	out = NULL;
+	out = ft_cprintf("Proc: %i.%i  |", p->id, id);
 	i = -1;
-	while (++i < REG_NUMBER + 4)
-		ft_printf("r%i: %i ", i + 1, p->procs.d[id].reg[i]);
-	ft_printf("\n");
+	while (++i < REG_NUMBER + 1 + MAX_ARGS_NUMBER)
+		ft_strcat_join(&out, ft_cprintf(" r%-2i: %-10i", i + 1, p->procs.d[id].reg[i]));
+	i = ft_strlen(out);
+	out[i] = '\n';
+	write(STDOUT_FILENO, out, i + 1);
+	free(out);
 }

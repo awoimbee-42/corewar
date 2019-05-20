@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/05/18 16:45:40 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/05/20 15:35:22 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -97,14 +97,14 @@ OBJ_ASM  = $(addprefix $(OBJ_FOLDER)/$(ASM_FD),  $(SRC_NAME_ASM:.c=.o))
 ################################################################################
 #################                  RULES                       #################
 ################################################################################
-all :
+all : $(LFT)
 	@$(MAKE) -j$(NUMPROC) $(NAME)   --no-print-directory
 	@$(MAKE) -j$(NUMPROC) $(ASM) --no-print-directory
 
 ############## LIBS ############
 $(LFT) :
 	@printf "$(YLW)Making libft...$(EOC)\n"
-	@$(MAKE) -s -C libft/
+	@$(MAKE) -j$(NUMPROC) -s -C libft/
 ################################
 
 $(NAME) : $(LFT) $(OBJ_CORE)
@@ -142,13 +142,8 @@ clean :
 	@rm -rf $(BUILD_FOLDER)
 	@printf "$(YLW)Cleaning libft...$(EOC)\n"
 	@make -s fclean -C libft
-	# @printf "$(RED)Cleaning $(DEPS_FOLDER)$(EOC)\n"
-	# @rm -f ./$(DEPS_FOLDER)/lib/*.la ./$(DEPS_FOLDER)/lib/*.a
-	# @rm -rf ./$(DEPS_FOLDER)/lib/cmake ./$(DEPS_FOLDER)/lib/pkgconfig
 
 fclean : clean
-	# @printf "$(YLW)Cleaning libs dependencies...$(EOC)\n"
-	# @rm -rf $(DEPS_FOLDER)/lib
 	@printf "$(RED)Cleaning $(NAME) & $(ASM)$(EOC)\n"
 	@rm -f $(NAME)
 	@rm -f $(ASM)
