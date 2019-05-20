@@ -29,5 +29,5 @@ void		print_winner(t_vm *vm)
 			if (vm->players.d[i].period_lives > vm->players.d[win_i].period_lives)
 				win_i = i;
 	}
-	ft_printf("Contestant 1, \"%s\", has won !\n", vm->players.d[win_i].id, vm->players.d[win_i].head.prog_name);
+	ft_printf("Contestant %i \"%s\", has won !\n", win_i + 1, vm->players.d[win_i].head.prog_name);
 }
