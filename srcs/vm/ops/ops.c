@@ -167,9 +167,9 @@ void			op_fork(t_vm *vm, int proc, int reg_num[3])
 	vecproc_push(&vm->gb, &vm->procs, vm->procs.d[proc]);
 	vm->procs.d[vm->procs.len - 1].pc = circumem(vm->procs.d[proc].pc + (vm->procs.d[proc].reg[reg_num[0]] % IDX_MOD));
 	vm->procs.d[vm->procs.len - 1].new_pc = 0;
-	read_instruction(vm, vm->procs.len - 1);
 	if (vm->verbosity >= VE_OPS)
 		ft_printf(" (%d) new_pc: %d",vm->procs.d[vm->procs.len - 1].pc, vm->procs.d[proc].new_pc);
+	read_instruction(vm, vm->procs.len - 1);
 }
 
 void			op_lld(t_vm *vm, int proc, int reg_num[3])

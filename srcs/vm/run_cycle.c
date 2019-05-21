@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 13:03:25 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/21 00:21:25 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/21 19:47:12 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void			read_instruction(t_vm *vm, int proc)
 	int			op_id;
 
 	op_id = vm->arena[vm->procs.d[proc].pc] - 1;
-	//ft_printf("read op_id: %i new_pc: %i\n", op_id, vm->procs.d[proc].new_pc);
+	//ft_printf("read op_id: %i pc: %i new_pc: %i\n", op_id, vm->procs.d[proc].pc, vm->procs.d[proc].new_pc);
 	if (0 <= op_id && op_id <= 15)
 	{
 		vm->procs.d[proc].op_id = op_id;
@@ -77,8 +77,9 @@ void			check_live(t_vm *vm)
 	int			nbr_live;
 	int			j;
 
-	if (vm->cycle_die && vm->cycle_curr % vm->cycle_die)
+	if (vm->cycle_curr - vm->cycle_last_check < vm->cycle_die)
 		return ;
+	vm->cycle_last_check = vm->cycle_curr;
 	vm->die_cycle_checks++;
 	nbr_live = 0;
 	j = vm->procs.len;
