@@ -40,6 +40,7 @@
 # define VE_OPS			6
 # define VE_CYCLE		7
 # define VE_REGISTER	8
+# define VE_PC_MOVE		9
 
 /*
 **	Ncurses sucks and doesnt define all the colors
