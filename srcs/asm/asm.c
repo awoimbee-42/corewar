@@ -6,14 +6,13 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 18:55:21 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/14 20:43:37 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/21 18:09:16 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 
-const t_op	g_op_tab[17] =
-{
+const t_op	g_op_tab[17] = {
 	{"live", 1, {T_DIR}, 1, 10, "alive", 0, 0},
 	{"ld", 2, {T_DIR | T_IND, T_REG}, 2, 5, "load", 1, 0},
 	{"st", 2, {T_REG, T_IND | T_REG}, 3, 5, "store", 1, 0},
@@ -42,11 +41,9 @@ const t_op	g_op_tab[17] =
 void	write_param(t_asm *my_asm, t_arg_type type, char *s)
 {
 	size_t	i;
-	char	*name;
 	int		two;
 
 	i = 0;
-	name = 0;
 	two = g_op_tab[my_asm->current_op - 1].dir2 ? 2 : 4;
 	if (type & T_IND)
 		two = 2;
@@ -54,7 +51,7 @@ void	write_param(t_asm *my_asm, t_arg_type type, char *s)
 		++s;
 	if (type & T_LAB)
 	{
-		create_label_holder(my_asm, s, &i, name);
+		create_label_holder(my_asm, s, &i);
 		write_nb_to_output(my_asm, two, 1);
 		my_asm->cursor += two == 2 ? 1 : 3;
 	}

@@ -6,7 +6,7 @@
 /*   By: cpoirier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 20:23:20 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/14 20:35:34 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/21 18:11:07 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ void	handle_labels(t_asm *my_asm, char *s, size_t *i)
 		fail_msg(my_asm, "Error: Name and Comment must be declared before"
 				" any instruction or label");
 	add_label(&my_asm->labels, &my_asm->label_pos,
-			ft_strnew(0), my_asm->cursor);
+			0, my_asm->cursor);
 	if (!read_label(my_asm->labels + my_asm->label_pos - 1, s + *i))
-		fail_msg(my_asm, "Syntax error on label");
+		fail_msg(my_asm, "Lexical error on label definition");
 	else
 	{
 		*i += ft_strlen(my_asm->labels[my_asm->label_pos - 1].name) + 1;

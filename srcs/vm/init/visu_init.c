@@ -6,13 +6,14 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 18:06:53 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/17 23:22:26 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/21 18:09:30 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 #include "init.h"
 #include <signal.h>
+#include <locale.h>
 
 static void	init_ncwindows(t_vm *vm)
 {
@@ -23,17 +24,17 @@ static void	init_ncwindows(t_vm *vm)
 		exit_vm(vm, gb_add(&vm->gb,
 				ft_cprintf("Windows too small (%dx%d), minimum is (270x68)",
 					dim[0], dim[1])));
-	vm->visu.rootw = newwin(68, 270, 0, 0);
-	vm->visu.arenaw = subwin(vm->visu.rootw, 64, 193, 2, 2);
-	vm->visu.sidep.rootw = subwin(vm->visu.rootw, 68, 74, 0, 196);
-	vm->visu.sidep.statusw = subwin(vm->visu.sidep.rootw, 64, 68, 2, 199);
-	if (!vm->visu.rootw || !vm->visu.arenaw
-		|| !vm->visu.sidep.rootw || !vm->visu.sidep.statusw)
+	if (!(vm->visu.rootw = newwin(68, 250, 0, 0))
+		|| !(vm->visu.arenaw = subwin(vm->visu.rootw, 64, 193, 2, 2))
+		|| !(vm->visu.sidep.rootw = subwin(vm->visu.rootw, 68, 54, 0, 196))
+		|| !(vm->visu.sidep.statusw = subwin(vm->visu.sidep.rootw, 57, 48, 2, 199))
+		|| !(vm->visu.sidep.printw = subwin(vm->visu.sidep.rootw, 6, 48, 60, 199)))
 		exit_vm(vm, "Could not create ncurses windows for visualizer.");
 }
 
 void		init_ncurses(t_vm *vm)
 {
+	setlocale(LC_ALL,"");
 	vm->verbosity = VE_VISU;
 	vm->visu.op_per_sec = 10;
 	vm->visu.paused = TRUE;

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 19:24:05 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/20 23:34:05 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/21 16:58:19 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,22 @@ void			set_verbosity(t_vm *vm, char *input)
 			ft_cprintf("Verbosity level badly formatted ('%s')", input)));
 }
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+void			arena_fill_rand(t_vm *vm)
+{
+	struct timespec	ts;
+	// int				r;
+	int				i;
+
+	srandom(time(NULL));
+	i = -1;
+	while (++i < MEM_SIZE)
+		vm->arena[i] = random();
+}
+
 void			read_argv_init(t_vm *env, int argc, char **argv)
 {
 	int			i;
@@ -109,6 +125,8 @@ void			read_argv_init(t_vm *env, int argc, char **argv)
 			env->verbosity = VE_VI_NOTINIT;
 		else if (!ft_strcmp(argv[i], "-verbose") || !ft_strcmp(argv[i], "-ve"))
 			set_verbosity(env, argv[++i]);
+		else if (!ft_strcmp(argv[i], "-rand"))
+			arena_fill_rand(env);
 		else
 			i = read_champ(env, argv, i);
 	}
