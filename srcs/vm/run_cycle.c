@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 13:03:25 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/21 19:47:12 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/21 21:14:21 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void		launch_instruction(t_vm *vm, int proc)
 
 	if (load_arg_into_regs(vm, &vm->procs.d[proc], reg_num))
 		g_op[vm->procs.d[proc].op_id].fun(vm, proc, reg_num);
-	
+
 	if (vm->verbosity >= VE_PC_MOVE)
 		ft_printf("\nADV %i (%#06x -> %#06x)", vm->procs.d[proc].new_pc
 				- vm->procs.d[proc].pc, vm->procs.d[proc].pc, vm->procs.d[proc].new_pc);
@@ -91,7 +91,7 @@ void			check_live(t_vm *vm)
 			if (vm->verbosity >= VE_PROCDEATH)
 				ft_printf("\tProcess %d of player %d died\n",
 					j, vm->procs.d[j].play->id);
-				vecproc_del_at(&vm->procs, j);
+			vecproc_del_at(&vm->procs, j);
 		}
 		vm->procs.d[j].live = 0;
 	}
@@ -108,10 +108,10 @@ void			check_live(t_vm *vm)
 int				run_vm_cycle(t_vm *vm)
 {
 	int			i;
-	int			alive;
+	// int			alive;
 
 	++vm->cycle_curr;
-	alive = FALSE;
+	// alive = FALSE;
 	if (vm->verbosity >= VE_CYCLE)
 		ft_printf("{PNK}cycle: %lu{eoc}\n", vm->cycle_curr);
 	check_live(vm);

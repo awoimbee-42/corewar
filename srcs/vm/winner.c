@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/18 16:33:52 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/21 01:20:07 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/21 21:47:24 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void		print_winner(t_vm *vm)
 	int		i;
 	int		win_i;
 
-	if (vm->cycle_curr == vm->cycle_dump)
+	if (vm->cycle_dump && vm->cycle_curr == vm->cycle_dump)
 		return ;
 	win_i = 0;
 	i = 0;
@@ -30,7 +30,10 @@ void		print_winner(t_vm *vm)
 			if (vm->players.d[i].period_lives > vm->players.d[win_i].period_lives)
 				win_i = i;
 	}
-	ft_printf("Contestant %i, \"%s\", has won !\n", win_i + 1, vm->players.d[win_i].head.prog_name);
+	if (vm->verbosity >= VE_WINNER)
+		ft_printf("Contestant %i, \"%s\", has won !\n", vm->players.d[win_i].id, vm->players.d[win_i].head.prog_name);
+	else if (vm->verbosity == VE_VISU)
+		visu_endloop(vm, win_i);
 }
 
 void		print_register(t_vm *vm, t_proc *proc)

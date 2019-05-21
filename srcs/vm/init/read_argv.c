@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 19:24:05 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/21 16:58:19 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/21 21:15:12 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,6 @@ void			set_verbosity(t_vm *vm, char *input)
 
 void			arena_fill_rand(t_vm *vm)
 {
-	struct timespec	ts;
-	// int				r;
 	int				i;
 
 	srandom(time(NULL));

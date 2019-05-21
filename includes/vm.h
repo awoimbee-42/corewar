@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/21 19:50:33 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/21 21:51:52 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@
 # define VE_PC_MOVE		9
 
 /*
-**	Ncurses sucks and doesnt define all the colors
+**	Ncurses sucks and doesnt define all the colors nor the keys
 */
 
 # define COLOR_BRIGHT_BLACK		8
@@ -54,6 +54,15 @@
 # define COLOR_BRIGHT_MAGENTA	13
 # define COLOR_BRIGHT_CYAN		14
 # define COLOR_BRIGHT_WHITE		15
+
+# define NC_Q	113
+# define NC_W	119
+# define NC_E	101
+# define NC_R	114
+# define NC_SPC	32
+# define NC_ESC	27
+# define NC_1	49
+# define NC_2	50
 
 /*
 **	Define the COLOR_PAIR we'll use for players, cursors & newly written mem,
@@ -260,6 +269,7 @@ void			exit_vm(t_vm *env, char *err_msg);
 int				run_vm_cycle(t_vm *vm);
 void			loop(t_vm *env);
 void			visu_loop(t_vm *vm);
+void			visu_endloop(t_vm *vm, int winner);
 
 // /* ops.c */
 // void			launch_instruction(t_vm *vm, t_play *play, t_proc *proc);

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 14:51:50 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/21 17:00:45 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/21 22:25:22 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,12 @@ int		usage(const char *pname)
 		"\t\t5: process creation-death\n"
 		"\t\t6: OPs\n"
 		"\t\t7: Show Cycles\n"
-		"\t\t8: Print registers at start of cycle (r17-20 are special regs)\n",
+		"\t\t8: Print registers at start of cycle (r17-20 are special regs)\n"
+		"\t###### CONTROLS IN THE VISUALIZER ######\n"
+		"\t\tQ: -10cycle/s  W: -1cycle/s  E: +1cycle/s  R: +10 cycle/s\n"
+		"\t\t1: 50cycle/s  2: ~9999 cycle/s\n"
+		"\t\tspace: pause/unpause\n"
+		"\t\tesc: quit\n",
 		pname);
 	return (0);
 }
