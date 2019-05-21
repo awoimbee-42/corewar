@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/21 18:21:38 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/21 19:38:19 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@
 # define CURS0_COLOR		13
 # define DELT_FRESH_COLOR	20
 # define FRESH0_COLOR		23
+
+# define AFF_BUFF_LEN	245
 
 /*
 **	#################
@@ -147,7 +149,7 @@ typedef struct	s_visu
 	t_bool				paused;
 	WINDOW				*rootw;
 	WINDOW				*arenaw;
-	char				aff[7];
+	char				aff[AFF_BUFF_LEN];
 	struct
 	{
 		WINDOW				*rootw;

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 14:56:02 by skiessli          #+#    #+#             */
-/*   Updated: 2019/05/21 18:24:20 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/21 19:23:53 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,11 +216,12 @@ void			op_aff(t_vm *vm, int proc, int reg_num[3])
 	else if (vm->verbosity == VE_VISU)
 	{
 		cursor = ft_strlen(vm->visu.aff);
-		if (cursor == 6)
+		if (cursor == AFF_BUFF_LEN - 1)
 		{
 			// ft_bzero(vm->visu.aff, 7);
 			cursor = 0;
 		}
 		vm->visu.aff[cursor] = c;
+		vm->visu.aff[cursor + 1] = ' ';
 	}
 }

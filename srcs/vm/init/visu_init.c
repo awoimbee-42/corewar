@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 18:06:53 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/21 18:09:30 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/21 19:48:15 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ static void	init_ncwindows(t_vm *vm)
 	int		dim[2];
 
 	getmaxyx(stdscr, dim[1], dim[0]);
-	if (dim[0] < 270 || dim[1] < 68)
+	if (dim[0] < 250 || dim[1] < 68)
 		exit_vm(vm, gb_add(&vm->gb,
-				ft_cprintf("Windows too small (%dx%d), minimum is (270x68)",
+				ft_cprintf("Windows too small (%dx%d), minimum is (250x68)",
 					dim[0], dim[1])));
 	if (!(vm->visu.rootw = newwin(68, 250, 0, 0))
 		|| !(vm->visu.arenaw = subwin(vm->visu.rootw, 64, 193, 2, 2))
@@ -49,7 +49,7 @@ void		init_ncurses(t_vm *vm)
 	ft_memset(vm->mem_owner, PLAY0_COLOR - 1, MEM_SIZE);   // set default mem owner
 
 	/* setup memory color */
-	init_pair(1, COLOR_BRIGHT_BLACK, COLOR_BRIGHT_BLACK);                // contour
+	init_pair(CONTOUR_COLOR, COLOR_BRIGHT_BLACK, COLOR_BRIGHT_BLACK);                // contour
 	init_pair(PLAY0_COLOR - 1, COLOR_BRIGHT_BLACK, COLOR_BLACK);  // unset mem color
 	init_pair(PLAY0_COLOR + 0, COLOR_GREEN, COLOR_BLACK);  // p1
 	init_pair(PLAY0_COLOR + 1, COLOR_BLUE, COLOR_BLACK);   // p2
