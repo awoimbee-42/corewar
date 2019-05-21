@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/21 00:54:22 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/21 18:21:38 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,10 +146,12 @@ typedef struct	s_visu
 	t_bool				paused;
 	WINDOW				*rootw;
 	WINDOW				*arenaw;
+	char				aff[7];
 	struct
 	{
 		WINDOW				*rootw;
 		WINDOW				*statusw;
+		WINDOW				*printw;
 	}					sidep;
 }				t_visu;
 

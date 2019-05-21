@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 18:17:49 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/20 23:41:30 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/21 18:21:12 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	print_ops(t_vm *vm) //for debug more than anything else
 			wprintw(vm->visu.sidep.statusw,
 				"\n\nOperation: %-10s"
 				"\n\tCycles remaining: %-10d",
-				g_op[vm->arena[vm->procs.d[j].pc] - 1].name,
+				g_op[vm->procs.d[j].op_id].name,
 				vm->procs.d[j].op_cycles);
 			wattroff(vm->visu.sidep.statusw, COLOR_PAIR(PLAY0_COLOR + (vm->procs.d[j].play - vm->players.d)));
 		}
@@ -74,6 +74,8 @@ void		visu_sidepview(t_vm *vm)
 	werase(vm->visu.sidep.rootw);
 	wattron(vm->visu.sidep.rootw, COLOR_PAIR(CONTOUR_COLOR));
 	box(vm->visu.sidep.rootw, '*', '*');
+	wmove(vm->visu.sidep.rootw, 59, 0);
+	whline(vm->visu.sidep.rootw, '*', 73);
 	wattroff(vm->visu.sidep.rootw, COLOR_PAIR(CONTOUR_COLOR));
 
 	wmove(vm->visu.sidep.statusw, 0, 0);
@@ -87,4 +89,7 @@ void		visu_sidepview(t_vm *vm)
 	print_players(vm);
 	print_cycles_info(vm);
 	print_ops(vm);
+
+	wmove(vm->visu.sidep.printw, 1, 0);
+	wprintw(vm->visu.sidep.printw,"%s", vm->visu.aff);
 }

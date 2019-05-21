@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 14:56:02 by skiessli          #+#    #+#             */
-/*   Updated: 2019/05/21 00:35:00 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/21 18:16:08 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,11 +131,13 @@ void			op_xor(t_vm *vm, int proc, int reg_num[3])
 void			op_zjmp(t_vm *vm, int proc, int reg_num[3])
 {
 	if (vm->procs.d[proc].carry)
+	{
+		if (vm->verbosity >= VE_OPS)
+			ft_printf(" OK");
 		vm->procs.d[proc].new_pc = circumem(vm->procs.d[proc].pc + (vm->procs.d[proc].reg[reg_num[0]] % IDX_MOD));
-	(void)vm;
-
-	(void)proc;
-	(void)reg_num;
+	}
+	else if (vm->verbosity >= VE_OPS)
+		ft_printf(" Nope");
 }
 
 void			op_ldi(t_vm *vm, int proc, int reg_num[3])
@@ -168,10 +170,6 @@ void			op_fork(t_vm *vm, int proc, int reg_num[3])
 	read_instruction(vm, vm->procs.len - 1);
 	if (vm->verbosity >= VE_OPS)
 		ft_printf(" (%d) new_pc: %d",vm->procs.d[vm->procs.len - 1].pc, vm->procs.d[proc].new_pc);
-	(void)vm;
-
-	(void)proc;
-	(void)reg_num;
 }
 
 void			op_lld(t_vm *vm, int proc, int reg_num[3])
@@ -203,23 +201,26 @@ void			op_lfork(t_vm *vm, int proc, int reg_num[3])
 	vm->procs.d[vm->procs.len - 1].pc = circumem(vm->procs.d[proc].pc + vm->procs.d[proc].reg[reg_num[0]]);
 	vm->procs.d[vm->procs.len - 1].new_pc = 0;
 	read_instruction(vm, vm->procs.len - 1);
-	(void)vm;
-
-	(void)proc;
-	(void)reg_num;
+	if (vm->verbosity >= VE_OPS)
+		ft_printf(" (%d) new_pc: %d",vm->procs.d[vm->procs.len - 1].pc, vm->procs.d[proc].new_pc);
 }
 
 void			op_aff(t_vm *vm, int proc, int reg_num[3])
 {
 	uint8_t	c;
+	int		cursor;
 
 	c = vm->procs.d[proc].reg[reg_num[0]] % 256;
 	if (vm->verbosity >= VE_AFF)
 		ft_printf("{grn}aff: %c{eoc}\n", c);
 	else if (vm->verbosity == VE_VISU)
-		; // /!\ /!\ /!\ /!\ DO SOMETHING  /!\ /!\ /!\ /!\ /!\ /!\ /!\ /!\ /!\ /
-	(void)vm;
-
-	(void)proc;
-	(void)reg_num;
+	{
+		cursor = ft_strlen(vm->visu.aff);
+		if (cursor == 6)
+		{
+			// ft_bzero(vm->visu.aff, 7);
+			cursor = 0;
+		}
+		vm->visu.aff[cursor] = c;
+	}
 }
