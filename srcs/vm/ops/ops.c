@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 14:56:02 by skiessli          #+#    #+#             */
-/*   Updated: 2019/05/21 18:16:08 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/21 18:24:20 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,12 +132,12 @@ void			op_zjmp(t_vm *vm, int proc, int reg_num[3])
 {
 	if (vm->procs.d[proc].carry)
 	{
+		vm->procs.d[proc].new_pc = circumem(vm->procs.d[proc].pc + (vm->procs.d[proc].reg[reg_num[0]] % IDX_MOD));
 		if (vm->verbosity >= VE_OPS)
 			ft_printf(" OK");
-		vm->procs.d[proc].new_pc = circumem(vm->procs.d[proc].pc + (vm->procs.d[proc].reg[reg_num[0]] % IDX_MOD));
 	}
 	else if (vm->verbosity >= VE_OPS)
-		ft_printf(" Nope");
+		ft_printf(" FAILED");
 }
 
 void			op_ldi(t_vm *vm, int proc, int reg_num[3])

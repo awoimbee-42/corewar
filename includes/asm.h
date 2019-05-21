@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 18:06:46 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/17 01:29:14 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/21 18:14:37 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ typedef struct	s_label
 	char				*name;
 	size_t				pos;
 	size_t				offset;
+	int					line;
 }				t_label;
 
 typedef struct	s_op
@@ -70,8 +71,8 @@ int					read_label(t_label *label, char *s);
 void				init_labels(t_asm *my_asm);
 void				add_label(t_label **l, size_t *pos, char *name, size_t p);
 void				write_label_holders(t_asm *my_asm);
-void				create_label_holder(t_asm *my_asm, char *s, size_t *i,
-		char *name);
+void				create_label_holder(t_asm *my_asm, char *s, size_t *i);
+void				write_back(t_asm *my_asm, size_t pos, int val);
 int					get_name(char *s, char name[], size_t len);
 int					get_op_id(char *s);
 void				write_header(t_asm *my_asm);

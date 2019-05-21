@@ -21,7 +21,12 @@ static void		launch_instruction(t_vm *vm, int proc)
 
 	if (load_arg_into_regs(vm, &vm->procs.d[proc], reg_num))
 		g_op[vm->procs.d[proc].op_id].fun(vm, proc, reg_num);
+	
+	if (vm->verbosity >= VE_PC_MOVE)
+		ft_printf("\nADV %i (%#06x -> %#06x)", vm->procs.d[proc].new_pc
+				- vm->procs.d[proc].pc, vm->procs.d[proc].pc, vm->procs.d[proc].new_pc);
 	vm->procs.d[proc].pc = vm->procs.d[proc].new_pc % MEM_SIZE;
+	vm->procs.d[proc].new_pc = 0;
 	if (vm->verbosity >= VE_OPS)
 		ft_printf("\n");
 }
@@ -31,6 +36,7 @@ void			read_instruction(t_vm *vm, int proc)
 	int			op_id;
 
 	op_id = vm->arena[vm->procs.d[proc].pc] - 1;
+	//ft_printf("read op_id: %i new_pc: %i\n", op_id, vm->procs.d[proc].new_pc);
 	if (0 <= op_id && op_id <= 15)
 	{
 		vm->procs.d[proc].op_id = op_id;
