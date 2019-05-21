@@ -131,7 +131,14 @@ void			op_xor(t_vm *vm, int proc, int reg_num[3])
 void			op_zjmp(t_vm *vm, int proc, int reg_num[3])
 {
 	if (vm->procs.d[proc].carry)
+	{
 		vm->procs.d[proc].new_pc = circumem(vm->procs.d[proc].pc + (vm->procs.d[proc].reg[reg_num[0]] % IDX_MOD));
+		if (vm->verbosity >= VE_OPS)
+			ft_printf(" OK");
+	}
+	else if (vm->verbosity >= VE_OPS)
+		ft_printf(" FAILED");
+	
 	(void)vm;
 
 	(void)proc;
