@@ -36,7 +36,7 @@ void			read_instruction(t_vm *vm, int proc)
 	int			op_id;
 
 	op_id = vm->arena[vm->procs.d[proc].pc] - 1;
-	//ft_printf("read op_id: %i new_pc: %i\n", op_id, vm->procs.d[proc].new_pc);
+	//ft_printf("read op_id: %i pc: %i new_pc: %i\n", op_id, vm->procs.d[proc].pc, vm->procs.d[proc].new_pc);
 	if (0 <= op_id && op_id <= 15)
 	{
 		vm->procs.d[proc].op_id = op_id;
