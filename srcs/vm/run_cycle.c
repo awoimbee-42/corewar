@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 13:03:25 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/22 15:36:39 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/22 17:07:42 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,16 @@ static void		launch_instruction(t_vm *vm, int proc)
 	int		reg_num[MAX_ARGS_NUMBER];
 
 	if (load_arg_into_regs(vm, &vm->procs.d[proc], reg_num))
+	{
 		g_op[vm->procs.d[proc].op_id].fun(vm, proc, reg_num);
-
+		if (vm->verbosity >= VE_OPS)
+			ft_printf("\n");
+	}
 	if (vm->verbosity >= VE_PC_MOVE)
-		ft_printf("\nADV %i (%#06x -> %#06x)", vm->procs.d[proc].new_pc
+		ft_printf("ADV %i (%#06x -> %#06x)\n", vm->procs.d[proc].new_pc
 				- vm->procs.d[proc].pc, vm->procs.d[proc].pc, vm->procs.d[proc].new_pc);
 	vm->procs.d[proc].pc = vm->procs.d[proc].new_pc % MEM_SIZE;
 	vm->procs.d[proc].new_pc = 0;
-	if (vm->verbosity >= VE_OPS)
-		ft_printf("\n");
 }
 
 void			read_instruction(t_vm *vm, int proc)
@@ -98,7 +99,12 @@ void			check_live(t_vm *vm)
 	j = vm->players.len;
 	while (j-- != 0)
 		vm->players.d[j].period_lives = 0;
-	if (nbr_live >= NBR_LIVE || vm->die_cycle_checks == MAX_CHECKS)
+	if (nbr_live >= NBR_LIVE)
+	{
+		vm->cycle_die -= CYCLE_DELTA;
+		vm->die_cycle_checks = 0;
+	}
+	if (vm->die_cycle_checks == MAX_CHECKS)
 	{
 		vm->cycle_die -= CYCLE_DELTA;
 		vm->die_cycle_checks = 0;
@@ -113,14 +119,13 @@ int				run_vm_cycle(t_vm *vm)
 	++vm->cycle_curr;
 	// alive = FALSE;
 	if (vm->verbosity >= VE_CYCLE)
-		ft_printf("{PNK}cycle: %lu{eoc}\n", vm->cycle_curr);
+		ft_printf("It is now cycle %lu\n", vm->cycle_curr);
 	check_live(vm);
 	i = vm->procs.len;
 	while (i-- != 0)
 	{
 		if (vm->verbosity >= VE_REGISTER)
 			print_register(vm, &vm->procs.d[i]);
-
 		if (vm->procs.d[i].op_cycles <= 0)
 			read_instruction(vm, i);
 		if (vm->procs.d[i].op_cycles == 1)
