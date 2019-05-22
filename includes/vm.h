@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/21 21:51:52 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/22 13:50:13 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ struct s_vm;
 
 typedef struct	s_proc
 {
+	int					pid;
 	t_register			reg[REG_NUMBER + 1 + MAX_ARGS_NUMBER];
 	t_register			pc;
 	t_register			new_pc;
@@ -114,6 +115,7 @@ typedef struct	s_proc
 typedef struct	s_vecproc
 {
 	struct s_proc		*d;
+	int					last_pid;
 	int					len;
 	int					mem;
 }				t_vecproc;

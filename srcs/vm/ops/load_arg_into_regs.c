@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/17 22:52:46 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/21 16:06:03 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/22 13:52:57 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int			load_arg_into_regs(t_vm *vm, t_proc *proc, int reg_num[3])
 
 	fail = FALSE;
 	if (vm->verbosity >= VE_OPS)
-		ft_printf("P%5d | %s", proc - vm->procs.d + 1, g_op[proc->op_id].name);
+		ft_printf("P%5d | %s", proc->pid, g_op[proc->op_id].name);
 	if (g_op[proc->op_id].coding_byte == TRUE)
 		fail = load_cb(vm, proc, reg_num);
 	else
