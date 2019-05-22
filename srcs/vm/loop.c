@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 17:59:57 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/21 22:26:09 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/22 20:35:26 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void			loop(t_vm *env)
 		if (env->cycle_dump == cycle)
 		{
 			print_memory(env, env->arena);
-			break;
+			break ;
 		}
 	}
 }
@@ -60,6 +60,5 @@ void			visu_loop(t_vm *vm)
 			if (!vm->visu.paused)
 				usleep(dt * 1000000);
 		}
-
 	}
 }

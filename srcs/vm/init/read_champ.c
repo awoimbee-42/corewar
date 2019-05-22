@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 18:08:33 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/21 00:50:40 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/22 20:33:10 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ static void		load_cor(t_vm *env, t_play *p, uint8_t *buffer)
 	char		*fname;
 	uint		size;
 
-	// ft_printf("{grn}Load .cor file{eoc} \"%s\"\n", p->cor);
 	fname = p->fname;
 	gb = &env->gb;
 	fd = open(fname, O_RDONLY);
@@ -78,11 +77,9 @@ int				read_champ(t_vm *vm, char **input, int i)
 {
 	t_play		*champ;
 
-	// ft_printf("{grn}read_champ{eoc}\n"); // REMOVE
 	if (vm->players.len == 4)
 		exit_vm(vm, gb_add(&vm->gb, ft_cprintf("Too many champions !")));
 	champ = &vm->players.d[vm->players.len++];
-	// champ->index = env->players.len - 1;
 	champ->id = RESERVED_ID;
 	if (!ft_strcmp(input[i], "-n") && ++i)
 	{
@@ -91,7 +88,6 @@ int				read_champ(t_vm *vm, char **input, int i)
 			|| ((champ->id = ft_atoi(input[i])) == RESERVED_ID))
 			exit_vm(vm, gb_add(&vm->gb,
 					ft_cprintf("Champ. id badly formatted ('%s')", input[i])));
-		// ft_printf("{grn}Read champ id set by user: (string)'%s' == (int)%d{eoc}\n", input[i], champ->id);
 		++i;
 	}
 	vecproc_push_empty(&vm->gb, &vm->procs);

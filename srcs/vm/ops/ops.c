@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 14:56:02 by skiessli          #+#    #+#             */
-/*   Updated: 2019/05/22 16:58:00 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/22 20:49:47 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,25 +46,17 @@ void			op_live(t_vm *vm, int proc, int reg_num[3])
 		if (vm->verbosity >= VE_OPS)
 			ft_printf("\n");
 		if (vm->verbosity >= VE_LIVE)
-			ft_printf("un processus dit que le joueur %d(%s) est en vie%s",
+			ft_printf("A process shows that player %d (%s) is alive%s", // the thing w/ the \n is weird
 				vm->players.d[i].id, vm->players.d[i].head.prog_name,
 				(vm->verbosity < VE_OPS) ? "\n" : "");
 	}
 	vm->procs.d[proc].live++;
-	(void)vm;
-
-	(void)proc;
-	(void)reg_num;
 }
 
 void			op_ld(t_vm *vm, int proc, int reg_num[3])
 {
 	vm->procs.d[proc].carry = vm->procs.d[proc].reg[reg_num[0]] ? 0 : 1;
 	vm->procs.d[proc].reg[reg_num[1]] = vm->procs.d[proc].reg[reg_num[0]];
-	(void)vm;
-
-	(void)proc;
-	(void)reg_num;
 }
 
 void			op_st(t_vm *vm, int proc, int reg_num[3])
@@ -73,67 +65,48 @@ void			op_st(t_vm *vm, int proc, int reg_num[3])
 		write32(vm, vm->procs.d[proc].pc, vm->procs.d[proc].pc + (load16(vm, vm->procs.d[proc].pc + 3) % IDX_MOD), vm->procs.d[proc].reg[reg_num[0]]);
 	else
 		vm->procs.d[proc].reg[reg_num[1]] = vm->procs.d[proc].reg[reg_num[0]];
-	(void)vm;
-
-	(void)proc;
-	(void)reg_num;
 }
 
 void			op_add(t_vm *vm, int proc, int reg_num[3])
 {
 	vm->procs.d[proc].carry = vm->procs.d[proc].reg[reg_num[0]] + vm->procs.d[proc].reg[reg_num[1]] ? 0 : 1;
 	vm->procs.d[proc].reg[reg_num[2]] = vm->procs.d[proc].reg[reg_num[0]] + vm->procs.d[proc].reg[reg_num[1]];
-	(void)vm;
-
-	(void)proc;
-	(void)reg_num;
 }
 
 void			op_sub(t_vm *vm, int proc, int reg_num[3])
 {
 	vm->procs.d[proc].carry = vm->procs.d[proc].reg[reg_num[0]] - vm->procs.d[proc].reg[reg_num[1]] ? 0 : 1;
 	vm->procs.d[proc].reg[reg_num[2]] = vm->procs.d[proc].reg[reg_num[0]] - vm->procs.d[proc].reg[reg_num[1]];
-	(void)vm;
-
-	(void)proc;
-	(void)reg_num;
 }
 
 void			op_and(t_vm *vm, int proc, int reg_num[3])
 {
 	vm->procs.d[proc].carry = vm->procs.d[proc].reg[reg_num[0]] & vm->procs.d[proc].reg[reg_num[1]] ? 0 : 1;
 	vm->procs.d[proc].reg[reg_num[2]] = vm->procs.d[proc].reg[reg_num[0]] & vm->procs.d[proc].reg[reg_num[1]];
-	(void)vm;
-
-	(void)proc;
-	(void)reg_num;
 }
 
 void			op_or(t_vm *vm, int proc, int reg_num[3])
 {
 	vm->procs.d[proc].carry = vm->procs.d[proc].reg[reg_num[0]] | vm->procs.d[proc].reg[reg_num[1]] ? 0 : 1;
 	vm->procs.d[proc].reg[reg_num[2]] = vm->procs.d[proc].reg[reg_num[0]] | vm->procs.d[proc].reg[reg_num[1]];
-	(void)vm;
-
-	(void)proc;
-	(void)reg_num;
 }
 
 void			op_xor(t_vm *vm, int proc, int reg_num[3])
 {
-	vm->procs.d[proc].carry = vm->procs.d[proc].reg[reg_num[0]] ^ vm->procs.d[proc].reg[reg_num[1]] ? 0 : 1;
-	vm->procs.d[proc].reg[reg_num[2]] = vm->procs.d[proc].reg[reg_num[0]] ^ vm->procs.d[proc].reg[reg_num[1]];
-	(void)vm;
+	t_register	res;
 
-	(void)proc;
-	(void)reg_num;
+	res = vm->procs.d[proc].reg[reg_num[0]] ^ vm->procs.d[proc].reg[reg_num[1]];
+	vm->procs.d[proc].carry = res ? 0 : 1;
+	vm->procs.d[proc].reg[reg_num[2]] = res;
 }
 
 void			op_zjmp(t_vm *vm, int proc, int reg_num[3])
 {
 	if (vm->procs.d[proc].carry)
 	{
-		vm->procs.d[proc].new_pc = circumem(vm->procs.d[proc].pc + (vm->procs.d[proc].reg[reg_num[0]] % IDX_MOD));
+		vm->procs.d[proc].new_pc = circumem(
+				vm->procs.d[proc].pc
+				+ (vm->procs.d[proc].reg[reg_num[0]] % IDX_MOD));
 		if (vm->verbosity >= VE_OPS)
 			ft_printf(" OK");
 	}
@@ -143,11 +116,13 @@ void			op_zjmp(t_vm *vm, int proc, int reg_num[3])
 
 void			op_ldi(t_vm *vm, int proc, int reg_num[3])
 {
-	vm->procs.d[proc].reg[reg_num[2]] = load32(vm, vm->procs.d[proc].pc + ((vm->procs.d[proc].reg[reg_num[0]] + vm->procs.d[proc].reg[reg_num[1]]) % IDX_MOD));
-	(void)vm;
+	t_register	addr_rel;
+	t_register	data;
 
-	(void)proc;
-	(void)reg_num;
+	addr_rel = (vm->procs.d[proc].reg[reg_num[0]]
+			+ vm->procs.d[proc].reg[reg_num[1]]) % IDX_MOD;
+	data = load32(vm, vm->procs.d[proc].pc + addr_rel);
+	vm->procs.d[proc].reg[reg_num[2]] = data;
 }
 
 void			op_sti(t_vm *vm, int proc, int reg_num[3])

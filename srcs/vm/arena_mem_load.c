@@ -6,14 +6,14 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/12 20:56:49 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/21 01:19:35 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/22 20:32:33 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
 #include "vm.h"
 
-int32_t		load32(t_vm *vm, t_register pc)
+int32_t			load32(t_vm *vm, t_register pc)
 {
 	int32_t		res;
 	uint8_t		*r;
@@ -26,7 +26,7 @@ int32_t		load32(t_vm *vm, t_register pc)
 	return (res);
 }
 
-int16_t		load16(t_vm *vm, t_register pc)
+int16_t			load16(t_vm *vm, t_register pc)
 {
 	int16_t		res;
 	uint8_t		*r;

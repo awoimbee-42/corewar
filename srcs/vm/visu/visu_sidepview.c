@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 18:17:49 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/22 13:50:27 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/22 20:38:27 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ static void	print_cycles_info(t_vm *vm)
 static void	print_ops(t_vm *vm) //for debug more than anything else
 {
 	int		j;
+	int		play;
 
 	wprintw(vm->visu.sidep.statusw, "\n");
 	j = -1;
@@ -31,13 +32,14 @@ static void	print_ops(t_vm *vm) //for debug more than anything else
 	{
 		if (vm->procs.d[j].op_cycles)
 		{
-			wattron(vm->visu.sidep.statusw, COLOR_PAIR(PLAY0_COLOR + (vm->procs.d[j].play - vm->players.d)));
+			play = (vm->procs.d[j].play - vm->players.d);
+			wattron(vm->visu.sidep.statusw, COLOR_PAIR(PLAY0_COLOR + play));
 			wprintw(vm->visu.sidep.statusw,
 				"\nP %-2d Op: %-6s| Cycles remaining: %-4d",
 				vm->procs.d[j].pid,
 				g_op[vm->procs.d[j].op_id].name,
 				vm->procs.d[j].op_cycles);
-			wattroff(vm->visu.sidep.statusw, COLOR_PAIR(PLAY0_COLOR + (vm->procs.d[j].play - vm->players.d)));
+			wattroff(vm->visu.sidep.statusw, COLOR_PAIR(PLAY0_COLOR + play));
 		}
 	}
 }

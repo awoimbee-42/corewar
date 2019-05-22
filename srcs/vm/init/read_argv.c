@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 19:24:05 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/21 21:15:12 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/22 18:40:57 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "vm.h"
 #include "init.h"
 #include <errno.h>
+#include <time.h>
 
 static void		read_dump_cycle(t_vm *env, char *input)
 {
@@ -68,7 +69,6 @@ static void		set_remaining_play_id(t_vm *env)
 					env->players.d[i].id = champ_id;
 			}
 		}
-		// env->players.d[i].procs.d[0].reg[1] = env->players.d[i].id;
 	}
 }
 
@@ -82,20 +82,17 @@ void			set_verbosity(t_vm *vm, char *input)
 	if (vm->verbosity == VE_VISU || vm->verbosity == VE_VI_NOTINIT)
 		exit_vm(vm, "Cannot set verbosity in visual mode!");
 	if (!input)
-		exit_vm(vm, "Mbenjell fuck off");
+		exit_vm(vm, "Need a verbosity level (wtf are u trying to achieve ?)");
 	vm->verbosity = ft_atoi(input);
 	if (vm->verbosity < 0)
-		vm->verbosity = 0;
+		vm->verbosity = VE_BAD;
 	if (input == NULL
-		|| ft_strlen(input) > 10
-		|| vm->verbosity < 0)
+		|| vm->verbosity < 0
+		|| (*input < '0' || *input > '9')
+		|| ft_strlen(input) > 10)
 		exit_vm(vm, gb_add(&vm->gb,
 			ft_cprintf("Verbosity level badly formatted ('%s')", input)));
 }
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
 
 void			arena_fill_rand(t_vm *vm)
 {

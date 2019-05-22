@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/22 16:29:15 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/22 18:40:39 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,12 @@
 
 # define RESERVED_ID	-2147483648
 # define TIME_OF_WRITE	0.3
+
 /*
 **	Verbosity levels are defined so new ones can be added in between easily
 */
 
+# define VE_BAD			-999
 # define VE_VI_NOTINIT	-2
 # define VE_VISU		-1
 # define VE_WINNER		0
@@ -92,7 +94,6 @@ struct s_vecproc;
 struct s_vecplay;
 struct s_vm;
 
-
 /*
 **	################
 **	   Definitions
@@ -126,7 +127,6 @@ typedef struct	s_play
 	int					last_live;
 	int					period_lives;
 	char				*fname;
-	// uint8_t				*cor; // useless ?
 	t_header			head;
 }				t_play;
 
@@ -137,20 +137,21 @@ typedef struct	s_vecplay
 }				t_vecplay;
 
 /*
+**							rootw
 **	+-------------------------+------------------------------+
-**	|                         |           sidepw             |
+**	|                         |        sidepw->rootw         |
 **	|                         |                              |
 **	|                         |  +------------------------+  |
-**	|                         |  |      spstatusw         |  |
+**	|                         |  |                        |  |
+**	|                         |  |                        |  |
+**	|                         |  |        statusw         |  |
 **	|         arenaw          |  |                        |  |
+**	|                         |  |                        |  |
+**	|                         |  |                        |  |
 **	|                         |  +------------------------+  |
-**	|                         |                              |
-**	|                         |                              |
-**	|                         |                              |
-**	|                         |                              |
-**	|                         |                              |
-**	|                         |                              |
-**	|                         |                              |
+**	|                         |  +------------------------+  |
+**	|                         |  |        printw          |  |
+**	|                         |  +------------------------+  |
 **	+-------------------------+------------------------------+
 */
 
@@ -161,7 +162,7 @@ typedef struct	s_visu
 	WINDOW				*rootw;
 	WINDOW				*arenaw;
 	char				aff[AFF_BUFF_LEN];
-	struct
+	struct		s_sidep
 	{
 		WINDOW				*rootw;
 		WINDOW				*statusw;
@@ -169,9 +170,9 @@ typedef struct	s_visu
 	}					sidep;
 }				t_visu;
 
-
 /*
 **	OPs
+**		in here, id == op_code
 */
 
 typedef void(*t_opfun)(struct s_vm*, int, int[3]);
@@ -180,8 +181,8 @@ typedef struct	s_vm_op
 {
 	char				name[5];
 	int					nb_args;
-	t_arg_type			args_type[3]; // 3 is the max number of args -> the compiler will round to 4 anyways
-	int					id; //op_code
+	t_arg_type			args_type[MAX_ARGS_NUMBER];
+	int					id;
 	int					cycles;
 	t_bool				coding_byte;
 	t_bool				modcarry;
@@ -197,7 +198,6 @@ extern const t_vm_op g_op[16];
 **	  MAIN STRUCT
 **	#################
 */
-
 
 typedef struct	s_vm
 {
@@ -224,18 +224,6 @@ typedef struct	s_vm
 **	##################
 */
 
-/*
-**	Check for MAX_PLAYERS is done inside these functions, dont worry about it
-*/
-
-// t_vecplay		*vecplay_init(t_garbage *gb, t_vecplay *vec, size_t reserv_len);
-// t_vecplay		*vecplay_new(t_garbage *gb, size_t reserved_len);
-// t_vecplay		*vecplay_push_empty(t_garbage *gb, t_vecplay *vec);
-// t_vecplay		*vecplay_push(t_garbage *gb, t_vecplay *vec, t_play d);
-// t_vecplay		*vecplay_realloc(t_garbage *gb, t_vecplay *vec);
-// t_vecplay		*vecplay_del_at(t_vecplay *v, size_t at);
-// t_play			*vecplay_point_last(const t_vecplay *vec);
-
 t_vecproc		*vecproc_init(t_garbage *gb, t_vecproc *vec, size_t reserv_len);
 t_vecproc		*vecproc_new(t_garbage *gb, size_t reserved_len);
 t_vecproc		*vecproc_push_empty(t_garbage *gb, t_vecproc *vec);
@@ -244,7 +232,9 @@ t_vecproc		*vecproc_realloc(t_garbage *gb, t_vecproc *vec);
 t_vecproc		*vecproc_del_at(t_vecproc *v, int at);
 
 /*
-**	Functions
+**	##################
+**	    FUNCTIONS
+**	##################
 */
 uint32_t		swap32_endian(uint32_t val);
 uint16_t		swap16_endian(uint16_t val);
@@ -263,21 +253,20 @@ uint8_t			*write16(t_vm *vm, int pc, int aptr, uint16_t data);
 uint8_t			*write8(t_vm *vm, int pc, int aptr, uint8_t data);
 int				circumem(int ptr);
 
-/*
-**
-*/
 int				usage(const char *pname);
 void			exit_vm(t_vm *env, char *err_msg);
 
+/*
+**	Functions that actually run the vm
+*/
 int				run_vm_cycle(t_vm *vm);
 void			loop(t_vm *env);
 void			visu_loop(t_vm *vm);
 void			visu_endloop(t_vm *vm, int winner);
 
-// /* ops.c */
-// void			launch_instruction(t_vm *vm, t_play *play, t_proc *proc);
-
-/* visu */
+/*
+**	visu
+*/
 void			clean_visu(t_vm *vm);
 void			visu_update(t_vm *vm);
 void			visu_khandler(t_vm *vm);
@@ -295,24 +284,24 @@ void			print_winner(t_vm *vm);
 /*
 **	OPs
 */
-void		read_instruction(t_vm *vm, int proc);
-int			read_one_arg(t_vm *vm, t_proc *proc, uint8_t cb, int cur_arg);
-int			load_arg_into_regs(t_vm *vm, t_proc *proc, int reg_num[3]);
+void			read_instruction(t_vm *vm, int proc);
+int				read_one_arg(t_vm *vm, t_proc *proc, uint8_t cb, int cur_arg);
+int				load_arg_into_regs(t_vm *vm, t_proc *proc, int reg_num[3]);
 
-void		op_live(t_vm *vm, int proc, int reg_num[3]);
-void		op_ld(t_vm *vm, int proc, int reg_num[3]);
-void		op_st(t_vm *vm, int proc, int reg_num[3]);
-void		op_add(t_vm *vm, int proc, int reg_num[3]);
-void		op_sub(t_vm *vm, int proc, int reg_num[3]);
-void		op_and(t_vm *vm, int proc, int reg_num[3]);
-void		op_or(t_vm *vm, int proc, int reg_num[3]);
-void		op_xor(t_vm *vm, int proc, int reg_num[3]);
-void		op_zjmp(t_vm *vm, int proc, int reg_num[3]);
-void		op_ldi(t_vm *vm, int proc, int reg_num[3]);
-void		op_sti(t_vm *vm, int proc, int reg_num[3]);
-void		op_fork(t_vm *vm, int proc, int reg_num[3]);
-void		op_lld(t_vm *vm, int proc, int reg_num[3]);
-void		op_lldi(t_vm *vm, int proc, int reg_num[3]);
-void		op_lfork(t_vm *vm, int proc, int reg_num[3]);
-void		op_aff(t_vm *vm, int proc, int reg_num[3]);
+void			op_live(t_vm *vm, int proc, int reg_num[3]);
+void			op_ld(t_vm *vm, int proc, int reg_num[3]);
+void			op_st(t_vm *vm, int proc, int reg_num[3]);
+void			op_add(t_vm *vm, int proc, int reg_num[3]);
+void			op_sub(t_vm *vm, int proc, int reg_num[3]);
+void			op_and(t_vm *vm, int proc, int reg_num[3]);
+void			op_or(t_vm *vm, int proc, int reg_num[3]);
+void			op_xor(t_vm *vm, int proc, int reg_num[3]);
+void			op_zjmp(t_vm *vm, int proc, int reg_num[3]);
+void			op_ldi(t_vm *vm, int proc, int reg_num[3]);
+void			op_sti(t_vm *vm, int proc, int reg_num[3]);
+void			op_fork(t_vm *vm, int proc, int reg_num[3]);
+void			op_lld(t_vm *vm, int proc, int reg_num[3]);
+void			op_lldi(t_vm *vm, int proc, int reg_num[3]);
+void			op_lfork(t_vm *vm, int proc, int reg_num[3]);
+void			op_aff(t_vm *vm, int proc, int reg_num[3]);
 #endif
