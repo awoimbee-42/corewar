@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 13:03:25 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/21 21:14:21 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/22 15:36:39 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void			read_instruction(t_vm *vm, int proc)
 		if (vm->procs.d[proc].new_pc == 0)
 			vm->procs.d[proc].pc = (vm->procs.d[proc].pc + 1) % MEM_SIZE;
 		vm->procs.d[proc].new_pc = 0;
-		vm->procs.d[proc].op_cycles = 0;
+		vm->procs.d[proc].op_cycles = -1;
 	}
 }
 
@@ -120,11 +120,12 @@ int				run_vm_cycle(t_vm *vm)
 	{
 		if (vm->verbosity >= VE_REGISTER)
 			print_register(vm, &vm->procs.d[i]);
-		--vm->procs.d[i].op_cycles;
-		if (vm->procs.d[i].op_cycles == 0 && --vm->procs.d[i].op_cycles)
-			launch_instruction(vm, i);
-		if (vm->procs.d[i].op_cycles == -1)
+
+		if (vm->procs.d[i].op_cycles <= 0)
 			read_instruction(vm, i);
+		if (vm->procs.d[i].op_cycles == 1)
+			launch_instruction(vm, i);
+		--vm->procs.d[i].op_cycles;
 		vm->procs.d[i].new_pc = 0;
 	}
 	if (vm->procs.len == 0)
