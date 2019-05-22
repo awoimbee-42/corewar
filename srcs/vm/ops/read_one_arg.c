@@ -37,7 +37,7 @@ static int		load_dir(t_vm *vm, t_proc *proc, int cur_arg)
 	proc->reg[REG_NUMBER + cur_arg] = g_op[proc->op_id].dir2 ? load16(vm, proc->new_pc) : load32(vm, proc->new_pc);
 	proc->new_pc = g_op[proc->op_id].dir2 ? (proc->new_pc + 2) % MEM_SIZE : (proc->new_pc + 4) % MEM_SIZE;
 	if (vm->verbosity >= VE_OPS)
-		ft_strcat_join(&vm->tmpstr, ft_cprintf(" %%%d", proc->reg[REG_NUMBER + cur_arg]));
+		ft_strcat_join(&vm->tmpstr, ft_cprintf(" %d", proc->reg[REG_NUMBER + cur_arg]));
 		// ft_printf(" %%%d", proc->reg[REG_NUMBER + cur_arg]);
 	if (!(T_DIR & g_op[proc->op_id].args_type[cur_arg - 1]))
 		return (-1);

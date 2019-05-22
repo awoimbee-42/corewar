@@ -18,6 +18,7 @@
 static void		launch_instruction(t_vm *vm, int proc)
 {
 	int		reg_num[MAX_ARGS_NUMBER];
+	int		i;
 
 	if (load_arg_into_regs(vm, &vm->procs.d[proc], reg_num))
 	{
@@ -25,9 +26,15 @@ static void		launch_instruction(t_vm *vm, int proc)
 		if (vm->verbosity >= VE_OPS)
 			ft_printf("\n");
 	}
-	if (vm->verbosity >= VE_PC_MOVE)
-		ft_printf("ADV %i (%#06x -> %#06x)\n", vm->procs.d[proc].new_pc
+	if (vm->verbosity >= VE_PC_MOVE && vm->procs.d[proc].op_id != 8)
+	{
+		ft_printf("ADV %i (%#06x -> %#06x) ", vm->procs.d[proc].new_pc
 				- vm->procs.d[proc].pc, vm->procs.d[proc].pc, vm->procs.d[proc].new_pc);
+		i = -1;
+		while (++i + vm->procs.d[proc].pc < vm->procs.d[proc].new_pc)
+			ft_printf("%02x ", vm->arena[(vm->procs.d[proc].pc + i) % MEM_SIZE]);
+		ft_printf("\n");
+	}	
 	vm->procs.d[proc].pc = vm->procs.d[proc].new_pc % MEM_SIZE;
 	vm->procs.d[proc].new_pc = 0;
 }
@@ -99,15 +106,12 @@ void			check_live(t_vm *vm)
 	j = vm->players.len;
 	while (j-- != 0)
 		vm->players.d[j].period_lives = 0;
-	if (nbr_live >= NBR_LIVE)
+	if (nbr_live >= NBR_LIVE || vm->die_cycle_checks == MAX_CHECKS)
 	{
 		vm->cycle_die -= CYCLE_DELTA;
 		vm->die_cycle_checks = 0;
-	}
-	if (vm->die_cycle_checks == MAX_CHECKS)
-	{
-		vm->cycle_die -= CYCLE_DELTA;
-		vm->die_cycle_checks = 0;
+		if (vm->verbosity >= VE_CYCLE)
+			ft_printf("Cycle to die is now %i\n", vm->cycle_die);
 	}
 }
 
@@ -120,7 +124,6 @@ int				run_vm_cycle(t_vm *vm)
 	// alive = FALSE;
 	if (vm->verbosity >= VE_CYCLE)
 		ft_printf("It is now cycle %lu\n", vm->cycle_curr);
-	check_live(vm);
 	i = vm->procs.len;
 	while (i-- != 0)
 	{
@@ -133,6 +136,7 @@ int				run_vm_cycle(t_vm *vm)
 		--vm->procs.d[i].op_cycles;
 		vm->procs.d[i].new_pc = 0;
 	}
+	check_live(vm);
 	if (vm->procs.len == 0)
 		return (0);
 	return (1);

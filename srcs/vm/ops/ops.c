@@ -46,8 +46,9 @@ void			op_live(t_vm *vm, int proc, int reg_num[3])
 		if (vm->verbosity >= VE_OPS)
 			ft_printf("\n");
 		if (vm->verbosity >= VE_LIVE)
-			ft_printf("un processus dit que le joueur %d(%s) est en vie\n",
-				vm->players.d[i].id, vm->players.d[i].head.prog_name);
+			ft_printf("un processus dit que le joueur %d(%s) est en vie%s",
+				vm->players.d[i].id, vm->players.d[i].head.prog_name,
+				(vm->verbosity < VE_OPS) ? "\n" : "");
 	}
 	vm->procs.d[proc].live++;
 	(void)vm;
@@ -168,7 +169,8 @@ void			op_fork(t_vm *vm, int proc, int reg_num[3])
 	vm->procs.d[vm->procs.len - 1].pc = circumem(vm->procs.d[proc].pc + (vm->procs.d[proc].reg[reg_num[0]] % IDX_MOD));
 	vm->procs.d[vm->procs.len - 1].new_pc = 1;
 	if (vm->verbosity >= VE_OPS)
-		ft_printf(" (%d) new_pc: %d",vm->procs.d[vm->procs.len - 1].pc, vm->procs.d[proc].new_pc);
+		ft_printf(" (%d)",vm->procs.d[vm->procs.len - 1].pc);
+		//ft_printf(" (%d) new_pc: %d",vm->procs.d[vm->procs.len - 1].pc, vm->procs.d[proc].new_pc);
 	read_instruction(vm, vm->procs.len - 1);
 }
 
