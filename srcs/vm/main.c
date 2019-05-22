@@ -78,9 +78,9 @@ int		usage(const char *pname)
 		"\t-vi(su)      : enable the ncurses visualizer mode\n"
 		"\t-ve(rbosity) : verbosity level, it is cumulative\n"
 		"\t\t0: winner (le joueur x(nom_champion) a gagne)\n"
-		"\t\t1: aff\n"
+		"\t\t1: aff & greetings message (list of competitors)\n"
 		"\t\t2: live {red}<- DEFAULT SETTING{eoc}\n"
-		"\t\t3: greetings message (list of competitors & dump at start)\n"
+		"\t\t3: dump at start\n"
 		"\t\t4: player death\n"
 		"\t\t5: process creation-death\n"
 		"\t\t6: OPs\n"
@@ -105,11 +105,15 @@ int		main(int argc, char **argv)
 	gb_init_existing(&vm.gb);
 	vm.verbosity = VE_LIVE;
 	read_argv_init(&vm, argc, argv);
+	if (vm.verbosity >= VE_AFF)
+	{
+		ft_printf("Introducing contestants...\n");
+		for (int i = 0; i < vm.players.len; ++i)
+			ft_printf("* Player %i, weighing %ld bytes, \"%s\" (\"%s\") !\n", 
+			vm.players.d[i].id, vm.players.d[i].head.prog_size, vm.players.d[i].head.prog_name, vm.players.d[i].head.comment);
+	}
 	if (vm.verbosity >= VE_GREET)
 	{
-		ft_printf("Our contestants are:\n");
-		for (int i = 0; i < vm.players.len; ++i)
-			ft_printf("\tJean michel %s #%d avec un programme d'une taille de %ld octets\n", vm.players.d[i].head.prog_name, vm.players.d[i].id, vm.players.d[i].head.prog_size);
 		ft_printf("Arena:\n");
 		print_memory(&vm, vm.arena);
 	}

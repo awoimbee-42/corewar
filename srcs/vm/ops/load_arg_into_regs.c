@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/17 22:52:46 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/22 13:52:57 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/22 16:36:48 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,16 @@ int			load_arg_into_regs(t_vm *vm, t_proc *proc, int reg_num[3])
 
 	fail = FALSE;
 	if (vm->verbosity >= VE_OPS)
-		ft_printf("P%5d | %s", proc->pid, g_op[proc->op_id].name);
+		vm->tmpstr = ft_cprintf("P%5d | %s", proc->pid, g_op[proc->op_id].name);
+		// ft_printf("P%5d | %s", proc->pid, g_op[proc->op_id].name);
 	if (g_op[proc->op_id].coding_byte == TRUE)
 		fail = load_cb(vm, proc, reg_num);
 	else
 		fail = load_nocb(vm, proc, reg_num);
-	if (vm->verbosity >= VE_OPS && fail)
-		ft_printf(" {red}FAIL{eoc}");
+	if (vm->verbosity >= VE_OPS && !fail)
+		ft_putstr(vm->tmpstr);
+	if (vm->verbosity >= VE_OPS)
+		ft_memfree(&vm->tmpstr);
+		// ft_printf(" {red}FAIL{eoc}");
 	return (!fail);
 }

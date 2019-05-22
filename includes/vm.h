@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/22 13:50:13 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/22 16:29:15 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,6 +212,7 @@ typedef struct	s_vm
 	struct s_vecplay	players;
 	struct s_vecproc	procs;
 	struct s_garbage	gb;
+	char				*tmpstr;
 	uint8_t				arena[MEM_SIZE];
 	uint8_t				mem_owner[MEM_SIZE];
 	clock_t				time_write[MEM_SIZE];

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 13:03:25 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/22 15:36:39 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/22 17:07:42 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,25 @@
 static void		launch_instruction(t_vm *vm, int proc)
 {
 	int		reg_num[MAX_ARGS_NUMBER];
+	int		i;
 
 	if (load_arg_into_regs(vm, &vm->procs.d[proc], reg_num))
+	{
 		g_op[vm->procs.d[proc].op_id].fun(vm, proc, reg_num);
-
-	if (vm->verbosity >= VE_PC_MOVE)
-		ft_printf("\nADV %i (%#06x -> %#06x)", vm->procs.d[proc].new_pc
+		if (vm->verbosity >= VE_OPS)
+			ft_printf("\n");
+	}
+	if (vm->verbosity >= VE_PC_MOVE && vm->procs.d[proc].op_id != 8)
+	{
+		ft_printf("ADV %i (%#06x -> %#06x) ", vm->procs.d[proc].new_pc
 				- vm->procs.d[proc].pc, vm->procs.d[proc].pc, vm->procs.d[proc].new_pc);
+		i = -1;
+		while (++i + vm->procs.d[proc].pc < vm->procs.d[proc].new_pc)
+			ft_printf("%02x ", vm->arena[(vm->procs.d[proc].pc + i) % MEM_SIZE]);
+		ft_printf("\n");
+	}	
 	vm->procs.d[proc].pc = vm->procs.d[proc].new_pc % MEM_SIZE;
 	vm->procs.d[proc].new_pc = 0;
-	if (vm->verbosity >= VE_OPS)
-		ft_printf("\n");
 }
 
 void			read_instruction(t_vm *vm, int proc)
@@ -102,6 +110,8 @@ void			check_live(t_vm *vm)
 	{
 		vm->cycle_die -= CYCLE_DELTA;
 		vm->die_cycle_checks = 0;
+		if (vm->verbosity >= VE_CYCLE)
+			ft_printf("Cycle to die is now %i\n", vm->cycle_die);
 	}
 }
 
@@ -113,14 +123,12 @@ int				run_vm_cycle(t_vm *vm)
 	++vm->cycle_curr;
 	// alive = FALSE;
 	if (vm->verbosity >= VE_CYCLE)
-		ft_printf("{PNK}cycle: %lu{eoc}\n", vm->cycle_curr);
-	check_live(vm);
+		ft_printf("It is now cycle %lu\n", vm->cycle_curr);
 	i = vm->procs.len;
 	while (i-- != 0)
 	{
 		if (vm->verbosity >= VE_REGISTER)
 			print_register(vm, &vm->procs.d[i]);
-
 		if (vm->procs.d[i].op_cycles <= 0)
 			read_instruction(vm, i);
 		if (vm->procs.d[i].op_cycles == 1)
@@ -128,6 +136,7 @@ int				run_vm_cycle(t_vm *vm)
 		--vm->procs.d[i].op_cycles;
 		vm->procs.d[i].new_pc = 0;
 	}
+	check_live(vm);
 	if (vm->procs.len == 0)
 		return (0);
 	return (1);
