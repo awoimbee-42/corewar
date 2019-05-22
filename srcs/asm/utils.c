@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 18:13:30 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/21 18:14:58 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/22 18:35:47 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,11 @@
 void	fail_msg(t_asm *my_asm, char *s)
 {
 	if (my_asm)
+	{
 		ft_printf("%s on [%d:%d]\n", s, my_asm->curr_line, my_asm->curr_char);
+		get_next_line(my_asm->fd, GNL_FLUSH);
+		free_asm(my_asm);
+	}
 	else
 		ft_printf("Error: %s\n", s);
 	exit(EXIT_FAILURE);
@@ -51,4 +55,15 @@ void	skip_whitespace(char *s, size_t *i)
 {
 	while (s[*i] == ' ' || s[*i] == '\t')
 		(*i)++;
+}
+
+int		label_exists(t_asm *my_asm, char *s, size_t j)
+{
+	size_t		i;
+
+	i = -1;
+	while (++i < my_asm->label_pos)
+		if (i != j && !ft_strcmp(my_asm->labels[i].name, s))
+			return (1);
+	return (0);
 }

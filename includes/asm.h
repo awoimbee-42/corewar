@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 18:06:46 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/21 18:14:37 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/22 18:48:19 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,7 @@ typedef struct	s_asm
 	char				*file_name;
 	int					curr_line;
 	int					curr_char;
-	//char				name[PROG_NAME_LENGTH + 1];
-	//char				comment[COMMENT_LENGTH + 1];
+	int					fd;
 	t_header			header;
 	int					current_op;
 	char				*output;
@@ -74,6 +73,7 @@ void				write_label_holders(t_asm *my_asm);
 void				create_label_holder(t_asm *my_asm, char *s, size_t *i);
 void				write_back(t_asm *my_asm, size_t pos, int val);
 int					get_name(char *s, char name[], size_t len);
+int					label_exists(t_asm *my_asm, char *s, size_t i);
 int					get_op_id(char *s);
 void				write_header(t_asm *my_asm);
 char				*get_base_name(char *s);
@@ -81,6 +81,7 @@ void				init_op(t_asm *my_asm, char *s, size_t *i, t_arg_type t[3]);
 void				handle_current_op(t_asm *a, char *s, size_t *i, size_t *c);
 void				handle_op(t_asm *my_asm, char *s);
 void				init_asm(t_asm *my_asm, int *fd, char *path);
+void				init_asm_loop(t_asm *my_asm, int *i, char *s);
 void				handle_name(t_asm *my_asm, char *s, size_t *i);
 void				handle_comment(t_asm *my_asm, char *s, size_t *i);
 void				handle_labels(t_asm *my_asm, char *s, size_t *i);

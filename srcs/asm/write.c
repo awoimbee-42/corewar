@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 18:55:36 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/16 20:58:44 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/22 18:45:25 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,13 @@ void		write_opcode(t_asm *my_asm, t_arg_type types[3])
 	size_t	i;
 
 	i = -1;
+	if ((my_asm->op_begin + 1) % OUTPUT_LENGTH == 0)
+	{
+		if (!(my_asm->output = (char *)realloc(my_asm->output, my_asm->op_begin
+						+ 1 + OUTPUT_LENGTH)))
+			fail_msg(0, "Realloc failed");
+		ft_bzero(my_asm->output + my_asm->op_begin + 1, OUTPUT_LENGTH);
+	}
 	while (++i < 3)
 	{
 		if (types[i] & T_REG)

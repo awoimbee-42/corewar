@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 18:47:28 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/14 18:05:06 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/22 18:20:09 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # define LABEL_COUNT 50
 # define LABEL_END "-"
 
-# define OUTPUT_LENGTH 1024
+# define OUTPUT_LENGTH 1048576
 
 /*
 **	utils.c

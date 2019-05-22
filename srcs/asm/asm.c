@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 18:55:21 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/21 18:09:16 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/22 18:48:03 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void	free_asm(t_asm *my_asm)
 			* LABEL_COUNT].name);
 	free(my_asm->labels);
 	free(my_asm->labels_holder);
+	free(my_asm->file_name);
 }
 
 int		get_asm(char *path, t_asm *my_asm)
@@ -89,10 +90,7 @@ int		get_asm(char *path, t_asm *my_asm)
 	init_asm(my_asm, &fd, path);
 	while (get_next_line(fd, &s) > 0)
 	{
-		my_asm->curr_line++;
-		i = 0;
-		skip_whitespace(s, &i);
-		my_asm->curr_char = i;
+		init_asm_loop(my_asm, &i, s);
 		if (!ft_strncmp(s + i, NAME_CMD_STRING, ft_strlen(NAME_CMD_STRING)))
 			handle_name(my_asm, s, &i);
 		else if (!ft_strncmp(s + i, COMMENT_CMD_STRING,
@@ -100,8 +98,10 @@ int		get_asm(char *path, t_asm *my_asm)
 			handle_comment(my_asm, s, &i);
 		else if ((my_asm->current_op = get_op_id(s + i)))
 			handle_op(my_asm, s + i);
-		else if (s[i] && s[i] != COMMENT_CHAR)
+		else if (s[i] && s[i] != COMMENT_CHAR && ft_strchr(s + i, LABEL_CHAR))
 			handle_labels(my_asm, s, &i);
+		else if (s[i] && s[i] != COMMENT_CHAR)
+			fail_msg(my_asm, "Unknown operation");
 		free(s);
 	}
 	clear_asm(my_asm, s);

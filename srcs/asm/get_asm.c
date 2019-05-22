@@ -6,7 +6,7 @@
 /*   By: cpoirier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 20:23:20 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/21 18:11:07 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/22 18:36:44 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	init_asm(t_asm *my_asm, int *fd, char *path)
 	init_labels(my_asm);
 	tmp = ft_strnew(sizeof(t_header));
 	write_n_to_output(&my_asm->output, &my_asm->cursor, tmp, sizeof(t_header));
+	my_asm->fd = *fd;
 	free(tmp);
 }
 
@@ -51,12 +52,17 @@ void	handle_labels(t_asm *my_asm, char *s, size_t *i)
 			0, my_asm->cursor);
 	if (!read_label(my_asm->labels + my_asm->label_pos - 1, s + *i))
 		fail_msg(my_asm, "Lexical error on label definition");
+	else if (label_exists(my_asm, my_asm->labels[my_asm->label_pos - 1].name,
+				my_asm->label_pos - 1))
+		fail_msg(my_asm, "Label already exists");
 	else
 	{
 		*i += ft_strlen(my_asm->labels[my_asm->label_pos - 1].name) + 1;
 		skip_whitespace(s, i);
 		if ((my_asm->current_op = get_op_id(s + *i)))
 			handle_op(my_asm, s + *i);
+		else if (s[*i] && s[*i] != COMMENT_CHAR)
+			fail_msg(my_asm, "Unknown operation");
 	}
 }
 

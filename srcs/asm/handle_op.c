@@ -6,7 +6,7 @@
 /*   By: cpoirier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 19:57:59 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/16 23:04:54 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/22 17:41:03 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,9 @@ void	handle_op(t_asm *my_asm, char *s)
 	size_t		current_param;
 	t_arg_type	types[3];
 
+	if (!my_asm->header.prog_name[0] || !my_asm->header.comment[0])
+		fail_msg(my_asm, "Error: Name and Comment must be declared before"
+				" any instruction or label");
 	init_op(my_asm, s, &i, types);
 	current_param = 0;
 	while (current_param < (size_t)g_op_tab[my_asm->current_op - 1].nb_args)

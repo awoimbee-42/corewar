@@ -6,11 +6,21 @@
 /*   By: cpoirier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 18:51:30 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/14 18:57:20 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/22 18:47:58 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
+
+void		init_asm_loop(t_asm *my_asm, int *i, char *s)
+{
+	if (my_asm->cursor > CHAMP_MAX_SIZE)
+		fail_msg(my_asm, "Champion too long");
+	my_asm->curr_line++;
+	*i = 0;
+	skip_whitespace(s, i);
+	my_asm->curr_char = *i;
+}
 
 t_arg_type	get_arg_type_return(t_arg_type type, size_t i, char *s)
 {
