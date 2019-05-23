@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/23 11:42:47 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/23 16:39:45 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,12 +224,10 @@ typedef struct	s_vm
 **	##################
 */
 
-t_vecproc		*vecproc_init(t_garbage *gb, t_vecproc *vec, size_t reserv_len);
-t_vecproc		*vecproc_new(t_garbage *gb, size_t reserved_len);
 t_vecproc		*vecproc_push_empty(t_garbage *gb, t_vecproc *vec);
 t_vecproc		*vecproc_push(t_garbage *gb, t_vecproc *vec, t_proc d);
 t_vecproc		*vecproc_realloc(t_garbage *gb, t_vecproc *vec);
-t_vecproc		*vecproc_del_at(t_vecproc *v, int at);
+void			vecproc_del_dead(t_vecproc *v);
 
 /*
 **	##################

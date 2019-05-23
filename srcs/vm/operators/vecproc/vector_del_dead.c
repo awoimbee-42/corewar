@@ -1,40 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   gb_defrag.c                                        :+:      :+:    :+:   */
+/*   vector_del_dead.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/05 02:20:17 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/23 16:37:17 by awoimbee         ###   ########.fr       */
+/*   Created: 2019/05/23 14:19:54 by awoimbee          #+#    #+#             */
+/*   Updated: 2019/05/23 16:43:06 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "vm.h"
 
 /*
-**	This function restructurates the garbage collectors array.
-**	It is automatically called by gb_free()
+**	Remove all the dead processes
+**		A process is dead if it's PID is 0
 */
 
-void		gb_defrag(t_garbage *gb)
+void		vecproc_del_dead(t_vecproc *v)
 {
-	void		**end;
-	void		**it;
-	void		**it2;
+	t_proc		*end;
+	t_proc		*it;
+	t_proc		*it2;
 
-	end = &gb->pointers[gb->arr_len];
-	it = gb->pointers;
+	end = &v->d[v->len];
+	it = v->d;
 	while (it < end)
 	{
-		if (*it == NULL)
+		if (it->pid == 0)
 		{
 			it2 = &it[1];
-			while (it2 != end && *it2 == NULL)
+			while (it2 != end && it2->pid == 0)
 				it2 = &it2[1];
-			ft_memcpy(it, it2, (end - it2) * sizeof(void**));
-			gb->arr_len -= (it2 - it);
-			end = &gb->pointers[gb->arr_len];
+			ft_memcpy(it, it2, (end - it2) * sizeof(t_proc));
+			v->len -= (it2 - it);
+			end = &v->d[v->len];
 		}
 		it = &it[1];
 	}

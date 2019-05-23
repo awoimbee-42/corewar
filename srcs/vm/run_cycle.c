@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 13:03:25 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/23 12:58:57 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/23 15:55:25 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,12 @@ void			check_live(t_vm *vm)
 			if (vm->verbosity >= VE_PROCDEATH)
 				ft_printf("\tProcess %d of player %d died\n",
 					j, vm->procs.d[j].play->id);
-			vecproc_del_at(&vm->procs, j);
+			vm->procs.d[j].pid = 0;
+			// vecproc_del_at(&vm->procs, j);
 		}
 		vm->procs.d[j].live = 0;
 	}
+	vecproc_del_dead(&vm->procs);
 	j = vm->players.len;
 	while (j-- != 0)
 		vm->players.d[j].period_lives = 0;

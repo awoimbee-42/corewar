@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/05/23 11:58:43 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/05/23 16:40:01 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@
 NAME =	corewar
 ASM  =	asm
 
-CFLAGS	=	-Wall -Wextra -Ofast -march=native#-fsanitize=address #-Werror -Ofast -march=native
+CFLAGS	=	-g3 -Wall -Wextra -Ofast -march=native#-fsanitize=address #-Werror -Ofast -march=native
 
 SRC_NAME_CORE =	main.c								\
 				dump_memory.c						\
@@ -41,13 +41,10 @@ SRC_NAME_CORE =	main.c								\
 				ops/read_one_arg.c					\
 				ops/ops.c							\
 				\
-				operators/vecproc/init.c			\
-				operators/vecproc/new.c				\
-				operators/vecproc/point_last.c		\
 				operators/vecproc/push.c			\
 				operators/vecproc/push_empty.c		\
 				operators/vecproc/realloc.c			\
-				operators/vecproc/vector_del_at.c	\
+				operators/vecproc/vector_del_dead.c
 
 SRC_NAME_ASM =	asm.c					\
 				get_arg_type.c			\
