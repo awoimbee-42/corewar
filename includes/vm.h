@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/23 16:39:45 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/24 01:41:07 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,12 @@ struct s_vm;
 **	################
 */
 
+/*
+**	padd is used to make s_proc 128bytes for better memory allignment
+**	with some effort we could trim it down to 96bytes
+**		but I don't think it's worth the hassle
+*/
+
 typedef struct	s_proc
 {
 	int					pid;
@@ -111,11 +117,12 @@ typedef struct	s_proc
 	int					op_id;
 	int					op_cycles;
 	t_bool				carry;
+	char				padd[8];
 }				t_proc;
 
 typedef struct	s_vecproc
 {
-	struct s_proc		*d;
+	struct s_proc		*d __attribute__((aligned(16)));
 	int					last_pid;
 	int					len;
 	int					mem;

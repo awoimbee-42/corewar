@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 13:03:25 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/23 15:55:25 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/24 01:28:24 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ void			check_live(t_vm *vm)
 				ft_printf("\tProcess %d of player %d died\n",
 					j, vm->procs.d[j].play->id);
 			vm->procs.d[j].pid = 0;
-			// vecproc_del_at(&vm->procs, j);
 		}
 		vm->procs.d[j].live = 0;
 	}
@@ -98,15 +97,14 @@ void			check_live(t_vm *vm)
 int				run_vm_cycle(t_vm *vm)
 {
 	int			i;
-	// int			alive;
 
 	++vm->cycle_curr;
-	// alive = FALSE;
 	if (vm->verbosity >= VE_CYCLE)
 		ft_printf("It is now cycle %lu\n", vm->cycle_curr);
 	i = vm->procs.len;
-	while (i-- != 0)
+	while (i != 0)
 	{
+		--i;
 		if (vm->verbosity >= VE_REGISTER)
 			print_register(vm, &vm->procs.d[i]);
 		if (vm->procs.d[i].op_cycles <= 0)
