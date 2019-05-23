@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 18:55:21 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/23 11:56:12 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/23 13:15:37 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,10 @@ void	write_param(t_asm *my_asm, t_arg_type type, char *s)
 	}
 	else if (!(type & T_REG))
 		write_nb_to_output(my_asm, ft_atoi(s + i), two);
-	else
+	else if (ft_atoi(s + i) <= REG_NUMBER && ft_atoi(s + i) > 0)
 		write_nb_to_output(my_asm, ft_atoi(s + i), 1);
+	else
+		fail_msg(my_asm, "Reg number invalid");
 }
 
 void	free_asm(t_asm *my_asm)
