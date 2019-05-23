@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 18:55:21 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/22 18:48:03 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/23 11:20:27 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void	free_asm(t_asm *my_asm)
 	size_t	i;
 
 	free(my_asm->output);
+	free(my_asm->line);
 	i = -1;
 	while (++i < my_asm->label_pos)
 		free(my_asm->labels[i].name);
@@ -84,27 +85,28 @@ void	free_asm(t_asm *my_asm)
 int		get_asm(char *path, t_asm *my_asm)
 {
 	int		fd;
-	char	*s;
 	size_t	i;
 
 	init_asm(my_asm, &fd, path);
-	while (get_next_line(fd, &s) > 0)
+	while (get_next_line(fd, &my_asm->line) > 0)
 	{
-		init_asm_loop(my_asm, &i, s);
-		if (!ft_strncmp(s + i, NAME_CMD_STRING, ft_strlen(NAME_CMD_STRING)))
-			handle_name(my_asm, s, &i);
-		else if (!ft_strncmp(s + i, COMMENT_CMD_STRING,
+		init_asm_loop(my_asm, &i, my_asm->line);
+		if (!ft_strncmp(my_asm->line + i, NAME_CMD_STRING,
+					ft_strlen(NAME_CMD_STRING)))
+			handle_name(my_asm, my_asm->line, &i);
+		else if (!ft_strncmp(my_asm->line + i, COMMENT_CMD_STRING,
 					ft_strlen(COMMENT_CMD_STRING)))
-			handle_comment(my_asm, s, &i);
-		else if ((my_asm->current_op = get_op_id(s + i)))
-			handle_op(my_asm, s + i);
-		else if (s[i] && s[i] != COMMENT_CHAR && ft_strchr(s + i, LABEL_CHAR))
-			handle_labels(my_asm, s, &i);
-		else if (s[i] && s[i] != COMMENT_CHAR)
+			handle_comment(my_asm, my_asm->line, &i);
+		else if ((my_asm->current_op = get_op_id(my_asm->line + i)))
+			handle_op(my_asm, my_asm->line + i);
+		else if (my_asm->line[i] && my_asm->line[i] != COMMENT_CHAR
+				&& ft_strchr(my_asm->line + i, LABEL_CHAR))
+			handle_labels(my_asm, my_asm->line, &i);
+		else if (my_asm->line[i] && my_asm->line[i] != COMMENT_CHAR)
 			fail_msg(my_asm, "Unknown operation");
-		free(s);
+		free(my_asm->line);
 	}
-	clear_asm(my_asm, s);
+	clear_asm(my_asm, my_asm->line);
 	return (1);
 }
 

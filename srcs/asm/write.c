@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 18:55:36 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/22 18:45:25 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/23 11:14:36 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ void		write_output(t_asm *my_asm)
 		fail_msg(0, "Cannot write to output file");
 	close(fd);
 	ft_printf("Written output program to %s\n", my_asm->file_name);
-	free(my_asm->file_name);
 }
 
 void		write_opcode(t_asm *my_asm, t_arg_type types[3])

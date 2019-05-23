@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 18:06:46 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/22 18:48:19 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/23 11:13:26 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct	s_op
 typedef struct	s_asm
 {
 	char				*file_name;
+	char				*line;
 	int					curr_line;
 	int					curr_char;
 	int					fd;
@@ -81,7 +82,7 @@ void				init_op(t_asm *my_asm, char *s, size_t *i, t_arg_type t[3]);
 void				handle_current_op(t_asm *a, char *s, size_t *i, size_t *c);
 void				handle_op(t_asm *my_asm, char *s);
 void				init_asm(t_asm *my_asm, int *fd, char *path);
-void				init_asm_loop(t_asm *my_asm, int *i, char *s);
+void				init_asm_loop(t_asm *my_asm, size_t *i, char *s);
 void				handle_name(t_asm *my_asm, char *s, size_t *i);
 void				handle_comment(t_asm *my_asm, char *s, size_t *i);
 void				handle_labels(t_asm *my_asm, char *s, size_t *i);
