@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 14:51:50 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/23 16:41:38 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/23 22:44:39 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ int		main(int argc, char **argv)
 {
 	t_vm		vm;
 
-	sleep(10);
 	if (argc == 1)
 		return(usage(argv[0]));
 	ft_bzero(&vm, sizeof(vm));

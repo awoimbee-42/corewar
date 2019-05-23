@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/17 22:52:46 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/23 11:15:30 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/23 23:02:45 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static t_bool	load_nocb(t_vm *vm, t_proc *proc, int reg_num[3])
 **	/!\ Beware !
 **	No leaks are possible because load_cb and load_nocb cannot crash
 **		& because vm->verbosity cannot change after initiation !
-**	Modifying the above may cause issues
+**	Modifying the above may cause issues !
 */
 
 int				load_arg_into_regs(t_vm *vm, t_proc *proc, int reg_num[3])
