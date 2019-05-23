@@ -6,28 +6,31 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 17:59:57 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/21 22:26:09 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/23 12:05:36 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <time.h>
 #include "vm.h"
 
-void			loop(t_vm *env)
+void			loop(t_vm *vm)
 {
 	int		cycle;
 
 	cycle = 0;
-	while (run_vm_cycle(env))
+	while (run_vm_cycle(vm))
 	{
 		cycle++;
-		if (env->cycle_dump == cycle)
+		if (vm->cycle_dump == cycle)
 		{
-			print_memory(env, env->arena);
-			break;
+			dump_memory(vm);
+			break ;
 		}
 	}
 }
+
+static void		loop_refresh()
+{}
 
 void			visu_loop(t_vm *vm)
 {
@@ -46,12 +49,12 @@ void			visu_loop(t_vm *vm)
 		if (!skip_render)
 			visu_update(vm);
 		dt = (1. / vm->visu.op_per_sec) - ((float)(clock() - t) / CLOCKS_PER_SEC);
-		if (dt < -0)
-			skip_render += skip_render == 10 ? -10 : 1;
+		if (dt < -0.f)
+			skip_render += skip_render >= 10 ? -10 : 2;
 		else
 		{
 			skip_render -= skip_render ? 1 : 0;
-			while (dt > 0.5)
+			while (dt > 0.3)
 			{
 				t = clock();
 				visu_update(vm);
@@ -60,6 +63,5 @@ void			visu_loop(t_vm *vm)
 			if (!vm->visu.paused)
 				usleep(dt * 1000000);
 		}
-
 	}
 }

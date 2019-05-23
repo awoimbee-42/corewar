@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/17 22:52:46 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/22 16:36:48 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/23 11:15:30 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,20 @@ static t_bool	load_nocb(t_vm *vm, t_proc *proc, int reg_num[3])
 	return (fail);
 }
 
-int			load_arg_into_regs(t_vm *vm, t_proc *proc, int reg_num[3])
+/*
+**	/!\ Beware !
+**	No leaks are possible because load_cb and load_nocb cannot crash
+**		& because vm->verbosity cannot change after initiation !
+**	Modifying the above may cause issues
+*/
+
+int				load_arg_into_regs(t_vm *vm, t_proc *proc, int reg_num[3])
 {
 	t_bool	fail;
 
 	fail = FALSE;
 	if (vm->verbosity >= VE_OPS)
 		vm->tmpstr = ft_cprintf("P%5d | %s", proc->pid, g_op[proc->op_id].name);
-		// ft_printf("P%5d | %s", proc->pid, g_op[proc->op_id].name);
 	if (g_op[proc->op_id].coding_byte == TRUE)
 		fail = load_cb(vm, proc, reg_num);
 	else
@@ -60,6 +66,5 @@ int			load_arg_into_regs(t_vm *vm, t_proc *proc, int reg_num[3])
 		ft_putstr(vm->tmpstr);
 	if (vm->verbosity >= VE_OPS)
 		ft_memfree(&vm->tmpstr);
-		// ft_printf(" {red}FAIL{eoc}");
 	return (!fail);
 }

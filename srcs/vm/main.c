@@ -6,17 +6,14 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 14:51:50 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/21 22:25:22 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/23 13:46:34 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-// ./corewar [-dump nbr_cycles] [[-n number] champion1.cor] ...
 
 #include "corewar.h"
 #include "vm.h"
 
 const t_vm_op g_op[16] = {
-	//  name - nb_args -- args_types --                          id -- nb_cycles -- uses_coding_byte -- modcarry -- dir2 -- ldx_mod --  fun
 	{"live", 1, {T_DIR},                                                1,   10, 0, 0, 0, 0, op_live},
 	{"ld",   2, {T_DIR | T_IND, T_REG},                                 2,    5, 1, 1, 0, 0, op_ld},
 	{"st",   2, {T_REG, T_IND | T_REG},                                 3,    5, 1, 0, 0, 0, op_st},
@@ -33,7 +30,6 @@ const t_vm_op g_op[16] = {
 	{"lldi", 3, {T_REG | T_DIR | T_IND, T_DIR | T_REG, T_REG},         14,   50, 1, 1, 1, 1, op_lldi},
 	{"lfork",1, {T_DIR},                                               15, 1000, 0, 0, 1, 1, op_lfork},
 	{"aff",  1, {T_REG},                                               16,    2, 1, 0, 0, 0, op_aff},
-
 };
 
 void	clean_visu(t_vm *vm)
@@ -90,8 +86,7 @@ int		usage(const char *pname)
 		"\t\tQ: -10cycle/s  W: -1cycle/s  E: +1cycle/s  R: +10 cycle/s\n"
 		"\t\t1: 50cycle/s  2: ~9999 cycle/s\n"
 		"\t\tspace: pause/unpause\n"
-		"\t\tesc: quit\n",
-		pname);
+		"\t\tesc: quit\n", pname);
 	return (0);
 }
 
@@ -99,7 +94,7 @@ int		main(int argc, char **argv)
 {
 	t_vm		vm;
 
-	if (argc == 1)// || argc > MAX_ARGS_NUMBER)
+	if (argc == 1)
 		return(usage(argv[0]));
 	ft_bzero(&vm, sizeof(vm));
 	gb_init_existing(&vm.gb);
@@ -115,7 +110,7 @@ int		main(int argc, char **argv)
 	if (vm.verbosity >= VE_GREET)
 	{
 		ft_printf("Arena:\n");
-		print_memory(&vm, vm.arena);
+		dump_memory(&vm);
 	}
 	if (vm.verbosity == VE_VISU)
 		visu_loop(&vm);

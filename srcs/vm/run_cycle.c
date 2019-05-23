@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 13:03:25 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/22 17:07:42 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/23 12:58:57 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void		launch_instruction(t_vm *vm, int proc)
 		while (++i + vm->procs.d[proc].pc < vm->procs.d[proc].new_pc)
 			ft_printf("%02x ", vm->arena[(vm->procs.d[proc].pc + i) % MEM_SIZE]);
 		ft_printf("\n");
-	}	
+	}
 	vm->procs.d[proc].pc = vm->procs.d[proc].new_pc % MEM_SIZE;
 	vm->procs.d[proc].new_pc = 0;
 }
@@ -44,7 +44,6 @@ void			read_instruction(t_vm *vm, int proc)
 	int			op_id;
 
 	op_id = vm->arena[vm->procs.d[proc].pc] - 1;
-	//ft_printf("read op_id: %i pc: %i new_pc: %i\n", op_id, vm->procs.d[proc].pc, vm->procs.d[proc].new_pc);
 	if (0 <= op_id && op_id <= 15)
 	{
 		vm->procs.d[proc].op_id = op_id;
@@ -58,27 +57,6 @@ void			read_instruction(t_vm *vm, int proc)
 		vm->procs.d[proc].op_cycles = -1;
 	}
 }
-
-// static int		loop_player(t_vm *env, t_play *p)
-// {
-// 	int			i;
-
-// 	i = p->procs.len;
-// 	while (i-- != 0)
-// 	{
-// 		if (env->verbosity >= VE_REGISTER)
-// 			print_register(p, i);
-// 		--p->procs.d[i].op_cycles;
-// 		if (p->procs.d[i].op_cycles == 0 && --p->procs.d[i].op_cycles)
-// 			launch_instruction(env, p, &p->procs.d[i]);
-// 		if (p->procs.d[i].op_cycles == -1)
-// 			read_instruction(&p->procs.d[i], env);
-// 		p->procs.d[i].new_pc = 0;
-// 	}
-// 	if (p->procs.len == 0)
-// 		return (0);
-// 	return (1);
-// }
 
 void			check_live(t_vm *vm)
 {

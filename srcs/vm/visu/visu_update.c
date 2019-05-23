@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/12 22:29:22 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/21 22:26:36 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/23 12:02:31 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,16 @@
 #include "vm.h"
 #include <ncurses.h>
 #include <time.h>
+
+static void	exit_vm2(t_vm *env, char *err_msg)
+{
+	if (env->verbosity == VE_VISU)
+		clean_visu(env);
+	write(1, err_msg, ft_strlen(err_msg));
+	write(1, "\n", 1);
+	gb_freeall(&env->gb);
+	exit(EXIT_FAILURE);
+}
 
 void		visu_khandler(t_vm *vm)
 {
@@ -36,7 +46,7 @@ void		visu_khandler(t_vm *vm)
 		else if (c == NC_2)
 			vm->visu.op_per_sec = 9999;
 		else if (c == NC_ESC)
-			exit_vm(vm, "exit success"); // <- We still print 'Error', which sucks
+			exit_vm2(vm, "exit success !"); // <- We still print 'Error', which sucks
 		// ft_strcpy(vm->visu.aff, gb_add(&vm->gb, ft_cprintf("Key pressed: %d", c)));
 	}
 	if (vm->visu.op_per_sec < 1)
@@ -44,19 +54,15 @@ void		visu_khandler(t_vm *vm)
 }
 
 /*
-**	getch() f***s everything up so I have to redraw EVERYTHING, EVERYTIME
-**	This piece of SH*T IS SO F***ING INEFFICIENT LIKE WTF MAN
-**	WHY.
+**	getch() f***s everything up so we have to redraw EVERYTHING, EVERYTIME
 */
 
 void		visu_update(t_vm *vm)
 {
-	visu_khandler(vm); // BIG PIECE OF HOT POO HERE
-
+	visu_khandler(vm);
 	wattron(vm->visu.rootw, COLOR_PAIR(CONTOUR_COLOR));
 	box(vm->visu.rootw, '*', '*');
 	wattroff(vm->visu.rootw, COLOR_PAIR(CONTOUR_COLOR));
-	// wbkgd(vm->visu.arenaw, COLOR_PAIR(0));
 	visu_sidepview(vm);
 	visu_memview(vm);
 	wrefresh(vm->visu.rootw);
@@ -67,10 +73,10 @@ void		visu_update(t_vm *vm)
 
 void		visu_endloop(t_vm *vm, int winner)
 {
-	 ft_strcpy(vm->visu.aff, gb_add(&vm->gb, ft_cprintf("Contestant %i, \"%s\", has won !\nPress ESC to quit.", vm->players.d[winner].id, vm->players.d[winner].head.prog_name)));
+	ft_strcpy(vm->visu.aff, gb_add(&vm->gb, ft_cprintf("Contestant %i, \"%s\", has won !\nPress ESC to quit.", vm->players.d[winner].id, vm->players.d[winner].head.prog_name)));
 	while (1)
 	{
-		visu_khandler(vm); // BIG PIECE OF HOT POO HERE
+		visu_khandler(vm);
 		wattron(vm->visu.rootw, COLOR_PAIR(CONTOUR_COLOR));
 		box(vm->visu.rootw, '*', '*');
 		wattroff(vm->visu.rootw, COLOR_PAIR(CONTOUR_COLOR));
