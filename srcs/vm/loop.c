@@ -6,24 +6,24 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 17:59:57 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/22 20:35:26 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/23 11:44:40 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <time.h>
 #include "vm.h"
 
-void			loop(t_vm *env)
+void			loop(t_vm *vm)
 {
 	int		cycle;
 
 	cycle = 0;
-	while (run_vm_cycle(env))
+	while (run_vm_cycle(vm))
 	{
 		cycle++;
-		if (env->cycle_dump == cycle)
+		if (vm->cycle_dump == cycle)
 		{
-			print_memory(env, env->arena);
+			dump_memory(vm);
 			break ;
 		}
 	}

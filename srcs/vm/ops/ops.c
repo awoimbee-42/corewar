@@ -6,32 +6,17 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 14:56:02 by skiessli          #+#    #+#             */
-/*   Updated: 2019/05/22 20:49:47 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/23 10:59:48 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "vm.h"
-
-
-// OCP:
-// register: 0b01 > 1
-// indirect: 0b10 > 2
-// direct:   0b11 > 3
-
-// ACB == OCP
-
-/*
-	-> 0b 68 01 ff b6 00 01 (sti) does not work
-	   same with 0b 68 01 ff af 00 0f
-	   sti just doesnt work
-*/
 
 void			op_live(t_vm *vm, int proc, int reg_num[3])
 {
-	int		i;
-	int		player;
-	int		fail;
+	int			i;
+	int			player;
+	int			fail;
 
 	player = vm->procs.d[proc].reg[reg_num[0]];
 	i = 0;
@@ -61,34 +46,53 @@ void			op_ld(t_vm *vm, int proc, int reg_num[3])
 
 void			op_st(t_vm *vm, int proc, int reg_num[3])
 {
-	if (((vm->arena[circumem(vm->procs.d[proc].pc + 1)] >> 4) & 0b11) == IND_CODE)
-		write32(vm, vm->procs.d[proc].pc, vm->procs.d[proc].pc + (load16(vm, vm->procs.d[proc].pc + 3) % IDX_MOD), vm->procs.d[proc].reg[reg_num[0]]);
+	int			addr;
+	int			pc;
+
+	pc = vm->procs.d[proc].pc;
+	if (((vm->arena[circumem(pc + 1)] >> 4) & 0b11) == IND_CODE)
+	{
+		addr = pc + (load16(vm, pc + 3) % IDX_MOD);
+		write32(vm, pc, addr, vm->procs.d[proc].reg[reg_num[0]]);
+	}
 	else
 		vm->procs.d[proc].reg[reg_num[1]] = vm->procs.d[proc].reg[reg_num[0]];
 }
 
 void			op_add(t_vm *vm, int proc, int reg_num[3])
 {
-	vm->procs.d[proc].carry = vm->procs.d[proc].reg[reg_num[0]] + vm->procs.d[proc].reg[reg_num[1]] ? 0 : 1;
-	vm->procs.d[proc].reg[reg_num[2]] = vm->procs.d[proc].reg[reg_num[0]] + vm->procs.d[proc].reg[reg_num[1]];
+	int			res;
+
+	res = vm->procs.d[proc].reg[reg_num[0]] + vm->procs.d[proc].reg[reg_num[1]];
+	vm->procs.d[proc].carry = res ? 0 : 1;
+	vm->procs.d[proc].reg[reg_num[2]] = res;
 }
 
 void			op_sub(t_vm *vm, int proc, int reg_num[3])
 {
-	vm->procs.d[proc].carry = vm->procs.d[proc].reg[reg_num[0]] - vm->procs.d[proc].reg[reg_num[1]] ? 0 : 1;
-	vm->procs.d[proc].reg[reg_num[2]] = vm->procs.d[proc].reg[reg_num[0]] - vm->procs.d[proc].reg[reg_num[1]];
+	int			res;
+
+	res = vm->procs.d[proc].reg[reg_num[0]] - vm->procs.d[proc].reg[reg_num[1]];
+	vm->procs.d[proc].carry = res ? 0 : 1;
+	vm->procs.d[proc].reg[reg_num[2]] = res;
 }
 
 void			op_and(t_vm *vm, int proc, int reg_num[3])
 {
-	vm->procs.d[proc].carry = vm->procs.d[proc].reg[reg_num[0]] & vm->procs.d[proc].reg[reg_num[1]] ? 0 : 1;
-	vm->procs.d[proc].reg[reg_num[2]] = vm->procs.d[proc].reg[reg_num[0]] & vm->procs.d[proc].reg[reg_num[1]];
+	int			res;
+
+	res = vm->procs.d[proc].reg[reg_num[0]] & vm->procs.d[proc].reg[reg_num[1]];
+	vm->procs.d[proc].carry = res ? 0 : 1;
+	vm->procs.d[proc].reg[reg_num[2]] = res;
 }
 
 void			op_or(t_vm *vm, int proc, int reg_num[3])
 {
-	vm->procs.d[proc].carry = vm->procs.d[proc].reg[reg_num[0]] | vm->procs.d[proc].reg[reg_num[1]] ? 0 : 1;
-	vm->procs.d[proc].reg[reg_num[2]] = vm->procs.d[proc].reg[reg_num[0]] | vm->procs.d[proc].reg[reg_num[1]];
+	int			res;
+
+	res = vm->procs.d[proc].reg[reg_num[0]] | vm->procs.d[proc].reg[reg_num[1]];
+	vm->procs.d[proc].carry = res ? 0 : 1;
+	vm->procs.d[proc].reg[reg_num[2]] = res;
 }
 
 void			op_xor(t_vm *vm, int proc, int reg_num[3])
@@ -127,25 +131,26 @@ void			op_ldi(t_vm *vm, int proc, int reg_num[3])
 
 void			op_sti(t_vm *vm, int proc, int reg_num[3])
 {
-	int addr;
+	int			addr;
+	t_proc		*p;
 
-	addr = vm->procs.d[proc].pc + (vm->procs.d[proc].reg[reg_num[1]] + vm->procs.d[proc].reg[reg_num[2]]) % IDX_MOD;
-	// ft_fprintf(2, "addr: %d\nreg_num[1]: %d, reg_num[2]: %d\n", addr, vm->procs.d[proc].reg[reg_num[1]], vm->procs.d[proc].reg[reg_num[2]]); //PUUUTE
-	write32(vm, vm->procs.d[proc].pc, addr, vm->procs.d[proc].reg[reg_num[0]]);
-	(void)vm;
-
-	(void)proc;
-	(void)reg_num;
+	p = &vm->procs.d[proc];
+	addr = p->pc + (p->reg[reg_num[1]] + p->reg[reg_num[2]]) % IDX_MOD;
+	write32(vm, p->pc, addr, p->reg[reg_num[0]]);
 }
 
 void			op_fork(t_vm *vm, int proc, int reg_num[3])
 {
+	t_proc		*parent;
+	t_proc		*child;
+
 	vecproc_push(&vm->gb, &vm->procs, vm->procs.d[proc]);
-	vm->procs.d[vm->procs.len - 1].pc = circumem(vm->procs.d[proc].pc + (vm->procs.d[proc].reg[reg_num[0]] % IDX_MOD));
-	vm->procs.d[vm->procs.len - 1].new_pc = 1;
+	parent = &vm->procs.d[proc];
+	child = &vm->procs.d[vm->procs.len - 1];
+	child->pc = circumem(parent->pc + (parent->reg[reg_num[0]] % IDX_MOD));
+	child->new_pc = 1;
 	if (vm->verbosity >= VE_OPS)
-		ft_printf(" (%d)",vm->procs.d[vm->procs.len - 1].pc);
-		//ft_printf(" (%d) new_pc: %d",vm->procs.d[vm->procs.len - 1].pc, vm->procs.d[proc].new_pc);
+		ft_printf(" (%d)", child->pc);
 	read_instruction(vm, vm->procs.len - 1);
 }
 
@@ -153,33 +158,32 @@ void			op_lld(t_vm *vm, int proc, int reg_num[3])
 {
 	vm->procs.d[proc].carry = vm->procs.d[proc].reg[reg_num[0]] ? 0 : 1;
 	vm->procs.d[proc].reg[reg_num[1]] = vm->procs.d[proc].reg[reg_num[0]];
-	(void)vm;
-
-	(void)proc;
-	(void)reg_num;
 }
 
 void			op_lldi(t_vm *vm, int proc, int reg_num[3])
 {
-	int		res;
+	int32_t		res;
+	t_proc		*p;
 
-	res = load32(vm, vm->procs.d[proc].pc + (vm->procs.d[proc].reg[reg_num[0]] + vm->procs.d[proc].reg[reg_num[1]]));
-	vm->procs.d[proc].carry = res ? 0 : 1;
-	vm->procs.d[proc].reg[reg_num[2]] = load32(vm, vm->procs.d[proc].pc + (vm->procs.d[proc].reg[reg_num[0]] + vm->procs.d[proc].reg[reg_num[1]]));
-	(void)vm;
-
-	(void)proc;
-	(void)reg_num;
+	p = &vm->procs.d[proc];
+	res = load32(vm, p->pc + (p->reg[reg_num[0]] + p->reg[reg_num[1]]));
+	p->carry = res ? 0 : 1;
+	p->reg[reg_num[2]] = res;
 }
 
 void			op_lfork(t_vm *vm, int proc, int reg_num[3])
 {
+	t_proc		*parent;
+	t_proc		*child;
+
 	vecproc_push(&vm->gb, &vm->procs, vm->procs.d[proc]);
-	vm->procs.d[vm->procs.len - 1].pc = circumem(vm->procs.d[proc].pc + vm->procs.d[proc].reg[reg_num[0]]);
-	vm->procs.d[vm->procs.len - 1].new_pc = 1;
-	read_instruction(vm, vm->procs.len - 1);
+	parent = &vm->procs.d[proc];
+	child = &vm->procs.d[vm->procs.len - 1];
+	child->pc = circumem(parent->pc + parent->reg[reg_num[0]]);
+	child->new_pc = 1;
 	if (vm->verbosity >= VE_OPS)
-		ft_printf(" (%d) new_pc: %d",vm->procs.d[vm->procs.len - 1].pc, vm->procs.d[proc].new_pc);
+		ft_printf(" (%d)", child->pc);
+	read_instruction(vm, vm->procs.len - 1);
 }
 
 void			op_aff(t_vm *vm, int proc, int reg_num[3])

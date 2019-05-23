@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/22 18:40:39 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/23 11:42:47 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,7 +238,7 @@ t_vecproc		*vecproc_del_at(t_vecproc *v, int at);
 */
 uint32_t		swap32_endian(uint32_t val);
 uint16_t		swap16_endian(uint16_t val);
-void			print_memory(t_vm *env, const void *addr);
+void			dump_memory(t_vm *vm);
 
 /*
 **	arena_mem_*.c

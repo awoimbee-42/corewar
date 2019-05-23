@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 14:51:50 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/22 20:36:43 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/23 11:43:52 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ const t_vm_op g_op[16] = {
 	{"lldi", 3, {T_REG | T_DIR | T_IND, T_DIR | T_REG, T_REG},         14,   50, 1, 1, 1, 1, op_lldi},
 	{"lfork",1, {T_DIR},                                               15, 1000, 0, 0, 1, 1, op_lfork},
 	{"aff",  1, {T_REG},                                               16,    2, 1, 0, 0, 0, op_aff},
-
 };
 
 void	clean_visu(t_vm *vm)
@@ -107,7 +106,7 @@ int		main(int argc, char **argv)
 		for (int i = 0; i < vm.players.len; ++i)
 			ft_printf("\tJean michel %s #%d avec un programme d'une taille de %ld octets\n", vm.players.d[i].head.prog_name, vm.players.d[i].id, vm.players.d[i].head.prog_size);
 		ft_printf("Arena:\n");
-		print_memory(&vm, vm.arena);
+		dump_memory(&vm);
 	}
 	if (vm.verbosity == VE_VISU)
 		visu_loop(&vm);
