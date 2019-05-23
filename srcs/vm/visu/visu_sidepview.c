@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 18:17:49 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/22 20:38:27 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/23 13:26:18 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,26 +21,28 @@ static void	print_cycles_info(t_vm *vm)
 		vm->die_cycle_checks);
 }
 
-static void	print_ops(t_vm *vm) //for debug more than anything else
+static void	print_ops(t_vm *vm)
 {
 	int		j;
 	int		play;
+	char	*ptrf;
 
 	wprintw(vm->visu.sidep.statusw, "\n");
 	j = -1;
 	while (++j < vm->procs.len)
 	{
-		if (vm->procs.d[j].op_cycles)
-		{
-			play = (vm->procs.d[j].play - vm->players.d);
-			wattron(vm->visu.sidep.statusw, COLOR_PAIR(PLAY0_COLOR + play));
-			wprintw(vm->visu.sidep.statusw,
-				"\nP %-2d Op: %-6s| Cycles remaining: %-4d",
-				vm->procs.d[j].pid,
-				g_op[vm->procs.d[j].op_id].name,
-				vm->procs.d[j].op_cycles);
-			wattroff(vm->visu.sidep.statusw, COLOR_PAIR(PLAY0_COLOR + play));
-		}
+		if (vm->procs.d[j].op_cycles >= 0)
+			ptrf = "\nP %-2d Op: %-6s| Cycles remaining: %-4d";
+		else
+			ptrf = "\nP %-2d No Op";
+		play = (vm->procs.d[j].play - vm->players.d);
+		wattron(vm->visu.sidep.statusw, COLOR_PAIR(PLAY0_COLOR + play));
+		wprintw(vm->visu.sidep.statusw,
+			ptrf,
+			vm->procs.d[j].pid,
+			g_op[vm->procs.d[j].op_id].name,
+			vm->procs.d[j].op_cycles);
+		wattroff(vm->visu.sidep.statusw, COLOR_PAIR(PLAY0_COLOR + play));
 	}
 }
 
@@ -69,7 +71,6 @@ static void	print_proc_nb(t_vm *vm)
 		vm->procs.len);
 }
 
-
 void		visu_sidepview(t_vm *vm)
 {
 	char	*s;
@@ -80,7 +81,6 @@ void		visu_sidepview(t_vm *vm)
 	wmove(vm->visu.sidep.rootw, 59, 0);
 	whline(vm->visu.sidep.rootw, '*', 73);
 	wattroff(vm->visu.sidep.rootw, COLOR_PAIR(CONTOUR_COLOR));
-
 	wmove(vm->visu.sidep.statusw, 0, 0);
 	s = vm->visu.paused ? "PAUSED" : "RUNNING";
 	wprintw(vm->visu.sidep.statusw,
@@ -92,7 +92,6 @@ void		visu_sidepview(t_vm *vm)
 	print_players(vm);
 	print_cycles_info(vm);
 	print_ops(vm);
-
 	wmove(vm->visu.sidep.printw, 1, 0);
-	wprintw(vm->visu.sidep.printw,"%s", vm->visu.aff);
+	wprintw(vm->visu.sidep.printw, "%s", vm->visu.aff);
 }

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 19:24:05 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/22 18:40:57 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/23 13:17:13 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,27 +46,37 @@ static void		read_ndump_cycle(t_vm *env, char **argv, int *agid)
 			ft_cprintf("Dump cycle badly formatted ('%s')", argv[*agid])));
 }
 
-static void		set_remaining_play_id(t_vm *env)
+/*
+**	iterate over all the players:
+**		if play id not set:
+**			champ_id = player index
+**			while play id not set:
+**				increment champ_id
+**				iterate over players and break if champ_id already taken
+**				if champ_id not taken:
+**					set player id to champ_id
+*/
+
+static void		set_remaining_play_id(t_vm *vm)
 {
-	int			i;
+	int			pl;
 	int			j;
 	int			champ_id;
 
-	i = -1;
-	while (++i < env->players.len)
+	pl = -1;
+	while (++pl < vm->players.len)
 	{
-		if (env->players.d[i].id == RESERVED_ID)
+		if (vm->players.d[pl].id == RESERVED_ID)
 		{
-			champ_id = i;
-			while (env->players.d[i].id == RESERVED_ID)
+			champ_id = pl;
+			while (vm->players.d[pl].id == RESERVED_ID)
 			{
 				++champ_id;
-				j = -1;
-				while (++j < env->players.len)
-					if (env->players.d[j].id == champ_id)
-						break ;
-				if (env->players.d[j].id != champ_id)
-					env->players.d[i].id = champ_id;
+				j = 0;
+				while (j < vm->players.len && vm->players.d[j].id != champ_id)
+					++j;
+				if (j == vm->players.len || vm->players.d[j].id != champ_id)
+					vm->players.d[pl].id = champ_id;
 			}
 		}
 	}

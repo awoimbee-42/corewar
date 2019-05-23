@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/12 22:29:22 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/23 10:20:13 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/23 12:02:31 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,16 @@
 #include "vm.h"
 #include <ncurses.h>
 #include <time.h>
+
+static void	exit_vm2(t_vm *env, char *err_msg)
+{
+	if (env->verbosity == VE_VISU)
+		clean_visu(env);
+	write(1, err_msg, ft_strlen(err_msg));
+	write(1, "\n", 1);
+	gb_freeall(&env->gb);
+	exit(EXIT_FAILURE);
+}
 
 void		visu_khandler(t_vm *vm)
 {
@@ -36,7 +46,7 @@ void		visu_khandler(t_vm *vm)
 		else if (c == NC_2)
 			vm->visu.op_per_sec = 9999;
 		else if (c == NC_ESC)
-			exit_vm(vm, "exit success"); // <- We still print 'Error', which sucks
+			exit_vm2(vm, "exit success !"); // <- We still print 'Error', which sucks
 		// ft_strcpy(vm->visu.aff, gb_add(&vm->gb, ft_cprintf("Key pressed: %d", c)));
 	}
 	if (vm->visu.op_per_sec < 1)

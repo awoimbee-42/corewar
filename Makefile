@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/05/23 11:43:30 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/05/23 11:58:43 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@
 NAME =	corewar
 ASM  =	asm
 
-CFLAGS	=	-g3 -Wall -Wextra -Wpedantic #-Ofast -march=native#-fsanitize=address #-Werror -Ofast -march=native
+CFLAGS	=	-Wall -Wextra -Ofast -march=native#-fsanitize=address #-Werror -Ofast -march=native
 
 SRC_NAME_CORE =	main.c								\
 				dump_memory.c						\

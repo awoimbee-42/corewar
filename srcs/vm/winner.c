@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/18 16:33:52 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/22 20:42:32 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/23 12:58:37 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,24 @@ void		print_winner(t_vm *vm)
 {
 	int		i;
 	int		win_i;
+	t_play	*players;
 
 	if (vm->cycle_dump && vm->cycle_curr == vm->cycle_dump)
 		return ;
+	players = vm->players.d;
 	win_i = 0;
 	i = 0;
 	while (++i < vm->players.len)
 	{
-		if (vm->players.d[i].last_live > vm->players.d[win_i].last_live)
+		if (players[i].last_live > players[win_i].last_live)
 			win_i = i;
-		else if (vm->players.d[i].last_live == vm->players.d[win_i].last_live)
-			if (vm->players.d[i].period_lives > vm->players.d[win_i].period_lives)
+		else if (players[i].last_live == players[win_i].last_live)
+			if (players[i].period_lives > players[win_i].period_lives)
 				win_i = i;
 	}
 	if (vm->verbosity >= VE_WINNER)
-		ft_printf("Player %i (%s) won \n", vm->players.d[win_i].id,
-			vm->players.d[win_i].head.prog_name);
+		ft_printf("Player %i (%s) won \n", players[win_i].id,
+			players[win_i].head.prog_name);
 	else if (vm->verbosity == VE_VISU)
 		visu_endloop(vm, win_i);
 }
