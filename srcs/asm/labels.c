@@ -6,7 +6,7 @@
 /*   By: cpoirier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 19:12:52 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/24 14:35:49 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/24 17:30:01 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,13 @@ void	write_label_holders(t_asm *my_asm)
 		my_asm->curr_char = ft_strlen(my_asm->labels_holder[i].buff)
 			- ft_strlen(ft_strstr(my_asm->labels_holder[i].buff,
 						my_asm->labels_holder[i].name)) - 1;
-		(j == my_asm->label_pos) ? fail_msg(my_asm, "Label not found") : 0;
+		
+		if (j == my_asm->label_pos)
+		{
+			free(my_asm->line);
+			my_asm->line = my_asm->labels_holder[i].buff;
+			my_asm->labels_holder[i].buff = 0;
+			fail_msg(my_asm, "Label not found");
+		}
 	}
 }
