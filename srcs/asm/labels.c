@@ -6,7 +6,7 @@
 /*   By: cpoirier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 19:12:52 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/24 14:35:49 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/24 17:53:55 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int		read_label(t_asm *my_asm, t_label *label, char *s)
 
 	i = 0;
 	while (s[i] && s[i] != LABEL_CHAR && ft_strchr(LABEL_CHARS, s[i])
-			&& s[i] != COMMENT_CHAR)
+		&& s[i] != COMMENT_CHAR)
 		i++;
 	if (s[i] != LABEL_CHAR || !i)
 	{
@@ -35,8 +35,8 @@ int		read_label(t_asm *my_asm, t_label *label, char *s)
 void	init_labels(t_asm *my_asm)
 {
 	if (!(my_asm->labels = ft_memalloc((LABEL_COUNT + 1) * sizeof(t_label)))
-			|| !(my_asm->labels_holder = ft_memalloc((LABEL_COUNT + 1)
-					* sizeof(t_label))))
+		|| !(my_asm->labels_holder = ft_memalloc((LABEL_COUNT + 1)
+				* sizeof(t_label))))
 		fail_msg(0, "Malloc failed");
 	my_asm->labels[LABEL_COUNT].name = 0;
 	my_asm->labels_holder[LABEL_COUNT].name = 0;
@@ -47,7 +47,7 @@ void	add_label(t_label **l, size_t *pos, char *name, size_t p)
 	if (*pos && !(*pos % LABEL_COUNT))
 	{
 		if (!(*l = (t_label *)realloc(*l, sizeof(t_label) * (*pos + LABEL_COUNT
-							+ 1))))
+						+ 1))))
 			fail_msg(0, "Realloc failed");
 		(*l)[*pos + LABEL_COUNT].name = 0;
 	}
@@ -92,19 +92,15 @@ void	write_label_holders(t_asm *my_asm)
 		while (++j < my_asm->label_pos)
 		{
 			if (!ft_strcmp(my_asm->labels_holder[i].name,
-						my_asm->labels[j].name))
+					my_asm->labels[j].name))
 			{
 				write_back(my_asm, my_asm->labels_holder[i].pos
-						+ my_asm->labels_holder[i].offset,
-						(int)my_asm->labels[j].pos
-						- (int)my_asm->labels_holder[i].pos);
+					+ my_asm->labels_holder[i].offset,
+					(int)my_asm->labels[j].pos
+					- (int)my_asm->labels_holder[i].pos);
 				break ;
 			}
 		}
-		my_asm->curr_line = my_asm->labels_holder[i].line;
-		my_asm->curr_char = ft_strlen(my_asm->labels_holder[i].buff)
-			- ft_strlen(ft_strstr(my_asm->labels_holder[i].buff,
-						my_asm->labels_holder[i].name)) - 1;
-		(j == my_asm->label_pos) ? fail_msg(my_asm, "Label not found") : 0;
+		update_char(my_asm, i, j);
 	}
 }

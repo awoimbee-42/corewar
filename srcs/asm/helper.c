@@ -6,7 +6,7 @@
 /*   By: cpoirier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 19:30:37 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/23 16:10:06 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/24 17:52:05 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ int		get_name(t_asm *a, char *s, char name[], size_t len)
 		name[j] = s[i + j];
 		j++;
 	}
-	if ((!s[i + j] || !j || (j >= len && s[i + j] != '"')) && (a->curr_char += i
-			+ j))
+	if ((!s[i + j] || !j || (j >= len && s[i + j] != '"'))
+		&& (a->curr_char += i + j))
 		return (0);
 	name[j] = '\0';
 	return (1);
@@ -43,8 +43,8 @@ int		get_op_id(char *s)
 	while (i < 16)
 	{
 		if (!ft_strncmp(s, g_op_tab[i].name, ft_strlen(g_op_tab[i].name))
-				&& (s[ft_strlen(g_op_tab[i].name)] == ' '
-					|| s[ft_strlen(g_op_tab[i].name)] == '\t'))
+			&& (s[ft_strlen(g_op_tab[i].name)] == ' '
+				|| s[ft_strlen(g_op_tab[i].name)] == '\t'))
 			return (i + 1);
 		i++;
 	}
