@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 14:56:02 by skiessli          #+#    #+#             */
-/*   Updated: 2019/05/24 01:42:18 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/24 15:16:50 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void			op_live(t_vm *vm, int proc, int reg_num[3])
 		if (vm->verbosity >= VE_OPS)
 			ft_printf("\n");
 		if (vm->verbosity >= VE_LIVE)
-			ft_printf("A process shows that player %d (%s) is alive%s", // the thing w/ the \n is weird
+			ft_printf("A process shows that player %d (%s) is alive%s",
 				vm->players.d[i].id, vm->players.d[i].head.prog_name,
 				(vm->verbosity < VE_OPS) ? "\n" : "");
 	}
