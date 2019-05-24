@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 18:13:30 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/24 15:14:59 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/24 17:54:43 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	fail_msg(t_asm *my_asm, char *s)
 	if (my_asm)
 	{
 		ft_printf("<bold>%s:%d:%d: {red}error:{eoc} %s<rst>\n",
-				my_asm->path, my_asm->curr_line, my_asm->curr_char + 1, s);
+			my_asm->path, my_asm->curr_line, my_asm->curr_char + 1, s);
 		ft_printf("%s\n", my_asm->line);
 		i = -1;
 		while (++i < my_asm->curr_char)

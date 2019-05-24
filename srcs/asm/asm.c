@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 18:55:21 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/24 14:43:24 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/24 17:46:09 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,15 +143,15 @@ int		get_asm(char *path, t_asm *my_asm)
 	{
 		init_asm_loop(my_asm, &i, my_asm->line);
 		if (!ft_strncmp(my_asm->line + i, NAME_CMD_STRING,
-					ft_strlen(NAME_CMD_STRING)))
+				ft_strlen(NAME_CMD_STRING)))
 			handle_name(my_asm, my_asm->line, &i);
 		else if (!ft_strncmp(my_asm->line + i, COMMENT_CMD_STRING,
-					ft_strlen(COMMENT_CMD_STRING)))
+				ft_strlen(COMMENT_CMD_STRING)))
 			handle_comment(my_asm, my_asm->line, &i);
 		else if ((my_asm->current_op = get_op_id(my_asm->line + i)))
 			handle_op(my_asm, my_asm->line + i);
 		else if (my_asm->line[i] && my_asm->line[i] != COMMENT_CHAR
-				&& ft_strchr(my_asm->line + i, LABEL_CHAR))
+			&& ft_strchr(my_asm->line + i, LABEL_CHAR))
 			handle_labels(my_asm, my_asm->line, &i);
 		else if (my_asm->line[i] && my_asm->line[i] != COMMENT_CHAR)
 			fail_msg(my_asm, "Unknown operation");
