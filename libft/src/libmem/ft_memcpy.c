@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/23 01:06:53 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/24 01:15:00 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/24 14:02:17 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,42 +43,6 @@ static void	scalar_memcpy(void *restrict d, const void *restrict s, size_t n)
 	}
 }
 
-/*
-**	Alligned sse/avx memcpy could not be more optimized that this.
-**		(we use stream so the cpu knows the data should not be kept in cache)
-*/
-
-static void	align_avx_memcpy(void *restrict d, const void *restrict s, size_t n)
-{
-	while (n >= sizeof(__m256i))
-	{
-		_mm256_stream_si256((__m256i*)d, _mm256_stream_load_si256((__m256i*)s));
-		d += sizeof(__m256i);
-		s += sizeof(__m256i);
-		n -= sizeof(__m256i);
-	}
-	if (__builtin_expect(n, 0))
-		scalar_memcpy(d, s, n);
-}
-
-static void	align_sse_memcpy(void *restrict d, const void *restrict s, size_t n)
-{
-	while (n >= sizeof(__m128i))
-	{
-		_mm_stream_si128((__m128i*)d, _mm_stream_load_si128((__m128i*)s));
-		d += sizeof(__m128i);
-		s += sizeof(__m128i);
-		n -= sizeof(__m128i);
-	}
-	if (__builtin_expect(n, 0))
-		scalar_memcpy(d, s, n);
-}
-
-/*
-**	This is the fallback (that will be used in most cases),
-**	where we have a big amount of data to copy but no particular allignment
-*/
-
 static void	sse_memcpy(void *restrict d, const void *restrict s, size_t n)
 {
 	while (n >= sizeof(__m128i))
@@ -91,22 +55,9 @@ static void	sse_memcpy(void *restrict d, const void *restrict s, size_t n)
 	scalar_memcpy(d, s, n);
 }
 
-/*
-**	The modulo operations in here are optimized by the compiler & cpu
-**	as only a few bits need to be checked
-*/
-
 void		*ft_memcpy(void *restrict dst, const void *restrict src, size_t n)
 {
-	if (LFT_AVX
-		&& !((uintptr_t)dst % sizeof(__m256i))
-		&& !((uintptr_t)src % sizeof(__m256i)))
-		align_avx_memcpy(dst, src, n);
-	else if (LFT_SSE2
-		&& !((uintptr_t)dst % sizeof(__m128i))
-		&& !((uintptr_t)src % sizeof(__m128i)))
-		align_sse_memcpy(dst, src, n);
-	else if (LFT_SSE2)
+	if (LFT_SSE2)
 		sse_memcpy(dst, src, n);
 	else
 		scalar_memcpy(dst, src, n);
