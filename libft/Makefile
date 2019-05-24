@@ -14,7 +14,7 @@ NAME	=	libft.a
 
 CC	=	gcc
 
-CFLAGS = -march=native -Wall -Wextra -Werror -Ofast -fno-builtin -ftree-vectorize -fstrict-aliasing
+CFLAGS = -march=native -mavx2 -Wall -Wextra -Werror -Ofast -fno-builtin -ftree-vectorize -fstrict-aliasing
 
 SRCS_CHAR =	ft_isalnum.c		ft_isascii.c		ft_isprint.c		\
 			ft_isalpha.c		ft_isdigit.c		ft_tolower.c		\
