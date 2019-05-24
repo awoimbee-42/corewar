@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 14:51:50 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/23 13:46:34 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/23 22:44:39 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ int		main(int argc, char **argv)
 	{
 		ft_printf("Introducing contestants...\n");
 		for (int i = 0; i < vm.players.len; ++i)
-			ft_printf("* Player %i, weighing %ld bytes, \"%s\" (\"%s\") !\n", 
+			ft_printf("* Player %i, weighing %ld bytes, \"%s\" (\"%s\") !\n",
 			vm.players.d[i].id, vm.players.d[i].head.prog_size, vm.players.d[i].head.prog_name, vm.players.d[i].head.comment);
 	}
 	if (vm.verbosity >= VE_GREET)

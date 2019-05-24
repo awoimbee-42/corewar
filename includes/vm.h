@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/23 11:42:47 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/24 01:41:07 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,12 @@ struct s_vm;
 **	################
 */
 
+/*
+**	padd is used to make s_proc 128bytes for better memory allignment
+**	with some effort we could trim it down to 96bytes
+**		but I don't think it's worth the hassle
+*/
+
 typedef struct	s_proc
 {
 	int					pid;
@@ -111,11 +117,12 @@ typedef struct	s_proc
 	int					op_id;
 	int					op_cycles;
 	t_bool				carry;
+	char				padd[8];
 }				t_proc;
 
 typedef struct	s_vecproc
 {
-	struct s_proc		*d;
+	struct s_proc		*d __attribute__((aligned(16)));
 	int					last_pid;
 	int					len;
 	int					mem;
@@ -224,12 +231,10 @@ typedef struct	s_vm
 **	##################
 */
 
-t_vecproc		*vecproc_init(t_garbage *gb, t_vecproc *vec, size_t reserv_len);
-t_vecproc		*vecproc_new(t_garbage *gb, size_t reserved_len);
 t_vecproc		*vecproc_push_empty(t_garbage *gb, t_vecproc *vec);
 t_vecproc		*vecproc_push(t_garbage *gb, t_vecproc *vec, t_proc d);
 t_vecproc		*vecproc_realloc(t_garbage *gb, t_vecproc *vec);
-t_vecproc		*vecproc_del_at(t_vecproc *v, int at);
+void			vecproc_del_dead(t_vecproc *v);
 
 /*
 **	##################

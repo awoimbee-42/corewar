@@ -6,14 +6,14 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 17:59:57 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/23 12:05:36 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/23 15:46:16 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <time.h>
 #include "vm.h"
 
-void			loop(t_vm *vm)
+void				loop(t_vm *vm)
 {
 	int		cycle;
 
@@ -29,10 +29,22 @@ void			loop(t_vm *vm)
 	}
 }
 
-static void		loop_refresh()
-{}
+static inline void	loop_refresh(t_vm *vm, float *dt, clock_t *t)
+{
+	while (*dt > 0.3)
+	{
+		*t = clock();
+		visu_update(vm);
+		*dt -= (float)(clock() - *t) / CLOCKS_PER_SEC;
+	}
+}
 
-void			visu_loop(t_vm *vm)
+static inline float	cal_dt(t_vm *vm, clock_t t)
+{
+	return (1. / vm->visu.op_per_sec) - ((float)(clock() - t) / CLOCKS_PER_SEC);
+}
+
+void				visu_loop(t_vm *vm)
 {
 	clock_t		t;
 	float		dt;
@@ -48,18 +60,13 @@ void			visu_loop(t_vm *vm)
 			alive = run_vm_cycle(vm);
 		if (!skip_render)
 			visu_update(vm);
-		dt = (1. / vm->visu.op_per_sec) - ((float)(clock() - t) / CLOCKS_PER_SEC);
+		dt = cal_dt(vm, t);
 		if (dt < -0.f)
 			skip_render += skip_render >= 10 ? -10 : 2;
 		else
 		{
 			skip_render -= skip_render ? 1 : 0;
-			while (dt > 0.3)
-			{
-				t = clock();
-				visu_update(vm);
-				dt -= (float)(clock() - t) / CLOCKS_PER_SEC;
-			}
+			loop_refresh(vm, &dt, &t);
 			if (!vm->visu.paused)
 				usleep(dt * 1000000);
 		}
