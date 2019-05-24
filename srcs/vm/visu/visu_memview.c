@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 18:57:21 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/23 22:43:40 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/24 17:31:22 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void		visu_memview(t_vm *vm)
 	int				i;
 	int				mem;
 	clock_t			cur_time;
+	float			t;
 
 	wmove(vm->visu.arenaw, 0, 0);
 	mem = 0;
@@ -76,8 +77,9 @@ void		visu_memview(t_vm *vm)
 			wattron(vm->visu.arenaw, COLOR_PAIR(vm->mem_owner[mem + i]));
 			wprintw(vm->visu.arenaw, " %02hhx", vm->arena[mem + i]);
 			wattroff(vm->visu.arenaw, COLOR_PAIR(vm->mem_owner[mem + i]));
+			t = ((cur_time - vm->time_write[mem + i]) / (float)CLOCKS_PER_SEC);
 			if (vm->mem_owner[mem + i] >= FRESH0_COLOR
-					&& ((cur_time - vm->time_write[mem + i]) / (float)CLOCKS_PER_SEC) >= TIME_OF_WRITE)
+				&& t >= TIME_OF_WRITE)
 				vm->mem_owner[mem + i] -= DELT_FRESH_COLOR;
 		}
 		mem += 64;

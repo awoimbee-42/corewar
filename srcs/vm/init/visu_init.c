@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 18:06:53 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/24 15:16:18 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/24 17:22:42 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,20 @@
 
 static void	init_ncwindows(t_vm *vm)
 {
-	int		dim[2];
+	int				dim[2];
+	struct s_sidep	*sp;
 
 	getmaxyx(stdscr, dim[1], dim[0]);
 	if (dim[0] < 250 || dim[1] < 68)
 		exit_vm(vm, gb_add(&vm->gb,
 				ft_cprintf("Windows too small (%dx%d), minimum is (250x68)",
 					dim[0], dim[1])));
-	if (!(vm->visu.rootw = newwin(68, 250, 0, 0))
+	if (!(sp = &vm->visu.sidep)
+		|| !(vm->visu.rootw = newwin(68, 250, 0, 0))
 		|| !(vm->visu.arenaw = subwin(vm->visu.rootw, 64, 193, 2, 2))
-		|| !(vm->visu.sidep.rootw = subwin(vm->visu.rootw, 68, 54, 0, 196))
-		|| !(vm->visu.sidep.statusw = subwin(vm->visu.sidep.rootw, 57, 48, 2, 199))
-		|| !(vm->visu.sidep.printw = subwin(vm->visu.sidep.rootw, 6, 48, 60, 199)))
+		|| !(sp->rootw = subwin(vm->visu.rootw, 68, 54, 0, 196))
+		|| !(sp->statusw = subwin(sp->rootw, 57, 48, 2, 199))
+		|| !(sp->printw = subwin(sp->rootw, 6, 48, 60, 199)))
 		exit_vm(vm, "Could not create ncurses windows for visualizer.");
 }
 
@@ -60,7 +62,7 @@ static void	init_colors(t_vm *vm)
 
 void		init_ncurses(t_vm *vm)
 {
-	setlocale(LC_ALL,"");
+	setlocale(LC_ALL, "");
 	vm->verbosity = VE_VISU;
 	vm->visu.op_per_sec = 10;
 	vm->visu.paused = TRUE;

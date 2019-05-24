@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/12 22:29:22 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/23 12:02:31 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/24 17:32:16 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,7 @@ void		visu_khandler(t_vm *vm)
 		else if (c == NC_2)
 			vm->visu.op_per_sec = 9999;
 		else if (c == NC_ESC)
-			exit_vm2(vm, "exit success !"); // <- We still print 'Error', which sucks
-		// ft_strcpy(vm->visu.aff, gb_add(&vm->gb, ft_cprintf("Key pressed: %d", c)));
+			exit_vm2(vm, "exit success !");
 	}
 	if (vm->visu.op_per_sec < 1)
 		vm->visu.op_per_sec = 1;
@@ -73,7 +72,11 @@ void		visu_update(t_vm *vm)
 
 void		visu_endloop(t_vm *vm, int winner)
 {
-	ft_strcpy(vm->visu.aff, gb_add(&vm->gb, ft_cprintf("Contestant %i, \"%s\", has won !\nPress ESC to quit.", vm->players.d[winner].id, vm->players.d[winner].head.prog_name)));
+	ft_strcpy(vm->visu.aff,
+		gb_add(&vm->gb,
+			ft_cprintf("Contestant %i, \"%s\", has won !\nPress ESC to quit.",
+				vm->players.d[winner].id,
+				vm->players.d[winner].head.prog_name)));
 	while (1)
 	{
 		visu_khandler(vm);

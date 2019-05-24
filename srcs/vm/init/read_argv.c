@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 19:24:05 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/23 13:17:13 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/24 17:45:13 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,47 +15,6 @@
 #include "init.h"
 #include <errno.h>
 #include <time.h>
-
-static void		read_dump_cycle(t_vm *env, char *input)
-{
-	if (env->dump_width)
-		exit_vm(env, "Dump cycle set multiple times !");
-	env->dump_width = 32;
-	if (input == NULL
-		|| ft_strlen(input) > 10
-		|| (env->cycle_dump = ft_atoi(input)) <= 0)
-		exit_vm(env, gb_add(&env->gb,
-			ft_cprintf("Dump cycle badly formatted ('%s')", input)));
-}
-
-static void		read_ndump_cycle(t_vm *env, char **argv, int *agid)
-{
-	if (env->dump_width)
-		exit_vm(env, "Dump cycle set multiple times !");
-	++(*agid);
-	if (argv[*agid] == NULL
-		|| ft_strlen(argv[*agid]) > 10
-		|| (env->dump_width = ft_atoi(argv[*agid])) <= 0)
-		exit_vm(env, gb_add(&env->gb,
-			ft_cprintf("Dump width badly formatted ('%s')", argv[*agid])));
-	++(*agid);
-	if (argv[*agid] == NULL
-		|| ft_strlen(argv[*agid]) > 10
-		|| (env->cycle_dump = ft_atoi(argv[*agid])) <= 0)
-		exit_vm(env, gb_add(&env->gb,
-			ft_cprintf("Dump cycle badly formatted ('%s')", argv[*agid])));
-}
-
-/*
-**	iterate over all the players:
-**		if play id not set:
-**			champ_id = player index
-**			while play id not set:
-**				increment champ_id
-**				iterate over players and break if champ_id already taken
-**				if champ_id not taken:
-**					set player id to champ_id
-*/
 
 static void		set_remaining_play_id(t_vm *vm)
 {
@@ -87,7 +46,7 @@ static void		set_remaining_play_id(t_vm *vm)
 **		verbosity is set to -1 but the visualizer wasn't initialized
 */
 
-void			set_verbosity(t_vm *vm, char *input)
+static void		set_verbosity(t_vm *vm, char *input)
 {
 	if (vm->verbosity == VE_VISU || vm->verbosity == VE_VI_NOTINIT)
 		exit_vm(vm, "Cannot set verbosity in visual mode!");
@@ -104,7 +63,7 @@ void			set_verbosity(t_vm *vm, char *input)
 			ft_cprintf("Verbosity level badly formatted ('%s')", input)));
 }
 
-void			arena_fill_rand(t_vm *vm)
+static void		arena_fill_rand(t_vm *vm)
 {
 	int				i;
 

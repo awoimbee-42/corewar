@@ -6,14 +6,11 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 13:03:25 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/24 01:28:24 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/24 17:38:43 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
-
-//	si le cycle_to_die tombe en meme temps qu'une instruction live on fait quoi ?
-//	quand die_cycle_checks == MAX_CHECKS on décrémente de 1 ou de CYCLE_DELTA ?
 
 static void		launch_instruction(t_vm *vm, int proc)
 {
@@ -28,11 +25,14 @@ static void		launch_instruction(t_vm *vm, int proc)
 	}
 	if (vm->verbosity >= VE_PC_MOVE && vm->procs.d[proc].op_id != 8)
 	{
-		ft_printf("ADV %i (%#06x -> %#06x) ", vm->procs.d[proc].new_pc
-				- vm->procs.d[proc].pc, vm->procs.d[proc].pc, vm->procs.d[proc].new_pc);
+		ft_printf("ADV %i (%#06x -> %#06x) ",
+			vm->procs.d[proc].new_pc - vm->procs.d[proc].pc,
+			vm->procs.d[proc].pc,
+			vm->procs.d[proc].new_pc);
 		i = -1;
 		while (++i + vm->procs.d[proc].pc < vm->procs.d[proc].new_pc)
-			ft_printf("%02x ", vm->arena[(vm->procs.d[proc].pc + i) % MEM_SIZE]);
+			ft_printf("%02x ",
+				vm->arena[(vm->procs.d[proc].pc + i) % MEM_SIZE]);
 		ft_printf("\n");
 	}
 	vm->procs.d[proc].pc = vm->procs.d[proc].new_pc % MEM_SIZE;
@@ -58,29 +58,33 @@ void			read_instruction(t_vm *vm, int proc)
 	}
 }
 
-void			check_live(t_vm *vm)
+static void		check_proc_live(t_proc *proc, int *nbr_live, int verbosity)
+{
+	if (proc->live == 0)
+	{
+		proc->pid = 0;
+		if (verbosity >= VE_PROCDEATH)
+			ft_printf("\tProcess %d of player %d died\n",
+				proc->pid, proc->play->id);
+	}
+	else
+	{
+		*nbr_live += proc->live;
+		proc->live = 0;
+	}
+}
+
+static void		check_live(t_vm *vm)
 {
 	int			nbr_live;
 	int			j;
 
-	if (vm->cycle_curr - vm->cycle_last_check < vm->cycle_die)
-		return ;
 	vm->cycle_last_check = vm->cycle_curr;
 	vm->die_cycle_checks++;
 	nbr_live = 0;
 	j = vm->procs.len;
 	while (j-- != 0)
-	{
-		nbr_live += vm->procs.d[j].live;
-		if (vm->procs.d[j].live == 0)
-		{
-			if (vm->verbosity >= VE_PROCDEATH)
-				ft_printf("\tProcess %d of player %d died\n",
-					j, vm->procs.d[j].play->id);
-			vm->procs.d[j].pid = 0;
-		}
-		vm->procs.d[j].live = 0;
-	}
+		check_proc_live(&vm->procs.d[j], &nbr_live, vm->verbosity);
 	vecproc_del_dead(&vm->procs);
 	j = vm->players.len;
 	while (j-- != 0)
@@ -114,7 +118,8 @@ int				run_vm_cycle(t_vm *vm)
 		--vm->procs.d[i].op_cycles;
 		vm->procs.d[i].new_pc = 0;
 	}
-	check_live(vm);
+	if (vm->cycle_curr - vm->cycle_last_check >= vm->cycle_die)
+		check_live(vm);
 	if (vm->procs.len == 0)
 		return (0);
 	return (1);
