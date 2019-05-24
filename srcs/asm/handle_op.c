@@ -6,7 +6,7 @@
 /*   By: cpoirier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 19:57:59 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/24 14:47:10 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/24 17:44:14 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ void	handle_op(t_asm *my_asm, char *s)
 	size_t		i;
 	size_t		current_param;
 	t_arg_type	types[3];
-	int			old_pos;
 
 	if (!my_asm->header.prog_name[0] || !my_asm->header.comment[0])
 		fail_msg(my_asm, "Error: Name and Comment must be declared before"
@@ -60,14 +59,7 @@ void	handle_op(t_asm *my_asm, char *s)
 	current_param = 0;
 	while (current_param < (size_t)g_op_tab[my_asm->current_op - 1].nb_args)
 	{
-		old_pos = my_asm->curr_char;
-		if ((types[current_param] = get_arg_type(my_asm, s + i)) < 0)
-			fail_msg(my_asm, "Syntax error for parameter");
-		my_asm->curr_char = old_pos;
-		if (!(g_op_tab[my_asm->current_op - 1].args_types[current_param]
-					& types[current_param]))
-			fail_msg(my_asm, "Invalid type");
-		write_param(my_asm, types[current_param], s + i);
+		check_param(my_asm, s + i, current_param, types);
 		while (s[i] && s[i] != COMMENT_CHAR && s[i] != SEPARATOR_CHAR)
 		{
 			i++;

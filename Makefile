@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/05/23 16:40:01 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/05/24 17:34:45 by cpoirier         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,6 +53,7 @@ SRC_NAME_ASM =	asm.c					\
 				helper.c				\
 				handle_op.c				\
 				get_asm.c				\
+				update_char.c			\
 				utils.c
 
 ASM_FD = asm/
