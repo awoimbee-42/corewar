@@ -6,13 +6,13 @@
 /*   By: cpoirier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 19:12:52 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/23 11:15:25 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/24 14:35:49 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 
-int		read_label(t_label *label, char *s)
+int		read_label(t_asm *my_asm, t_label *label, char *s)
 {
 	size_t	i;
 
@@ -21,7 +21,10 @@ int		read_label(t_label *label, char *s)
 			&& s[i] != COMMENT_CHAR)
 		i++;
 	if (s[i] != LABEL_CHAR || !i)
+	{
+		my_asm->curr_char += i;
 		return (0);
+	}
 	free(label->name);
 	if (!(label->name = (char *)ft_memalloc(i + 1)))
 		fail_msg(0, "Realloc failed");
@@ -69,6 +72,8 @@ void	create_label_holder(t_asm *my_asm, char *s, size_t *i)
 	(*i) += len;
 	add_label(&my_asm->labels_holder, &my_asm->label_holder_pos,
 			name, my_asm->op_begin);
+	my_asm->labels_holder[my_asm->label_holder_pos
+		- 1].buff = ft_strdup(my_asm->line);
 	my_asm->labels_holder[my_asm->label_holder_pos - 1].offset = my_asm->cursor
 		- my_asm->op_begin;
 	my_asm->labels_holder[my_asm->label_holder_pos
@@ -97,6 +102,9 @@ void	write_label_holders(t_asm *my_asm)
 			}
 		}
 		my_asm->curr_line = my_asm->labels_holder[i].line;
+		my_asm->curr_char = ft_strlen(my_asm->labels_holder[i].buff)
+			- ft_strlen(ft_strstr(my_asm->labels_holder[i].buff,
+						my_asm->labels_holder[i].name)) - 1;
 		(j == my_asm->label_pos) ? fail_msg(my_asm, "Label not found") : 0;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 18:06:46 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/23 13:48:23 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/24 14:40:56 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ typedef struct	s_label
 	size_t				pos;
 	size_t				offset;
 	int					line;
+	char				*buff;
 }				t_label;
 
 typedef struct	s_op
@@ -41,6 +42,7 @@ typedef struct	s_op
 typedef struct	s_asm
 {
 	char				*file_name;
+	char				*path;
 	char				*line;
 	int					curr_line;
 	int					curr_char;
@@ -61,19 +63,19 @@ extern const t_op	g_op_tab[17];
 void			write_param(t_asm *my_asm, t_arg_type type, char *s);
 void			free_asm(t_asm *my_asm);
 void			fail_msg(t_asm *my_asm, char *s);
-t_arg_type		get_arg_type(char *s);
+t_arg_type		get_arg_type(t_asm *a, char *s);
 void			write_to_output(char **output, size_t *pos, char *src);
 void			write_n_to_output(char **o, size_t *p, char *src, size_t n);
 void			write_nb_to_output(t_asm *my_asm, int nb, int pre);
 void			write_output(t_asm *my_asm);
 void			write_opcode(t_asm *my_asm, t_arg_type types[3]);
-int				read_label(t_label *label, char *s);
+int				read_label(t_asm *my_asm, t_label *label, char *s);
 void			init_labels(t_asm *my_asm);
 void			add_label(t_label **l, size_t *pos, char *name, size_t p);
 void			write_label_holders(t_asm *my_asm);
 void			create_label_holder(t_asm *my_asm, char *s, size_t *i);
 void			write_back(t_asm *my_asm, size_t pos, int val);
-int				get_name(char *s, char name[], size_t len);
+int				get_name(t_asm *a, char *s, char name[], size_t len);
 int				label_exists(t_asm *my_asm, char *s, size_t i);
 int				get_op_id(char *s);
 void			write_header(t_asm *my_asm);
