@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 18:55:21 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/23 13:15:37 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/24 14:43:24 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,8 @@ const t_op	g_op_tab[17] = {
 		0, 0, {
 			0}
 		, 0, 0, 0, 0, 0}
-};
+}
+;
 
 void	write_param(t_asm *my_asm, t_arg_type type, char *s)
 {
@@ -119,7 +120,10 @@ void	free_asm(t_asm *my_asm)
 		free(my_asm->labels[i].name);
 	i = -1;
 	while (++i < my_asm->label_holder_pos)
+	{
 		free(my_asm->labels_holder[i].name);
+		free(my_asm->labels_holder[i].buff);
+	}
 	free(my_asm->labels[(my_asm->label_pos / LABEL_COUNT + 1)
 			* LABEL_COUNT].name);
 	free(my_asm->labels_holder[(my_asm->label_holder_pos / LABEL_COUNT + 1)
@@ -167,6 +171,7 @@ int		main(int ac, char **av)
 		return (0);
 	}
 	ft_bzero(&my_asm, sizeof(my_asm));
+	my_asm.path = av[1];
 	my_asm.file_name = get_base_name(ft_strdup(av[1]));
 	return (get_asm(av[1], &my_asm));
 }

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 18:13:30 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/23 11:18:22 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/24 15:02:55 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,15 @@
 
 void	fail_msg(t_asm *my_asm, char *s)
 {
+	char	*tmp_fmt;
+
 	if (my_asm)
 	{
-		ft_printf("%s on [%d:%d]\n", s, my_asm->curr_line, my_asm->curr_char);
+		ft_printf("<bold>%s:%d:%d: {red}error:{eoc} %s<rst>\n",
+				my_asm->path, my_asm->curr_line, my_asm->curr_char + 1, s);
+		tmp_fmt = ft_cprintf("%s\n%%%ds<bold>{grn}^<rst>\n", my_asm->line, my_asm->curr_char);
+		ft_printf(tmp_fmt, " ");
+		free(tmp_fmt);
 		get_next_line(my_asm->fd, GNL_FLUSH);
 		free_asm(my_asm);
 	}

@@ -6,20 +6,20 @@
 /*   By: cpoirier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 19:30:37 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/23 11:14:59 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/23 16:10:06 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 
-int		get_name(char *s, char name[], size_t len)
+int		get_name(t_asm *a, char *s, char name[], size_t len)
 {
 	size_t	i;
 	size_t	j;
 
 	i = 0;
 	skip_whitespace(s, &i);
-	if (s[i] != '"')
+	if (s[i] != '"' && (a->curr_char += i))
 		return (0);
 	i++;
 	j = 0;
@@ -28,7 +28,8 @@ int		get_name(char *s, char name[], size_t len)
 		name[j] = s[i + j];
 		j++;
 	}
-	if (!s[i + j] || !j || (j >= len && s[i + j] != '"'))
+	if ((!s[i + j] || !j || (j >= len && s[i + j] != '"')) && (a->curr_char += i
+			+ j))
 		return (0);
 	name[j] = '\0';
 	return (1);
