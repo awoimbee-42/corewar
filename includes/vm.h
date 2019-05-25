@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/24 01:41:07 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/25 13:45:56 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,6 +261,10 @@ int				circumem(int ptr);
 int				usage(const char *pname);
 void			exit_vm(t_vm *env, char *err_msg);
 
+void			read_argv_init(t_vm *env, int argc, char **argv);
+void			print_register(t_vm *vm, t_proc *proc);
+void			print_winner(t_vm *vm);
+
 /*
 **	Functions that actually run the vm
 */
@@ -278,13 +282,6 @@ void			visu_khandler(t_vm *vm);
 void			visu_init_memview(t_vm *vm);
 void			visu_memview(t_vm *vm);
 void			visu_sidepview(t_vm *vm);
-
-/*
-**
-*/
-void			read_argv_init(t_vm *env, int argc, char **argv);
-void			print_register(t_vm *vm, t_proc *proc);
-void			print_winner(t_vm *vm);
 
 /*
 **	OPs

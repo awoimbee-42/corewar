@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/05/24 17:34:45 by cpoirier         ###   ########.fr        #
+#    Updated: 2019/05/24 18:07:55 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,6 +32,7 @@ SRC_NAME_CORE =	main.c								\
 				init/read_argv.c					\
 				init/read_champ.c					\
 				init/visu_init.c					\
+				init/set_dump.c						\
 				\
 				visu/visu_update.c					\
 				visu/visu_memview.c					\
@@ -39,7 +40,10 @@ SRC_NAME_CORE =	main.c								\
 				\
 				ops/load_arg_into_regs.c			\
 				ops/read_one_arg.c					\
-				ops/ops.c							\
+				ops/ops1.c							\
+				ops/ops2.c							\
+				ops/ops3.c							\
+				ops/ops4.c							\
 				\
 				operators/vecproc/push.c			\
 				operators/vecproc/push_empty.c		\
