@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 18:55:21 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/24 17:46:09 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/25 14:01:59 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,12 +124,15 @@ void	free_asm(t_asm *my_asm)
 		free(my_asm->labels_holder[i].name);
 		free(my_asm->labels_holder[i].buff);
 	}
-	free(my_asm->labels[(my_asm->label_pos / LABEL_COUNT + 1)
-			* LABEL_COUNT].name);
-	free(my_asm->labels_holder[(my_asm->label_holder_pos / LABEL_COUNT + 1)
-			* LABEL_COUNT].name);
-	free(my_asm->labels);
-	free(my_asm->labels_holder);
+	if (my_asm->labels)
+	{
+		free(my_asm->labels[(my_asm->label_pos / LABEL_COUNT + 1)
+				* LABEL_COUNT].name);
+		free(my_asm->labels_holder[(my_asm->label_holder_pos / LABEL_COUNT + 1)
+				* LABEL_COUNT].name);
+		free(my_asm->labels);
+		free(my_asm->labels_holder);
+	}
 	free(my_asm->file_name);
 }
 

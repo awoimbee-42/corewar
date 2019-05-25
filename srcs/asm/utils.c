@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 18:13:30 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/24 17:54:43 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/25 13:55:23 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,9 @@ void	fail_msg(t_asm *my_asm, char *s)
 			my_asm->path, my_asm->curr_line, my_asm->curr_char + 1, s);
 		ft_printf("%s\n", my_asm->line);
 		i = -1;
+		!my_asm->line ? my_asm->curr_char = 0 : 0;
 		while (++i < my_asm->curr_char)
-			write(1, " ", 1);
+			(my_asm->line[i] == '\t') ? write(1, "\t", 1) : write(1, " ", 1);
 		ft_printf("<bold>{grn}^<rst>\n");
 		get_next_line(my_asm->fd, GNL_FLUSH);
 		free_asm(my_asm);
