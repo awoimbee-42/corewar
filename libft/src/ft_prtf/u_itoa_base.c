@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 16:55:01 by allespag          #+#    #+#             */
-/*   Updated: 2018/12/16 20:40:11 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/25 14:28:58 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ char			*prtf__u_itoa_base(unsigned long long n, int base, t_arg *arg)
 	char	*str_base;
 
 	str = u_malloc_base_str(n, base, arg);
-	str_base = (arg->conv_typ >= 'a' && arg->conv_typ <= 'z') ?
-	"0123456789abcdef" : "0123456789ABCDEF";
+	str_base = (arg->conv_typ >= 'a' && arg->conv_typ <= 'z')
+		? "0123456789abcdef" : "0123456789ABCDEF";
 	i = ft_strlen(str);
 	tmp = i;
 	if (!n)
