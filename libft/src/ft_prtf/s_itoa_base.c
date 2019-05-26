@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 15:14:07 by allespag          #+#    #+#             */
-/*   Updated: 2018/12/16 20:40:11 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/25 14:28:39 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ char		*s_malloc_base_str(long long int n, int base, t_arg *arg, int sign)
 		str[0] = '+';
 	else if (!sign && (arg->option & FLAG_SPACE) && ++i)
 		str[0] = ' ';
-	while (i < zero + sign +
-			((arg->option & FLAG_PLUS || arg->option & FLAG_SPACE) && !sign))
+	while (i < zero + sign
+		+ ((arg->option & FLAG_PLUS || arg->option & FLAG_SPACE) && !sign))
 		str[i++] = '0';
 	str[i] = '\0';
 	return (str);

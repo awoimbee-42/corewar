@@ -6,7 +6,7 @@
 /*   By: cpoirier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 20:23:20 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/24 17:47:20 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/25 14:04:11 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	init_asm(t_asm *my_asm, int *fd, char *path)
 	char *tmp;
 
 	if ((*fd = open(path, O_RDONLY)) == -1)
-		fail_msg(my_asm, ft_cprintf("%s '%s'", strerror(errno), path));
+		fail_msg(my_asm, strerror(errno));
 	init_labels(my_asm);
 	tmp = ft_strnew(sizeof(t_header));
 	write_n_to_output(&my_asm->output, &my_asm->cursor, tmp, sizeof(t_header));
