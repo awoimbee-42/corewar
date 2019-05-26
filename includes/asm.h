@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 18:06:46 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/24 17:40:33 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/26 17:34:58 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,12 @@ typedef struct	s_label
 
 typedef struct	s_op
 {
-	char				*name;
+	const char			*name;
 	int					nb_args;
 	t_arg_type			args_types[MAX_ARGS_NUMBER];
 	int					id;
 	int					cycles;
-	char				*desc;
+	const char			*desc;
 	t_bool				coding_byte;
 	t_bool				dir2;
 }				t_op;

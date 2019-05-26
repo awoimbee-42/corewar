@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/23 20:34:49 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/22 16:36:14 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/26 19:56:13 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void			*ft_mempcpy(void *dst, const void *src, size_t n);
 void			ft_mem64set(uint64_t *mem, uint64_t data, size_t memlen);
 void			ft_mem32set(uint32_t *mem, uint32_t data, size_t memlen);
 void			ft_mem16set(uint16_t *mem, uint16_t data, size_t memlen);
+void			ft_printmem(const void *mem, ssize_t len, int dump_width);
 
 /*
 **	#################### LIBSTR ####################
@@ -111,9 +112,9 @@ int				get_next_line(const int fd, char **line);
 /*
 **	################### FT_PRINTF ##################
 */
-int				ft_printf(const char *restrict format, ...);
-int				ft_fprintf(int fd, const char *restrict format, ...);
-int				ft_sprintf(char *str, const char *restrict format, ...);
+int				ft_printf(const char *format, ...);
+int				ft_fprintf(int fd, const char *format, ...);
+int				ft_sprintf(char *str, const char *format, ...);
 int				ft_asprintf(char **strp, const char *fmt, ...);
 char			*ft_cprintf(const char *fmt, ...);
 
@@ -123,7 +124,7 @@ char			*ft_cprintf(const char *fmt, ...);
 t_list			*ft_lstnew(void const *content, size_t content_size);
 void			ft_lstdelone(t_list **alst, void (*del)(t_listed*, size_t));
 void			ft_lstdel(t_list **alst, void (*del)(t_listed*, size_t));
-void			ft_lstadd(t_list **alst, t_list *new);
+void			ft_lstadd(t_list **alst, t_list *neww);
 void			ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 t_list			*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 t_list			*ft_lst_push_back(t_list **lst, t_listed *data, size_t d_size);

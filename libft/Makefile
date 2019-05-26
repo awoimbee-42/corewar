@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/16 11:55:20 by awoimbee          #+#    #+#              #
-#    Updated: 2019/05/24 12:22:07 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/05/26 18:54:24 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,8 @@ SRCS_FD =	ft_putchar.c		ft_putendl_fd.c		ft_putstr.c			\
 SRCS_MEM =	ft_bzero.c			ft_memchr.c			ft_memdel.c			\
 			ft_memalloc.c		ft_memcmp.c			ft_memmove.c		\
 			ft_memccpy.c		ft_memcpy.c			ft_memset.c			\
-			ft_mempcpy.c		ft_memnset.c		ft_memfree.c
+			ft_mempcpy.c		ft_memnset.c		ft_memfree.c		\
+			ft_printmem.c
 
 SRCS_NB =	ft_abs.c			ft_atoi.c			ft_itoa.c			\
 			ft_atoi_base.c		ft_itoa_base.c		ft_swap_int.c		\

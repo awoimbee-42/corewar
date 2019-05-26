@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/25 13:45:56 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/26 21:38:57 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 # include "corewar.h"
 # include "libft.h"
 # include <ncurses.h>
-# include <pthread.h>
 
 /*
 **	################
@@ -186,7 +185,7 @@ typedef void(*t_opfun)(struct s_vm*, int, int[3]);
 
 typedef struct	s_vm_op
 {
-	char				name[5];
+	const char			*name;
 	int					nb_args;
 	t_arg_type			args_type[MAX_ARGS_NUMBER];
 	int					id;

@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/05/24 18:07:55 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/05/26 21:45:03 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,9 +60,13 @@ SRC_NAME_ASM =	asm.c					\
 				update_char.c			\
 				utils.c
 
+SRC_NAME_DISA = main.cpp
+
 ASM_FD = asm/
-ASM_SRC_SUBFOLDERS =
 CORE_FD = vm/
+DISA_FD = disassembler/
+
+ASM_SRC_SUBFOLDERS =
 CORE_SRC_SUBFOLDERS =	operators/vecproc		\
 						visu					\
 						init					\
@@ -82,19 +86,24 @@ else ifeq ($(UNAME_S),Darwin)
 endif
 
 CC = gcc
+CXX = g++ -std=c++14
 LDLIBS = -lft -lncurses -lpthread
 LDFLAGS = -L./libft
 CFLAGS += -MMD -I./includes -I./libft
 
-SRC_FOLDERS = $(addprefix $(ASM_FD), $(ASM_SRC_SUBFOLDERS)) $(addprefix $(CORE_FD), $(CORE_SRC_SUBFOLDERS)) $(ASM_FD) $(CORE_FD)
+SRC_FOLDERS =	$(addprefix $(ASM_FD), $(ASM_SRC_SUBFOLDERS))		\
+				$(addprefix $(CORE_FD), $(CORE_SRC_SUBFOLDERS))		\
+				$(ASM_FD) $(CORE_FD) $(DISA_FD)
+
 REPO_PATH = $(patsubst %/,%,$(dir $(realpath $(firstword $(MAKEFILE_LIST)))))
 BUILD_PATH = $(REPO_PATH)/$(BUILD_FOLDER)
 SRC_PATH =	srcs
 OBJ_FOLDER = $(BUILD_FOLDER)/obj
 LFT = libft/libft.a
 
-OBJ_CORE = $(addprefix $(OBJ_FOLDER)/$(CORE_FD), $(SRC_NAME_CORE:.c=.o))
-OBJ_ASM  = $(addprefix $(OBJ_FOLDER)/$(ASM_FD),  $(SRC_NAME_ASM:.c=.o))
+OBJ_CORE = $(addprefix $(OBJ_FOLDER)/$(CORE_FD), $(SRC_NAME_CORE:.c=.c.o))
+OBJ_ASM  = $(addprefix $(OBJ_FOLDER)/$(ASM_FD),  $(SRC_NAME_ASM:.c=.c.o))
+OBJ_DISA = $(addprefix $(OBJ_FOLDER)/$(DISA_FD), $(SRC_NAME_DISA:.cpp=.cpp.o))
 
 ################################################################################
 #################                  RULES                       #################
@@ -102,12 +111,17 @@ OBJ_ASM  = $(addprefix $(OBJ_FOLDER)/$(ASM_FD),  $(SRC_NAME_ASM:.c=.o))
 all : $(LFT)
 	@$(MAKE) -j$(NUMPROC) $(NAME)   --no-print-directory
 	@$(MAKE) -j$(NUMPROC) $(ASM) --no-print-directory
+	@$(MAKE) disassembler
 
 ############## LIBS ############
 $(LFT) :
 	@printf "$(YLW)Making libft...$(EOC)\n"
 	@$(MAKE) -j$(NUMPROC) -s -C libft/
 ################################
+
+disassembler : $(LFT) $(OBJ_DISA)
+	@printf "$(GRN)Linking $@...$(EOC)\n"
+	$(CXX) $(CFLAGS) $(OBJ_DISA) -o $@ $(LDFLAGS) $(LDLIBS)
 
 $(NAME) : $(LFT) $(OBJ_CORE)
 	@printf "$(GRN)Linking $@...$(EOC)\n"
@@ -127,9 +141,13 @@ $(BUILD_FOLDER)/obj :
 	mkdir -p $(addprefix $(OBJ_FOLDER)/,$(SRC_FOLDERS)) 2> /dev/null
 
 #objects
-$(OBJ_FOLDER)/%.o : $(SRC_PATH)/%.c $(LSDL2) $(LSDL2_TTF) | $(BUILD_FOLDER)/obj
+$(OBJ_FOLDER)/%.c.o : $(SRC_PATH)/%.c | $(BUILD_FOLDER)/obj
 	@printf "\t$(CC) (...) $@\n"
 	@$(CC) $(CFLAGS) -o $@ -c $<
+
+$(OBJ_FOLDER)/%.cpp.o : $(SRC_PATH)/%.cpp | $(BUILD_FOLDER)/obj
+	@printf "\t$(CXX) (...) $@\n"
+	@$(CXX) $(CFLAGS) -o $@ -c $<
 
 # Add rules written in .d files (by gcc -MMD)
 # The '-' makes it doesn't care if the file exists or not
