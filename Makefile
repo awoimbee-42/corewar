@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/05/26 21:45:03 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/05/26 22:42:28 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@
 
 NAME =	corewar
 ASM  =	asm
+DISA =	disassembler
 
 CFLAGS	=	-g3 -Wall -Wextra -Ofast -march=native#-fsanitize=address #-Werror -Ofast -march=native
 
@@ -111,7 +112,7 @@ OBJ_DISA = $(addprefix $(OBJ_FOLDER)/$(DISA_FD), $(SRC_NAME_DISA:.cpp=.cpp.o))
 all : $(LFT)
 	@$(MAKE) -j$(NUMPROC) $(NAME)   --no-print-directory
 	@$(MAKE) -j$(NUMPROC) $(ASM) --no-print-directory
-	@$(MAKE) disassembler
+	@$(MAKE) disassembler --no-print-directory
 
 ############## LIBS ############
 $(LFT) :
@@ -119,7 +120,7 @@ $(LFT) :
 	@$(MAKE) -j$(NUMPROC) -s -C libft/
 ################################
 
-disassembler : $(LFT) $(OBJ_DISA)
+$(DISA) : $(LFT) $(OBJ_DISA)
 	@printf "$(GRN)Linking $@...$(EOC)\n"
 	$(CXX) $(CFLAGS) $(OBJ_DISA) -o $@ $(LDFLAGS) $(LDLIBS)
 
@@ -164,9 +165,10 @@ clean :
 	@make -s fclean -C libft
 
 fclean : clean
-	@printf "$(RED)Cleaning $(NAME) & $(ASM)$(EOC)\n"
+	@printf "$(RED)Cleaning $(NAME) & $(ASM) & $(DISA)$(EOC)\n"
 	@rm -f $(NAME)
 	@rm -f $(ASM)
+	@rm -f $(DISA)
 
 sclean	:	obj_clean
 re		:	fclean		all

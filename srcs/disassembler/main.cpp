@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/26 16:35:08 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/26 22:12:36 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/26 22:48:59 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,4 +261,6 @@ int		main(int argc, char **argv)
 		// pc += 1;
 	}
 	out.close();
+	printf("Source successfully written in ./disassembly.s !\n");
+	return (0);
 }
