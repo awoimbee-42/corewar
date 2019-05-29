@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 18:06:53 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/24 17:22:42 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/29 21:28:24 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ static void	init_colors(t_vm *vm)
 void		init_ncurses(t_vm *vm)
 {
 	setlocale(LC_ALL, "");
-	vm->verbosity = VE_VISU;
 	vm->visu.op_per_sec = 10;
 	vm->visu.paused = TRUE;
 	initscr();
@@ -74,4 +73,5 @@ void		init_ncurses(t_vm *vm)
 	init_ncwindows(vm);
 	init_colors(vm);
 	visu_init_memview(vm);
+	vm->verbosity = VE_VISU;
 }

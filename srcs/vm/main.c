@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 14:51:50 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/24 14:53:21 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/29 21:28:01 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ void	clean_visu(t_vm *vm)
 	delwin(vm->visu.arenaw);
 	delwin(vm->visu.sidep.rootw);
 	delwin(vm->visu.sidep.statusw);
+	delwin(vm->visu.sidep.printw);
 	echo();
 	nocbreak();
 	curs_set(TRUE);
@@ -114,8 +115,7 @@ void	exit_vm(t_vm *env, char *err_msg)
 int		usage(const char *pname)
 {
 	ft_printf("<bold>Usage: %s"
-		" [-visu | -verbose]"
-		" [-rand]"
+		" [-visu | -verbose] [-rand]"
 		" [-dump nbr_cycles | -ndump width nbr_cycles]"
 		" [[-n number] champion.cor]<rst>\n"
 		"\t-dump        : Dumps the VMs 'RAM' after nbr_cycles, 32bits/line\n"
@@ -123,9 +123,10 @@ int		usage(const char *pname)
 		"\t-rand        : Fill the VM mem w/ random values, to test stability\n"
 		"\t-vi(su)      : enable the ncurses visualizer mode\n"
 		"\t-ve(rbosity) : verbosity level, it is cumulative\n"
-		"\t\t0: winner (le joueur x(nom_champion) a gagne)\n"
+		"\t\t0: winner (Player X (champion_name) won)\n"
 		"\t\t1: aff\n"
-		"\t\t2: live {red}<- DEFAULT SETTING{eoc}\n"
+		"\t\t2: live (A process shows that player X (champion_name) is alive)"
+		"{red}<- DEFAULT SETTING{eoc}\n"
 		"\t\t3: greetings message (list of competitors)\n"
 		"\t\t4: player death\n"
 		"\t\t5: process creation-death\n"

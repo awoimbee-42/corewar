@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 13:03:25 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/29 13:28:42 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/29 20:35:02 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,7 @@ static void		check_proc_live(t_proc *proc, int *nbr_live, int verbosity)
 	{
 		proc->pid = 0;
 		if (verbosity >= VE_PROCDEATH)
-			ft_printf("\tProcess %d of player %d died\n",
-				proc->pid, proc->play->id);
+			ft_printf("\tProcess %d died\n", proc->pid);
 	}
 	else
 	{

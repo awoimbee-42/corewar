@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 18:57:21 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/24 17:31:22 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/29 20:38:10 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@ void		visu_init_memview(t_vm *vm)
 	uint			mem;
 
 	i = -1;
-	while (++i < vm->procs.len)
+	while (++i < vm->players.len)
 	{
 		mem = 0;
 		mem_pc = vm->procs.d[i].pc;
 		wmove(vm->visu.arenaw, mem_pc / 64, mem_pc % 64);
 		wattron(vm->visu.arenaw, COLOR_PAIR(PLAY0_COLOR + i));
-		while (mem < vm->procs.d[i].play->head.prog_size)
+		while (mem < vm->players.d[i].head.prog_size)
 		{
 			if (mem_pc % 64 == 0)
 				wprintw(vm->visu.arenaw, "\n");
