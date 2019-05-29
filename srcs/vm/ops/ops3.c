@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/24 17:40:43 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/24 17:40:51 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/29 17:39:40 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void			op_fork(t_vm *vm, int proc, int reg_num[3])
 	t_proc		*parent;
 	t_proc		*child;
 
-	vecproc_push(&vm->gb, &vm->procs, vm->procs.d[proc]);
+	vecproc_push(&vm->gb, &vm->procs, proc);
 	parent = &vm->procs.d[proc];
 	child = &vm->procs.d[vm->procs.len - 1];
 	child->pc = circumem(parent->pc + (parent->reg[reg_num[0]] % IDX_MOD));
@@ -59,7 +59,7 @@ void			op_lfork(t_vm *vm, int proc, int reg_num[3])
 	t_proc		*parent;
 	t_proc		*child;
 
-	vecproc_push(&vm->gb, &vm->procs, vm->procs.d[proc]);
+	vecproc_push(&vm->gb, &vm->procs, proc);
 	parent = &vm->procs.d[proc];
 	child = &vm->procs.d[vm->procs.len - 1];
 	child->pc = circumem(parent->pc + parent->reg[reg_num[0]]);

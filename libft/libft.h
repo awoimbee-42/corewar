@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/23 20:34:49 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/26 19:56:13 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/29 17:51:16 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,6 +174,7 @@ t_queue			*que_flush(t_queue *q);
 **	t_vec4			vec4_matmul(const t_vec4 mat[4], const t_vec4 vec);
 **	void			vec4_newmat_aa(t_vec4 mat[4], const float f[4][4]);
 **	void			vec4_newmat_a(t_vec4 mat[4], const float f[16]);
+**	t_vec4			vec4_norm(const t_vec4 v);
 */
 
 /*

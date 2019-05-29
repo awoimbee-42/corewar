@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/16 11:55:20 by awoimbee          #+#    #+#              #
-#    Updated: 2019/05/26 18:54:24 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/05/29 17:52:17 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,7 +60,7 @@ SRCS_QUE =	create_destroy.c	disp.c				isempty.c			\
 
 SRCS_VEC4 =	vec4_new.c			vec4_newa.c			vec4_div.c			\
 			vec4_add_sub.c		vec4_mul.c			vec4_abs_sqr.c		\
-			vec4_dot.c			vec4_mod.c								\
+			vec4_dot.c			vec4_mod.c			vec4_norm.c			\
 			vec4_cross.c		vec4_mat.c
 
 SRCS_VECT =	new.c				push.c				realloc.c			\

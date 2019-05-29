@@ -18,14 +18,7 @@
 **		A process is dead if it's PID is 0
 */
 
-/*
-**	proc_memcpy is specially configured for copying 1 or more t_proc
-**		'special_memcpy(it, it2, end);' can be replaced with:
-**			ft_memcpy(it, it2, (end - it2) * sizeof(t_proc));
-**			end = &v->d[v->len];
-*/
-
-void		vecproc_del_dead(t_vecproc *v)
+void		vecproc_del_dead(t_garbage *gb, t_vecproc *v)
 {
 	t_proc		*end;
 	t_proc		*it;
@@ -37,9 +30,12 @@ void		vecproc_del_dead(t_vecproc *v)
 	{
 		if (it->pid == 0)
 		{
-			it2 = &it[1];
+			it2 = &it[0];
 			while (it2 != end && it2->pid == 0)
+			{
+				gb_free(gb, it2->reg);
 				it2 = &it2[1];
+			}
 			ft_memcpy(it, it2, (end - it2) * sizeof(t_proc));
 			v->len -= (it2 - it);
 			end = &v->d[v->len];

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/26 21:38:57 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/29 17:38:28 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 
 # define RESERVED_ID	-2147483648
 # define TIME_OF_WRITE	0.3
+# define OUR_REG_NB	(REG_NUMBER + 1 + MAX_ARGS_NUMBER)
 
 /*
 **	Verbosity levels are defined so new ones can be added in between easily
@@ -108,7 +109,7 @@ struct s_vm;
 typedef struct	s_proc
 {
 	int					pid;
-	t_register			reg[REG_NUMBER + 1 + MAX_ARGS_NUMBER];
+	t_register			*reg;
 	t_register			pc;
 	t_register			new_pc;
 	struct s_play		*play;
@@ -116,7 +117,6 @@ typedef struct	s_proc
 	int					op_id;
 	int					op_cycles;
 	t_bool				carry;
-	char				padd[8];
 }				t_proc;
 
 typedef struct	s_vecproc
@@ -231,9 +231,9 @@ typedef struct	s_vm
 */
 
 t_vecproc		*vecproc_push_empty(t_garbage *gb, t_vecproc *vec);
-t_vecproc		*vecproc_push(t_garbage *gb, t_vecproc *vec, t_proc d);
+t_vecproc		*vecproc_push(t_garbage *gb, t_vecproc *vec, uint src);
 t_vecproc		*vecproc_realloc(t_garbage *gb, t_vecproc *vec);
-void			vecproc_del_dead(t_vecproc *v);
+void			vecproc_del_dead(t_garbage *gb, t_vecproc *v);
 
 /*
 **	##################

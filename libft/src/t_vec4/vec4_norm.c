@@ -1,23 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vector_del_at.c                                    :+:      :+:    :+:   */
+/*   vec4_norm.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/23 11:48:47 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/23 14:14:08 by cpoirier         ###   ########.fr       */
+/*   Created: 2019/05/12 18:35:20 by awoimbee          #+#    #+#             */
+/*   Updated: 2019/05/29 17:50:55 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vm.h"
 #include "libft.h"
+#include <math.h>
 
-t_vecproc		*vecproc_del_at(t_vecproc *v, int at)
+static inline t_vec4	vec4_norm(const t_vec4 v)
 {
-	if (at >= v->len)
-		return (NULL);
-	--v->len;
-	memcpy(&v->d[at], &v->d[at + 1], (v->len - at) * sizeof(*v->d));
-	return (v);
+	return (vec4_divf(v, vec4_mod(v)));
 }

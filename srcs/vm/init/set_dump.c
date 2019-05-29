@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/24 17:44:25 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/24 17:44:55 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/29 17:48:51 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ void		read_ndump_cycle(t_vm *env, char **argv, int *agid)
 	++(*agid);
 	if (argv[*agid] == NULL
 		|| ft_strlen(argv[*agid]) > 10
-		|| (env->dump_width = ft_atoi(argv[*agid])) <= 0)
+		|| (env->dump_width = ft_atoi(argv[*agid])) <= 0
+		|| env->dump_width > 1024)
 		exit_vm(env, gb_add(&env->gb,
 			ft_cprintf("Dump width badly formatted ('%s')", argv[*agid])));
 	++(*agid);
