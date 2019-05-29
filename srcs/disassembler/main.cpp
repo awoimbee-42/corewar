@@ -48,16 +48,6 @@ const t_op	g_op_tab[17] = {
 	{0, 0, {0}, 0, 0, 0, FALSE, FALSE}
 };
 
-// template<typename T>
-// std::vector<T> slice(std::vector<T> const &v, int start, int end)
-// {
-// 	auto first = v.cbegin() + start;
-// 	auto last = v.cbegin() + end;
-
-// 	std::vector<T> vec(first, last);
-// 	return vec;
-// }
-
 void	quit(const char* errMsg) {
 	if (errMsg)
 		fprintf(stderr, "%s\n", errMsg);

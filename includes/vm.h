@@ -108,7 +108,7 @@ struct s_vm;
 typedef struct	s_proc
 {
 	int					pid;
-	t_register			reg[REG_NUMBER + 1 + MAX_ARGS_NUMBER];
+	t_register			*reg;//[REG_NUMBER + 1 + MAX_ARGS_NUMBER];
 	t_register			pc;
 	t_register			new_pc;
 	struct s_play		*play;
@@ -233,7 +233,7 @@ typedef struct	s_vm
 t_vecproc		*vecproc_push_empty(t_garbage *gb, t_vecproc *vec);
 t_vecproc		*vecproc_push(t_garbage *gb, t_vecproc *vec, t_proc d);
 t_vecproc		*vecproc_realloc(t_garbage *gb, t_vecproc *vec);
-void			vecproc_del_dead(t_vecproc *v);
+void			vecproc_del_dead(t_garbage *gb, t_vecproc *v);
 
 /*
 **	##################

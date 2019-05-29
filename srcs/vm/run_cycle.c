@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 13:03:25 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/24 17:38:43 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/29 13:28:42 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ static void		check_live(t_vm *vm)
 	j = vm->procs.len;
 	while (j-- != 0)
 		check_proc_live(&vm->procs.d[j], &nbr_live, vm->verbosity);
-	vecproc_del_dead(&vm->procs);
+	vecproc_del_dead(&vm->gb, &vm->procs);
 	j = vm->players.len;
 	while (j-- != 0)
 		vm->players.d[j].period_lives = 0;

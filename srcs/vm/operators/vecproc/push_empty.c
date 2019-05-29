@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 18:35:33 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/23 11:51:59 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/29 13:26:53 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ t_vecproc		*vecproc_push_empty(t_garbage *gb, t_vecproc *vec)
 	if (vec->len == vec->mem)
 		vecproc_realloc(gb, vec);
 	ft_bzero(&vec->d[vec->len], sizeof(*vec->d));
+	vec->d[vec->len].reg = gb_memalloc(gb,
+			(REG_NUMBER + 1 + MAX_ARGS_NUMBER) * sizeof(t_register));
 	vec->last_pid++;
 	vec->d[vec->len].pid = vec->last_pid;
 	++vec->len;

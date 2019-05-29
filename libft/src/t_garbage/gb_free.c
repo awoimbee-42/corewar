@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/04 20:50:39 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/23 16:37:04 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/29 13:35:06 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 
 void		gb_free(t_garbage *gb, void *ptr)
 {
-	void		**i;
-	static int	fragmentation = 0;
+	void				**i;
+	static unsigned int	fragmentation = 0;
 
 	i = gb->pointers;
 	while (*i != ptr)
@@ -27,7 +27,7 @@ void		gb_free(t_garbage *gb, void *ptr)
 	free(*i);
 	*i = NULL;
 	++fragmentation;
-	if (fragmentation == 20)
+	if (fragmentation == 8192)
 	{
 		gb_defrag(gb);
 		fragmentation = 0;
