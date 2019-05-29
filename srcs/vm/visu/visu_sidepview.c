@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 18:17:49 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/23 13:26:18 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/29 20:39:20 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	print_ops(t_vm *vm)
 			ptrf = "\nP %-2d Op: %-6s| Cycles remaining: %-4d";
 		else
 			ptrf = "\nP %-2d No Op";
-		play = (vm->procs.d[j].play - vm->players.d);
+		play = vm->procs.d[j].play;
 		wattron(vm->visu.sidep.statusw, COLOR_PAIR(PLAY0_COLOR + play));
 		wprintw(vm->visu.sidep.statusw,
 			ptrf,

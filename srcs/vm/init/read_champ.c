@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 18:08:33 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/22 20:33:10 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/29 20:41:04 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ void			champs_setup(t_vm *vm)
 	i = -1;
 	while (++i < vm->procs.len)
 	{
-		load_cor(vm, vm->procs.d[i].play, &vm->arena[offset]);
-		vm->procs.d[i].reg[1] = vm->procs.d[i].play->id;
+		load_cor(vm, &vm->players.d[i], &vm->arena[offset]);
+		vm->procs.d[i].reg[1] = vm->players.d[i].id;
 		vm->procs.d[i].pc = offset;
 		offset += spacing;
 		read_instruction(vm, i);
@@ -91,7 +91,7 @@ int				read_champ(t_vm *vm, char **input, int i)
 		++i;
 	}
 	vecproc_push_empty(&vm->gb, &vm->procs);
-	vm->procs.d[vm->procs.len - 1].play = champ;
+	vm->procs.d[vm->procs.len - 1].play = vm->players.len - 1;
 	champ->fname = input[i];
 	return (i);
 }

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/29 17:38:28 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/29 21:28:06 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,22 +101,23 @@ struct s_vm;
 */
 
 /*
-**	padd is used to make s_proc 128bytes for better memory allignment
-**	with some effort we could trim it down to 96bytes
-**		but I don't think it's worth the hassle
+**	t_proc is only 32bytes,
+**	which means each proces can be copied in a single AVX register !
+**	->it would be a bit faster than using ft_memcpy
+**	But anyways, wht's slowing us down is the grabage collector..
 */
 
 typedef struct	s_proc
 {
-	int					pid;
+	int					pc;
+	uint8_t				op_id;
+	uint8_t				play;
+	int16_t				new_pc;
 	t_register			*reg;
-	t_register			pc;
-	t_register			new_pc;
-	struct s_play		*play;
+	uint				pid;
 	int					live;
-	int					op_id;
-	int					op_cycles;
-	t_bool				carry;
+	int16_t				op_cycles;
+	int8_t				carry;
 }				t_proc;
 
 typedef struct	s_vecproc
