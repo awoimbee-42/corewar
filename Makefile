@@ -18,7 +18,7 @@ NAME =	corewar
 ASM  =	asm
 DISA =	disassembler
 
-CFLAGS	=	-g3 -Wall -Wextra -Ofast -march=native#-fsanitize=address #-Werror -Ofast -march=native
+CFLAGS	= -Wall -Wextra -Werror -Ofast -march=native
 
 SRC_NAME_CORE =	main.c								\
 				dump_memory.c						\
