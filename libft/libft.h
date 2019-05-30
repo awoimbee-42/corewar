@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/23 20:34:49 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/29 17:51:16 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/30 16:24:14 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define LIBFT_H
 # include <string.h>
 # include "intrisics.h"
-# include "libft.gen"
 
 /*
 **	#################### LIBMEM ####################
