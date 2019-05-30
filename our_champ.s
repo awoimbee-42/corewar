@@ -120,18 +120,18 @@ attack:
 
 	ld %0, r16
 
-	st r2, 500
-	st r3, 499
-	st r4, 498
-	st r5, 497
-	st r6, 496
-	st r7, 495
-	st r1, 491
-	st r8, 490
+	st r2, 508
+	st r3, 507
+	st r4, 506
+	st r5, 505
+	st r6, 504
+	st r7, 503
+	st r1, 499
+	st r8, 498
 	st r1, 6
 	live %123
 
-	zjmp %450
+	zjmp %458
 
 # 190317573 equals 	sti	r4, r5
 # so we can write forward
