@@ -6,11 +6,14 @@
 /*   By: cpoirier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 20:23:20 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/25 14:04:11 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/30 15:40:38 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
+#include "libft.h"
+#include <errno.h>
+#include <fcntl.h>
 
 void	init_asm(t_asm *my_asm, int *fd, char *path)
 {

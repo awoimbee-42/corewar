@@ -6,11 +6,12 @@
 /*   By: cpoirier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 19:30:37 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/24 17:52:05 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/30 15:38:26 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
+#include "libft.h"
 
 int		get_name(t_asm *a, char *s, char name[], size_t len)
 {

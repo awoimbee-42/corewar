@@ -6,11 +6,12 @@
 /*   By: cpoirier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 18:51:30 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/23 16:22:57 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/30 15:39:01 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
+#include "libft.h"
 
 void		init_asm_loop(t_asm *my_asm, size_t *i, char *s)
 {

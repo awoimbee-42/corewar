@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/12 22:29:22 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/24 17:32:16 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/30 15:31:40 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "vm.h"
 #include <ncurses.h>
 #include <time.h>
+#include <unistd.h>
 
 static void	exit_vm2(t_vm *env, char *err_msg)
 {

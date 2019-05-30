@@ -6,11 +6,12 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 17:59:57 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/23 15:46:16 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/30 15:30:36 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <time.h>
+#include <unistd.h>
 #include "vm.h"
 
 void				loop(t_vm *vm)

@@ -6,12 +6,13 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 14:51:50 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/29 21:28:01 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/30 15:30:47 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
 #include "vm.h"
+#include <unistd.h>
 
 const t_vm_op g_op[16] = {
 	{

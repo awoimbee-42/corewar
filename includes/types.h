@@ -6,14 +6,13 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/05 21:12:00 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/26 21:39:19 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/30 15:35:34 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TYPES_H
 # define TYPES_H
 # include "corewar.h"
-# include <string.h>
 
 typedef enum	e_bool
 {

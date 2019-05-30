@@ -6,15 +6,15 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:24:23 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/29 21:28:06 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/30 15:41:19 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VM_H
 # define VM_H
 # include "corewar.h"
-# include "libft.h"
 # include <ncurses.h>
+# include "libft.h"
 
 /*
 **	################

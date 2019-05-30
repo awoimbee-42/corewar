@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 18:06:46 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/26 17:34:58 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/30 15:39:59 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 # define ASM_H
 # include "types.h"
 # include "corewar.h"
-# include "libft.h"
-# include <fcntl.h>
-# include <errno.h>
 
 typedef struct	s_label
 {

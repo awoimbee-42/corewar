@@ -6,12 +6,13 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/18 16:33:52 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/23 12:58:37 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/30 15:31:10 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 #include "libft.h"
+#include <unistd.h>
 
 void		print_winner(t_vm *vm)
 {

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 18:08:33 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/29 20:41:04 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/30 15:31:26 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "init.h"
 #include <errno.h>
 #include <fcntl.h>
+#include <unistd.h>
 
 /*
 **	Filename is put in t_play.cor by read_champ()

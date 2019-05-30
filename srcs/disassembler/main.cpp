@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/26 16:35:08 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/26 22:48:59 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/30 15:32:29 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <vector>
 #include <istream>
 #include <fstream>
+#include <unistd.h>
 
 extern "C" {
 #include "corewar.h"

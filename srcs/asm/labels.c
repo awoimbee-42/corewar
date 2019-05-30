@@ -6,11 +6,12 @@
 /*   By: cpoirier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 19:12:52 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/24 17:53:55 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/30 15:38:37 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
+#include "libft.h"
 
 int		read_label(t_asm *my_asm, t_label *label, char *s)
 {

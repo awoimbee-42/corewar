@@ -6,12 +6,13 @@
 /*   By: cpoirier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/24 17:33:25 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/24 17:54:26 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/30 15:39:16 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 #include <stdlib.h>
+#include "libft.h"
 
 void		update_char(t_asm *my_asm, size_t i, size_t j)
 {
