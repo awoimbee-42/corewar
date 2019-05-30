@@ -6,7 +6,7 @@
 /*   By: cpoirier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 19:30:37 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/30 15:38:26 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/30 16:57:23 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ char	*get_base_name(char *s)
 	size_t	i;
 	char	*res;
 
+	if (!s)
+		fail_msg(0, "Malloc failed");
 	i = -1;
 	dot_pos = -1;
 	while (s[++i])
