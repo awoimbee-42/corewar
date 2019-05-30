@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/18 16:33:52 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/30 15:31:10 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/30 17:36:06 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void		print_winner(t_vm *vm)
 	}
 	if (vm->verbosity >= VE_WINNER)
 		ft_printf("Player %i (%s) won \n", players[win_i].id,
-			players[win_i].head.prog_name);
+			gb_add(&vm->gb, ft_strdup(players[win_i].head.prog_name)));
 	else if (vm->verbosity == VE_VISU)
 		visu_endloop(vm, win_i);
 }
