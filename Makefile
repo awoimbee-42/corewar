@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/05/26 22:42:28 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/05/30 16:40:41 by cpoirier         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ NAME =	corewar
 ASM  =	asm
 DISA =	disassembler
 
-CFLAGS	= -Wall -Wextra -Werror -Ofast -march=native
+CFLAGS	= -Wall -Wextra -Werror -fno-builtin
 
 SRC_NAME_CORE =	main.c								\
 				dump_memory.c						\

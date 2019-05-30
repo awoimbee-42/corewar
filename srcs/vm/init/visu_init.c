@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 18:06:53 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/29 21:28:24 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/30 16:36:21 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,7 @@ static void	init_ncwindows(t_vm *vm)
 
 	getmaxyx(stdscr, dim[1], dim[0]);
 	if (dim[0] < 250 || dim[1] < 68)
-		exit_vm(vm, gb_add(&vm->gb,
-				ft_cprintf("Windows too small (%dx%d), minimum is (250x68)",
-					dim[0], dim[1])));
+		ft_printf("Warning: window too small !\n");
 	if (!(sp = &vm->visu.sidep)
 		|| !(vm->visu.rootw = newwin(68, 250, 0, 0))
 		|| !(vm->visu.arenaw = subwin(vm->visu.rootw, 64, 193, 2, 2))
