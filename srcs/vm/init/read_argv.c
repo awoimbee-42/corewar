@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 19:24:05 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/30 16:34:56 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/30 16:44:53 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void			read_argv_init(t_vm *env, int argc, char **argv)
 			read_ndump_cycle(env, argv, &i);
 		else if (!ft_strcmp(argv[i], "-visu") || !ft_strcmp(argv[i], "-vi"))
 			env->verbosity = VE_VI_NOTINIT;
-		else if (!ft_strcmp(argv[i], "-verbosity") || !ft_strcmp(argv[i], "-ve"))
+		else if (!ft_strcmp(argv[i], "-verbose") || !ft_strcmp(argv[i], "-ve"))
 			set_verbosity(env, argv[++i]);
 		else if (!ft_strcmp(argv[i], "-rand"))
 			arena_fill_rand(env);

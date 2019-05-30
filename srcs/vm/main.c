@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 14:51:50 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/05/30 15:30:47 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/30 16:45:15 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ int		usage(const char *pname)
 		"\t-ndump       : Dumps the VMs 'RAM' after nbr_cycles, nbits/line\n"
 		"\t-rand        : Fill the VM mem w/ random values, to test stability\n"
 		"\t-vi(su)      : enable the ncurses visualizer mode\n"
-		"\t-ve(rbosity) : verbosity level, it is cumulative\n"
+		"\t-ve(rbose) : verbosity level, it is cumulative\n"
 		"\t\t0: winner (Player X (champion_name) won)\n"
 		"\t\t1: aff\n"
 		"\t\t2: live (A process shows that player X (champion_name) is alive)"
