@@ -6,7 +6,7 @@
 /*   By: cpoirier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 20:23:20 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/30 15:40:38 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/30 17:23:07 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ void	init_asm(t_asm *my_asm, int *fd, char *path)
 		fail_msg(my_asm, strerror(errno));
 	init_labels(my_asm);
 	tmp = ft_strnew(sizeof(t_header));
+	if (!tmp)
+		fail_msg("Malloc failed");
 	write_n_to_output(&my_asm->output, &my_asm->cursor, tmp, sizeof(t_header));
 	my_asm->fd = *fd;
 	free(tmp);
