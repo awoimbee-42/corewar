@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_asm.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpoirier <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 20:23:20 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/30 17:23:07 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/30 17:43:04 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	init_asm(t_asm *my_asm, int *fd, char *path)
 	init_labels(my_asm);
 	tmp = ft_strnew(sizeof(t_header));
 	if (!tmp)
-		fail_msg("Malloc failed");
+		fail_msg(0, "Malloc failed");
 	write_n_to_output(&my_asm->output, &my_asm->cursor, tmp, sizeof(t_header));
 	my_asm->fd = *fd;
 	free(tmp);

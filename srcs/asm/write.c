@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 18:55:36 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/05/30 17:23:27 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/05/30 17:42:53 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void		write_nb_to_output(t_asm *my_asm, int nb, int pre)
 
 	s = ft_strnew(pre);
 	if (!s)
-		fail_msg("Malloc failed");
+		fail_msg(0, "Malloc failed");
 	if (pre > 1)
 		write_nb(s, nb, pre);
 	else
