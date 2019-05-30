@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/14 16:59:21 by awoimbee          #+#    #+#             */
-/*   Updated: 2018/12/16 20:36:21 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/05/30 17:10:45 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,9 @@ void			prtf__parse_bonus(t_string *out)
 	i = 0;
 	while (i < out->len)
 	{
-		if (out->str[i] == '{' && out->str[i + 4] == '}')
+		if (out->str[i] == '{'
+			&& i + 4 < out->len
+			&& out->str[i + 4] == '}')
 			set_color(&out->str[i]);
 		else if (out->str[i] == '<')
 			set_decoration(&out->str[i]);
